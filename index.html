@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupo La Emilia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #d7faea;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header img {
+            height: 50px;
+        }
+        nav {
+            background-color: #444;
+            padding: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline-block;
+            position: relative;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+        }
+        nav ul li a:hover {
+            color: #ddd;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #444;
+            min-width: 160px;
+            z-index: 1;
+            text-align: left;
+            top: 100%;
+            left: 0;
+        }
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: #444;
+        }
+        nav ul li:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="C:\Users\lcrocetti\Desktop\pagina\logo.png" alt="Logo">
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="C:\Users\lcrocetti\Desktop\pagina\fiscal.html">Fiscal</a></li>
+            <li><a href="C:\Users\lcrocetti\Desktop\pagina\plasticos.html">Plasticos Inyecciones</a></li>
+            <li>
+                <a href="#">Materia Prima</a>
+                <div class="dropdown-content">
+                    <a href="C:\Users\lcrocetti\Desktop\pagina\MP\R20\r20.html">Rack 20</a>
+                    <a href="C:\Users\lcrocetti\Desktop\pagina\MP\R21\r21.html">Rack 21</a>
+                    <a href="C:\Users\lcrocetti\Desktop\pagina\MP\subpagina1.html">Subpágina 1</a>
+                    <a href="C:\Users\lcrocetti\Desktop\pagina\MP\subpagina2.html">Subpágina 2</a>
+                </div>
+            </li>
+            <li><a href="C:\Users\lcrocetti\Desktop\pagina\Buloneria\index.html">Buloneria</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <center><h1>Bienvenido a nuestra página</h1></center>
+    </main>
+
+</body>
+</html>

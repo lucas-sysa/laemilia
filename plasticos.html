@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Inventario</title>
+    <link rel="stylesheet" href="plasticos.css">
+</head>
+<body>
+    <h1><center>Escanear Codigo</center></h1>
+
+    <!-- Campo para ingresar código de barras (en la parte superior) -->
+    <input type="text" id="barcodeInput" placeholder="Escanea el código de barras" autofocus>
+
+<table>
+	<center>
+    <button id="exportStockBtn">Exportar Datos de Stock</button>
+    <input type="file" id="importStockFile" style="display:none;">
+    <button id="importStockBtn">Importar Datos de Stock</button>
+    <button id="syncDataBtn">Sincronizar Datos</button>
+    <button id="clearAllBtn">Limpiar Todo</button>
+    <button id="showLogBtn">Mostrar Log</button>
+    <button id="exportLogBtn">Exportar Historial a Excel</button>
+	</center>
+</table>
+
+
+    <h1>Control de Inventario</h1>
+
+    <!-- Formulario para agregar productos -->
+    <form id="productForm">
+        <label for="codigo">Código:</label>
+        <input type="text" id="codigo" required>
+        <label for="modelo">Modelo:</label>
+        <input type="text" id="modelo" required>
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" required>
+        <button type="submit" id="addProductBtn">Agregar Producto</button>
+    </form>
+
+    <table id="stockTable">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Modelo</th>
+                <th>Descripción</th>
+                <th>Stock</th>
+                <th>Entrada</th>
+                <th>Salida</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las filas de la tabla se agregarán aquí -->
+        </tbody>
+    </table>
+
+    <!-- Diálogo para acción de entrada o salida -->
+    <div id="actionOverlay"></div>
+    <div id="actionDialog">
+        <p id="dialogMessage">Mensaje de acción aquí</p>
+        <button id="entradaBtn">Entrada</button>
+        <button id="salidaBtn">Salida</button>
+        <button id="cancelBtn">Cancelar</button>
+    </div>
+
+    <!-- Botón para mostrar el log -->
+
+    <!-- Contenedor del log -->
+    <div id="logContainer" class="modal">
+        <div class="modal-content">
+            <h2>Registro de Movimientos</h2>
+            <ul id="logList"></ul>
+            <button id="closeLogBtn" class="action-btn">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal para la validación de tarjeta -->
+    <div id="cardOverlay" class="overlay"></div>
+    <div id="cardModal" class="modal">
+        <div class="modal-content">
+            <label for="cardInput">Escanee su tarjeta:</label>
+            <input type="text" id="cardInput">
+            <button id="cancelCardBtn" class="action-btn">Cancelar</button>
+        </div>
+    </div>
+
+
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+    <script src="plasticos.js"></script>
+</body>
+</html>
