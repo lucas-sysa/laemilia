@@ -175,6 +175,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <td class="stock">${item.stock}</td>
             <td><input type="number" class="entrada" min="0"></td>
             <td><input type="number" class="salida" min="0"></td>
+            <td><input type="number" class="canasto" min="0" value="${item.canasto || 0}"></td>
+            <td class="diferencia">${(item.stock * (item.canasto || 0)).toFixed(2)}</td>
             <td><button class="deleteBtn">Eliminar</button></td>
         `;
         table.appendChild(newRow);
@@ -191,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentStock += entradaValue;
             stockCell.textContent = currentStock;
             this.value = '';
+            updateCanastoCalculation(row);  // Actualiza la diferencia al cambiar el stock
             updateMovements(row.children[0].textContent.trim(), `Entrada: ${entradaValue} unidades`, cardNumber);
             updateLocalStorage();
         });
@@ -204,13 +207,58 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentStock -= salidaValue;
                 stockCell.textContent = currentStock;
                 this.value = '';
+                updateCanastoCalculation(row);  // Actualiza la diferencia al cambiar el stock
                 updateMovements(row.children[0].textContent.trim(), `Salida: ${salidaValue} unidades`, cardNumber);
                 updateLocalStorage();
             } else {
                 alert('No hay suficiente stock para la salida.');
             }
         });
+
+        row.querySelector('.canasto').addEventListener('input', function() {
+            updateCanastoCalculation(row);  // Actualiza la diferencia al cambiar la cantidad por canasto
+
+    function updateCanastoCalculation(row) {
+        const stockCell = row.querySelector('.stock');
+        const canastoCell = row.querySelector('.canasto');
+        const diferenciaCell = row.querySelector('.diferencia');
+
+        let stock = parseInt(stockCell.textContent, 10);
+        let canastoQuantity = parseInt(canastoCell.value, 10) || 0; // Asegúrate de que no sea 0 para evitar errores
+
+        // Realizar la multiplicación y mostrarla en la columna "diferencia"
+        let multiplicacion = stock * canastoQuantity;
+        diferenciaCell.textContent = multiplicacion.toFixed(2);
     }
+});
+    row.querySelector('.canasto').addEventListener('input', function() {
+        const stockCell = row.querySelector('.stock');
+        const canastoCell = row.querySelector('.canasto');
+        const diferenciaCell = row.querySelector('.diferencia');
+
+        let stock = parseInt(stockCell.textContent, 10);
+        let canastoQuantity = parseInt(canastoCell.value, 10) || 1; // Asegurarse de que no sea 0 para evitar errores
+
+        // Realizar la multiplicación y mostrarla en la columna "diferencia"
+        let multiplicacion = stock * canastoQuantity;
+        diferenciaCell.textContent = multiplicacion.toFixed(2);
+
+        // Guardar el dato actualizado en localStorage
+        updateLocalStorage();
+    });
+}
+
+function saveCanastoToLocalStorage(codigo, canastoQuantity) {
+    const stockData = JSON.parse(localStorage.getItem('stockData')) || [];
+    const updatedData = stockData.map(item => {
+        if (item.codigo === codigo) {
+            item.canasto = canastoQuantity;
+            item.diferencia = item.stock * canastoQuantity; // Actualizar la diferencia si es necesario
+        }
+        return item;
+    });
+    localStorage.setItem('stockData', JSON.stringify(updatedData));
+}
 
     function attachDeleteEvent(row) {
         row.querySelector('.deleteBtn').addEventListener('click', function() {
@@ -239,22 +287,24 @@ function updateMovements(productCode, actionDetails, cardNumber) {
         }
     }
 
-    function updateLocalStorage() {
-        const rows = document.querySelectorAll('#stockTable tbody tr');
-        const stockData = [];
+function updateLocalStorage() {
+    const rows = document.querySelectorAll('#stockTable tbody tr');
+    const stockData = [];
 
-        rows.forEach(row => {
-            stockData.push({
-                codigo: row.children[0].textContent.trim(),
-                modelo: row.children[1].textContent.trim(),
-                descripcion: row.children[2].textContent.trim(),
-                stock: parseInt(row.querySelector('.stock').textContent, 10)
-            });
+    rows.forEach(row => {
+        stockData.push({
+            codigo: row.children[0].textContent.trim(),
+            modelo: row.children[1].textContent.trim(),
+            descripcion: row.children[2].textContent.trim(),
+            stock: parseInt(row.querySelector('.stock').textContent, 10),
+            diferencia: parseFloat(row.querySelector('.diferencia').textContent) || 0, // Guardar la diferencia
+            canasto: parseFloat(row.querySelector('.canasto').value) || 0 // Guardar la cantidad de canastos
         });
+    });
 
-        localStorage.setItem('stockData', JSON.stringify(stockData));
-        console.log('Datos guardados en localStorage:', stockData);
-    }
+    localStorage.setItem('stockData', JSON.stringify(stockData));
+    console.log('Datos guardados en localStorage:', stockData);
+}
 
     document.getElementById('showLogBtn').addEventListener('click', function() {
         logContainer.style.display = 'block';
@@ -315,7 +365,6 @@ function exportLogToExcel() {
     XLSX.utils.book_append_sheet(wb, ws, 'Historial de Movimientos');
     XLSX.writeFile(wb, 'Historial_Movimientos.xlsx');
 }
-
 
 document.getElementById('exportStockBtn').addEventListener('click', function() {
     exportStockData();
