@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Etiquetas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #labels-container {
+            display: flex;
+            flex-direction: column; /* Colocar etiquetas en columna para una sola página */
+            width: 100%; /* Asegúrate de que el contenedor use todo el ancho */
+        }
+
+        .label {
+            width: 7cm; /* Ajusta el tamaño de cada etiqueta */
+            height: 5cm;
+            border: 1px solid #000;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #fff;
+            page-break-inside: avoid;
+            margin-bottom: 5mm; /* Espacio entre etiquetas */
+        }
+
+        .label p {
+            margin: 0;
+            padding: 2px 0;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .print-button {
+            background-color: #e74c3c;
+        }
+
+        .print-button:hover {
+            background-color: #c0392b;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                display: block;
+                width: 40cm; /* Ajusta el ancho de la página a la impresora */
+                height: 60cm; /* Ajusta el alto de la página a la impresora */
+            }
+
+            #labels-container {
+                display: flex;
+                flex-direction: column; /* Asegura que las etiquetas se coloquen en columna */
+                width: 50cm; /* Ancho de la hoja para impresión */
+                height: 80cm; /* Alto de la hoja para impresión */
+                margin: 0;
+                padding: 0;
+            }
+
+            .label {
+                width: 50cm; /* Tamaño de las etiquetas en la impresión */
+                height: 80cm;
+                box-shadow: none; /* Elimina sombras en la impresión */
+                border: none; /* Elimina bordes en la impresión */
+            }
+
+            button {
+                display: none; /* Oculta botones en la impresión */
+            }
+
+            h1 {
+                display: none; /* Oculta encabezado en la impresión */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Etiquetas Generadas</h1>
+    <div id="labels-container">
+        <!-- Las etiquetas se generarán aquí -->
+    </div>
+    <button onclick="window.location.href='index.html'">Volver</button>
+    <button class="print-button" onclick="printLabels()">Imprimir Etiquetas</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const labelsContainer = document.getElementById('labels-container');
+
+            // Obtén los datos de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const data = JSON.parse(decodeURIComponent(urlParams.get('data')));
+
+            // Mostrar los datos en el contenedor
+            data.forEach(item => {
+                const label = document.createElement('div');
+                label.classList.add('label');
+                label.innerHTML = `
+                    <p><strong>Orden:</strong> ${item.orden}</p>
+                    <p><strong>Modelo:</strong> ${item.modelo}</p>
+                    <p><strong>Descripción:</strong> ${item.descripcion}</p>
+                    <p><strong>Cantidad:</strong> ${item.cantidad}</p>
+                    <p><strong>Posición:</strong> ${item.posicion}</p>
+                    <p><strong>Código Pallet:</strong> ${item.codigoPallet}</p>
+                    <p><strong>Estado:</strong> ${item.estado}</p>
+                `;
+                labelsContainer.appendChild(label);
+            });
+        });
+
+        function printLabels() {
+            // Ocultar elementos no deseados antes de imprimir
+            document.querySelector('h1').style.display = 'none';
+            document.querySelectorAll('button').forEach(btn => btn.style.display = 'none');
+            
+            window.print();
+            
+            // Restaurar visibilidad después de imprimir
+            document.querySelector('h1').style.display = 'block';
+            document.querySelectorAll('button').forEach(btn => btn.style.display = 'block');
+        }
+    </script>
+</body>
+</html>
+
+
+
