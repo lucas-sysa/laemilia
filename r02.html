@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Depósito</title>
+<link rel="stylesheet" href="R02.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+<center>
+<h1>Gestión de Depósito</h1>
+<div class="deposit">
+<img src="rack02.jpg" alt="Plano del Depósito" class="plano" id="plano">
+
+<!-- Sector R02 -->
+<div id="sector-R02" class="sector">
+<div class="position" id="R02-1" data-position="R02-1">R1</div>
+<div class="position" id="R02-2" data-position="R02-2">R2</div>
+<div class="position" id="R02-3" data-position="R02-3">R3</div>
+<div class="position" id="R02-4" data-position="R02-4">R4</div>
+<div class="position" id="R02-5" data-position="R02-5">R5</div>
+<div class="position" id="R02-6" data-position="R02-6">R6</div>
+<div class="position" id="R02-7" data-position="R02-7">R7</div>
+<div class="position" id="R02-8" data-position="R02-8">R8</div>
+<div class="position" id="R02-9" data-position="R02-9">R9</div>
+<div class="position" id="R02-10" data-position="R02-10">R10</div>
+<div class="position" id="R02-11" data-position="R02-11">R11</div>
+<div class="position" id="R02-12" data-position="R02-12">R12</div>
+<div class="position" id="R02-13" data-position="R02-13">R13</div>
+<div class="position" id="R02-14" data-position="R02-14">R14</div>
+<div class="position" id="R02-15" data-position="R02-15">R15</div>
+<div class="position" id="R02-16" data-position="R02-16">R16</div>
+<div class="position" id="R02-17" data-position="R02-17">R17</div>
+<div class="position" id="R02-18" data-position="R02-18">R18</div>
+<div class="position" id="R02-19" data-position="R02-19">R19</div>
+<div class="position" id="R02-20" data-position="R02-20">R20</div>
+<div class="position" id="R02-21" data-position="R02-21">R21</div>
+<div class="position" id="R02-22" data-position="R02-22">R22</div>
+<div class="position" id="R02-23" data-position="R02-23">R23</div>
+<div class="position" id="R02-24" data-position="R02-24">R24</div>
+<div class="position" id="R02-25" data-position="R02-25">R25</div>
+<div class="position" id="R02-26" data-position="R02-26">R26</div>
+<div class="position" id="R02-27" data-position="R02-27">R27</div>
+<div class="position" id="R02-28" data-position="R02-28">R28</div>
+<div class="position" id="R02-29" data-position="R02-29">R29</div>
+<div class="position" id="R02-30" data-position="R02-30">R30</div>
+
+<div class="position" id="R02-31" data-position="R02-31">R31</div>
+<div class="position" id="R02-32" data-position="R02-32">R32</div>
+<div class="position" id="R02-33" data-position="R02-33">R33</div>
+<div class="position" id="R02-34" data-position="R02-34">R34</div>
+<div class="position" id="R02-35" data-position="R02-35">R35</div>
+<div class="position" id="R02-36" data-position="R02-36">R36</div>
+<div class="position" id="R02-37" data-position="R02-37">R37</div>
+<div class="position" id="R02-38" data-position="R02-38">R38</div>
+<div class="position" id="R02-39" data-position="R02-39">R39</div>
+<div class="position" id="R02-40" data-position="R02-40">R40</div>
+<div class="position" id="R02-41" data-position="R02-41">R41</div>
+<div class="position" id="R02-42" data-position="R02-42">R42</div>
+<div class="position" id="R02-43" data-position="R02-43">R43</div>
+<div class="position" id="R02-44" data-position="R02-44">R44</div>
+<div class="position" id="R02-45" data-position="R02-45">R45</div>
+<div class="position" id="R02-46" data-position="R02-46">R46</div>
+<div class="position" id="R02-47" data-position="R02-47">R47</div>
+<div class="position" id="R02-48" data-position="R02-48">R48</div>
+<div class="position" id="R02-49" data-position="R02-49">R49</div>
+<div class="position" id="R02-50" data-position="R02-50">R50</div>
+<div class="position" id="R02-51" data-position="R02-51">R51</div>
+<div class="position" id="R02-52" data-position="R02-52">R52</div>
+<div class="position" id="R02-53" data-position="R02-53">R53</div>
+<div class="position" id="R02-54" data-position="R02-54">R54</div>
+<div class="position" id="R02-55" data-position="R02-55">R55</div>
+<div class="position" id="R02-56" data-position="R02-56">R56</div>
+<div class="position" id="R02-57" data-position="R02-57">R57</div>
+<div class="position" id="R02-58" data-position="R02-58">R58</div>
+<div class="position" id="R02-59" data-position="R02-59">R59</div>
+<div class="position" id="R02-60" data-position="R02-60">R60</div>
+<div class="position" id="R02-61" data-position="R02-61">R61</div>
+<div class="position" id="R02-62" data-position="R02-62">R62</div>
+<div class="position" id="R02-63" data-position="R02-63">R63</div>
+<div class="position" id="R02-64" data-position="R02-64">R64</div>
+<div class="position" id="R02-65" data-position="R02-65">R65</div>
+<div class="position" id="R02-66" data-position="R02-66">R66</div>
+</div>
+</div>
+<!-- Formulario de carga -->
+<form id="depositForm">
+<label for="orden">Orden:</label>
+<input type="text" id="orden" required>
+
+<label for="modelo">Modelo:</label>
+<input type="text" id="modelo" required>
+
+<label for="descripcion">Descripción:</label>
+<input type="text" id="descripcion" required>
+
+<label for="cantidad">Cantidad:</label>
+<input type="number" id="cantidad" required>
+
+<label for="posicion">Posición:</label>
+<select id="posicion" name="posicion" required>
+<option value="R02-1">R02-1</option>
+<option value="R02-2">R02-2</option>
+<option value="R02-3">R02-3</option>
+<option value="R02-4">R02-4</option>
+<option value="R02-5">R02-5</option>
+<option value="R02-6">R02-6</option>
+<option value="R02-7">R02-7</option>
+<option value="R02-8">R02-8</option>
+<option value="R02-9">R02-9</option>
+<option value="R02-10">R02-10</option>
+<option value="R02-11">R02-11</option>
+<option value="R02-12">R02-12</option>
+<option value="R02-13">R02-13</option>
+<option value="R02-14">R02-14</option>
+<option value="R02-15">R02-15</option>
+<option value="R02-16">R02-16</option>
+<option value="R02-17">R02-17</option>
+<option value="R02-18">R02-18</option>
+<option value="R02-19">R02-19</option>
+<option value="R02-20">R02-20</option>
+<option value="R02-21">R02-21</option>
+<option value="R02-22">R02-22</option>
+<option value="R02-23">R02-23</option>
+<option value="R02-24">R02-24</option>
+<option value="R02-25">R02-25</option>
+<option value="R02-26">R02-26</option>
+<option value="R02-27">R02-27</option>
+<option value="R02-28">R02-28</option>
+<option value="R02-29">R02-29</option>
+<option value="R02-30">R02-30</option>
+<option value="R02-31">R02-31</option>
+<option value="R02-32">R02-32</option>
+<option value="R02-33">R02-33</option>
+<option value="R02-34">R02-34</option>
+<option value="R02-35">R02-35</option>
+<option value="R02-36">R02-36</option>
+<option value="R02-37">R02-37</option>
+<option value="R02-38">R02-38</option>
+<option value="R02-39">R02-39</option>
+<option value="R02-40">R02-40</option>
+<option value="R02-41">R02-41</option>
+<option value="R02-42">R02-42</option>
+<option value="R02-43">R02-43</option>
+<option value="R02-44">R02-44</option>
+<option value="R02-45">R02-45</option>
+<option value="R02-46">R02-46</option>
+<option value="R02-47">R02-47</option>
+<option value="R02-48">R02-48</option>
+<option value="R02-49">R02-49</option>
+<option value="R02-50">R02-50</option>
+<option value="R02-51">R02-51</option>
+<option value="R02-52">R02-52</option>
+<option value="R02-53">R02-53</option>
+<option value="R02-54">R02-54</option>
+<option value="R02-55">R02-55</option>
+<option value="R02-56">R02-56</option>
+<option value="R02-57">R02-57</option>
+<option value="R02-58">R02-58</option>
+<option value="R02-59">R02-59</option>
+<option value="R02-60">R02-60</option>
+<option value="R02-61">R02-61</option>
+<option value="R02-62">R02-62</option>
+<option value="R02-63">R02-63</option>
+<option value="R02-64">R02-64</option>
+<option value="R02-65">R02-65</option>
+<option value="R02-66">R02-66</option>
+</select>
+
+<label for="estado">Estado:</label>
+<select id="estado" name="estado" required>
+<option value="ok">Ok</option>
+<option value="retenido">Retenido</option>
+<option value="intervenido">Intervenido</option>
+</select>
+
+<label for="codigoPallet" class="hidden">Código de Pallet (autogenerado):</label>
+<input type="text" id="codigoPallet" name="codigoPallet" readonly class="hidden">
+
+
+<button type="submit">Agregar</button>
+</form>
+
+<!-- Tabla para mostrar los datos cargados -->
+<table id="orderTable">
+<thead>
+<tr>
+<th>Orden</th>
+<th>Modelo</th>
+<th>Descripción</th>
+<th>Cantidad</th>
+<th>Posición</th>
+<th>Código Pallet</th>
+<th>Estado</th>
+<th>Modificar Estado</th> <!-- Nueva columna para seleccionar el estado -->
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+<script src="R02.js"></script>
+
+</body>
+</html>
+
