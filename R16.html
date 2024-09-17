@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Depósito</title>
+<link rel="stylesheet" href="R16.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+<center>
+<h1>Gestión de Depósito</h1>
+<div class="deposit">
+<img src="rack16.jpg" alt="Plano del Depósito" class="plano" id="plano">
+
+<!-- Sector R16 -->
+<div id="sector-R16" class="sector">
+<div class="position" id="R16-1" data-position="R16-1">R1</div>
+<div class="position" id="R16-2" data-position="R16-2">R2</div>
+<div class="position" id="R16-3" data-position="R16-3">R3</div>
+<div class="position" id="R16-4" data-position="R16-4">R4</div>
+<div class="position" id="R16-5" data-position="R16-5">R5</div>
+<div class="position" id="R16-6" data-position="R16-6">R6</div>
+<div class="position" id="R16-7" data-position="R16-7">R7</div>
+<div class="position" id="R16-8" data-position="R16-8">R8</div>
+<div class="position" id="R16-9" data-position="R16-9">R9</div>
+<div class="position" id="R16-10" data-position="R16-10">R10</div>
+<div class="position" id="R16-11" data-position="R16-11">R11</div>
+<div class="position" id="R16-12" data-position="R16-12">R12</div>
+<div class="position" id="R16-13" data-position="R16-13">R13</div>
+<div class="position" id="R16-14" data-position="R16-14">R14</div>
+<div class="position" id="R16-15" data-position="R16-15">R15</div>
+<div class="position" id="R16-16" data-position="R16-16">R16</div>
+<div class="position" id="R16-17" data-position="R16-17">R17</div>
+<div class="position" id="R16-18" data-position="R16-18">R18</div>
+<div class="position" id="R16-19" data-position="R16-19">R19</div>
+<div class="position" id="R16-20" data-position="R16-20">R20</div>
+<div class="position" id="R16-21" data-position="R16-21">R21</div>
+<div class="position" id="R16-22" data-position="R16-22">R22</div>
+<div class="position" id="R16-23" data-position="R16-23">R23</div>
+<div class="position" id="R16-24" data-position="R16-24">R24</div>
+<div class="position" id="R16-25" data-position="R16-25">R25</div>
+<div class="position" id="R16-26" data-position="R16-26">R26</div>
+<div class="position" id="R16-27" data-position="R16-27">R27</div>
+<div class="position" id="R16-28" data-position="R16-28">R28</div>
+<div class="position" id="R16-29" data-position="R16-29">R29</div>
+<div class="position" id="R16-30" data-position="R16-30">R30</div>
+
+<div class="position" id="R16-31" data-position="R16-31">R31</div>
+<div class="position" id="R16-32" data-position="R16-32">R32</div>
+<div class="position" id="R16-33" data-position="R16-33">R33</div>
+<div class="position" id="R16-34" data-position="R16-34">R34</div>
+<div class="position" id="R16-35" data-position="R16-35">R35</div>
+<div class="position" id="R16-36" data-position="R16-36">R36</div>
+<div class="position" id="R16-37" data-position="R16-37">R37</div>
+<div class="position" id="R16-38" data-position="R16-38">R38</div>
+<div class="position" id="R16-39" data-position="R16-39">R39</div>
+<div class="position" id="R16-40" data-position="R16-40">R40</div>
+<div class="position" id="R16-41" data-position="R16-41">R41</div>
+<div class="position" id="R16-42" data-position="R16-42">R42</div>
+<div class="position" id="R16-43" data-position="R16-43">R43</div>
+<div class="position" id="R16-44" data-position="R16-44">R44</div>
+<div class="position" id="R16-45" data-position="R16-45">R45</div>
+<div class="position" id="R16-46" data-position="R16-46">R46</div>
+<div class="position" id="R16-47" data-position="R16-47">R47</div>
+<div class="position" id="R16-48" data-position="R16-48">R48</div>
+<div class="position" id="R16-49" data-position="R16-49">R49</div>
+<div class="position" id="R16-50" data-position="R16-50">R50</div>
+<div class="position" id="R16-51" data-position="R16-51">R51</div>
+<div class="position" id="R16-52" data-position="R16-52">R52</div>
+<div class="position" id="R16-53" data-position="R16-53">R53</div>
+<div class="position" id="R16-54" data-position="R16-54">R54</div>
+<div class="position" id="R16-55" data-position="R16-55">R55</div>
+<div class="position" id="R16-56" data-position="R16-56">R56</div>
+<div class="position" id="R16-57" data-position="R16-57">R57</div>
+<div class="position" id="R16-58" data-position="R16-58">R58</div>
+<div class="position" id="R16-59" data-position="R16-59">R59</div>
+<div class="position" id="R16-60" data-position="R16-60">R60</div>
+<div class="position" id="R16-61" data-position="R16-61">R61</div>
+<div class="position" id="R16-62" data-position="R16-62">R62</div>
+<div class="position" id="R16-63" data-position="R16-63">R63</div>
+<div class="position" id="R16-64" data-position="R16-64">R64</div>
+<div class="position" id="R16-65" data-position="R16-65">R65</div>
+<div class="position" id="R16-66" data-position="R16-66">R66</div>
+</div>
+</div>
+<!-- Formulario de carga -->
+<form id="depositForm">
+<label for="orden">Orden:</label>
+<input type="text" id="orden" required>
+
+<label for="modelo">Modelo:</label>
+<input type="text" id="modelo" required>
+
+<label for="descripcion">Descripción:</label>
+<input type="text" id="descripcion" required>
+
+<label for="cantidad">Cantidad:</label>
+<input type="number" id="cantidad" required>
+
+<label for="posicion">Posición:</label>
+<select id="posicion" name="posicion" required>
+<option value="R16-1">R16-1</option>
+<option value="R16-2">R16-2</option>
+<option value="R16-3">R16-3</option>
+<option value="R16-4">R16-4</option>
+<option value="R16-5">R16-5</option>
+<option value="R16-6">R16-6</option>
+<option value="R16-7">R16-7</option>
+<option value="R16-8">R16-8</option>
+<option value="R16-9">R16-9</option>
+<option value="R16-10">R16-10</option>
+<option value="R16-11">R16-11</option>
+<option value="R16-12">R16-12</option>
+<option value="R16-13">R16-13</option>
+<option value="R16-14">R16-14</option>
+<option value="R16-15">R16-15</option>
+<option value="R16-16">R16-16</option>
+<option value="R16-17">R16-17</option>
+<option value="R16-18">R16-18</option>
+<option value="R16-19">R16-19</option>
+<option value="R16-20">R16-20</option>
+<option value="R16-21">R16-21</option>
+<option value="R16-22">R16-22</option>
+<option value="R16-23">R16-23</option>
+<option value="R16-24">R16-24</option>
+<option value="R16-25">R16-25</option>
+<option value="R16-26">R16-26</option>
+<option value="R16-27">R16-27</option>
+<option value="R16-28">R16-28</option>
+<option value="R16-29">R16-29</option>
+<option value="R16-30">R16-30</option>
+<option value="R16-31">R16-31</option>
+<option value="R16-32">R16-32</option>
+<option value="R16-33">R16-33</option>
+<option value="R16-34">R16-34</option>
+<option value="R16-35">R16-35</option>
+<option value="R16-36">R16-36</option>
+<option value="R16-37">R16-37</option>
+<option value="R16-38">R16-38</option>
+<option value="R16-39">R16-39</option>
+<option value="R16-40">R16-40</option>
+<option value="R16-41">R16-41</option>
+<option value="R16-42">R16-42</option>
+<option value="R16-43">R16-43</option>
+<option value="R16-44">R16-44</option>
+<option value="R16-45">R16-45</option>
+<option value="R16-46">R16-46</option>
+<option value="R16-47">R16-47</option>
+<option value="R16-48">R16-48</option>
+<option value="R16-49">R16-49</option>
+<option value="R16-50">R16-50</option>
+<option value="R16-51">R16-51</option>
+<option value="R16-52">R16-52</option>
+<option value="R16-53">R16-53</option>
+<option value="R16-54">R16-54</option>
+<option value="R16-55">R16-55</option>
+<option value="R16-56">R16-56</option>
+<option value="R16-57">R16-57</option>
+<option value="R16-58">R16-58</option>
+<option value="R16-59">R16-59</option>
+<option value="R16-60">R16-60</option>
+<option value="R16-61">R16-61</option>
+<option value="R16-62">R16-62</option>
+<option value="R16-63">R16-63</option>
+<option value="R16-64">R16-64</option>
+<option value="R16-65">R16-65</option>
+<option value="R16-66">R16-66</option>
+</select>
+
+<label for="estado">Estado:</label>
+<select id="estado" name="estado" required>
+<option value="ok">Ok</option>
+<option value="retenido">Retenido</option>
+<option value="intervenido">Intervenido</option>
+</select>
+
+<label for="codigoPallet" class="hidden">Código de Pallet (autogenerado):</label>
+<input type="text" id="codigoPallet" name="codigoPallet" readonly class="hidden">
+
+
+<button type="submit">Agregar</button>
+</form>
+
+<!-- Tabla para mostrar los datos cargados -->
+<table id="orderTable">
+<thead>
+<tr>
+<th>Orden</th>
+<th>Modelo</th>
+<th>Descripción</th>
+<th>Cantidad</th>
+<th>Posición</th>
+<th>Código Pallet</th>
+<th>Estado</th>
+<th>Modificar Estado</th> <!-- Nueva columna para seleccionar el estado -->
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+<script src="R16.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depósito</title>
+    <link rel="stylesheet" href="r20.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+<center>
+    <h1>Gestión de Depósito</h1>
+    <div class="deposit">
+        <img src="rack20.jpg" alt="Plano del Depósito" class="plano" id="plano">
+
+        <!-- Sector R20 -->
+ <div id="sector-R20" class="sector">
+            <div class="position" id="R20-1" data-position="R20-1">R1</div>
+            <div class="position" id="R20-2" data-position="R20-2">R2</div>
+            <div class="position" id="R20-3" data-position="R20-3">R3</div>
+            <div class="position" id="R20-4" data-position="R20-4">R4</div>
+            <div class="position" id="R20-5" data-position="R20-5">R5</div>
+            <div class="position" id="R20-6" data-position="R20-6">R6</div>
+            <div class="position" id="R20-7" data-position="R20-7">R7</div>
+            <div class="position" id="R20-8" data-position="R20-8">R8</div>
+            <div class="position" id="R20-9" data-position="R20-9">R9</div>
+            <div class="position" id="R20-10" data-position="R20-10">R10</div>
+            <div class="position" id="R20-11" data-position="R20-11">R11</div>
+            <div class="position" id="R20-12" data-position="R20-12">R12</div>
+            <div class="position" id="R20-13" data-position="R20-13">R13</div>
+            <div class="position" id="R20-14" data-position="R20-14">R14</div>
+            <div class="position" id="R20-15" data-position="R20-15">R15</div>
+            <div class="position" id="R20-16" data-position="R20-16">R16</div>
+            <div class="position" id="R20-17" data-position="R20-17">R17</div>
+            <div class="position" id="R20-18" data-position="R20-18">R18</div>
+            <div class="position" id="R20-19" data-position="R20-19">R19</div>
+            <div class="position" id="R20-20" data-position="R20-20">R20</div>
+            <div class="position" id="R20-21" data-position="R20-21">R21</div>
+            <div class="position" id="R20-22" data-position="R20-22">R22</div>
+            <div class="position" id="R20-23" data-position="R20-23">R23</div>
+            <div class="position" id="R20-24" data-position="R20-24">R24</div>
+            <div class="position" id="R20-25" data-position="R20-25">R25</div>
+            <div class="position" id="R20-26" data-position="R20-26">R26</div>
+            <div class="position" id="R20-27" data-position="R20-27">R27</div>
+            <div class="position" id="R20-28" data-position="R20-28">R28</div>
+            <div class="position" id="R20-29" data-position="R20-29">R29</div>
+            <div class="position" id="R20-30" data-position="R20-30">R30</div>
+
+            <div class="position" id="R20-31" data-position="R20-31">R31</div>
+            <div class="position" id="R20-32" data-position="R20-32">R32</div>
+            <div class="position" id="R20-33" data-position="R20-33">R33</div>
+            <div class="position" id="R20-34" data-position="R20-34">R34</div>
+            <div class="position" id="R20-35" data-position="R20-35">R35</div>
+            <div class="position" id="R20-36" data-position="R20-36">R36</div>
+            <div class="position" id="R20-37" data-position="R20-37">R37</div>
+            <div class="position" id="R20-38" data-position="R20-38">R38</div>
+            <div class="position" id="R20-39" data-position="R20-39">R39</div>
+            <div class="position" id="R20-40" data-position="R20-40">R40</div>
+            <div class="position" id="R20-41" data-position="R20-41">R41</div>
+            <div class="position" id="R20-42" data-position="R20-42">R42</div>
+            <div class="position" id="R20-43" data-position="R20-43">R43</div>
+            <div class="position" id="R20-44" data-position="R20-44">R44</div>
+            <div class="position" id="R20-45" data-position="R20-45">R45</div>
+            <div class="position" id="R20-46" data-position="R20-46">R46</div>
+            <div class="position" id="R20-47" data-position="R20-47">R47</div>
+            <div class="position" id="R20-48" data-position="R20-48">R48</div>
+            <div class="position" id="R20-49" data-position="R20-49">R49</div>
+            <div class="position" id="R20-50" data-position="R20-50">R50</div>
+            <div class="position" id="R20-51" data-position="R20-51">R51</div>
+            <div class="position" id="R20-52" data-position="R20-52">R52</div>
+            <div class="position" id="R20-53" data-position="R20-53">R53</div>
+            <div class="position" id="R20-54" data-position="R20-54">R54</div>
+            <div class="position" id="R20-55" data-position="R20-55">R55</div>
+            <div class="position" id="R20-56" data-position="R20-56">R56</div>
+            <div class="position" id="R20-57" data-position="R20-57">R57</div>
+            <div class="position" id="R20-58" data-position="R20-58">R58</div>
+            <div class="position" id="R20-59" data-position="R20-59">R59</div>
+            <div class="position" id="R20-60" data-position="R20-60">R60</div>
+            <div class="position" id="R20-61" data-position="R20-61">R61</div>
+            <div class="position" id="R20-62" data-position="R20-62">R62</div>
+            <div class="position" id="R20-63" data-position="R20-63">R63</div>
+            <div class="position" id="R20-64" data-position="R20-64">R64</div>
+            <div class="position" id="R20-65" data-position="R20-65">R65</div>
+            <div class="position" id="R20-66" data-position="R20-66">R66</div>
+        </div>
+</div>
+    <!-- Formulario de carga -->
+    <form id="depositForm">
+        <label for="orden">Orden:</label>
+        <input type="text" id="orden" required>
+        
+        <label for="modelo">Modelo:</label>
+        <input type="text" id="modelo" required>
+
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" required>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" required>
+
+        <label for="posicion">Posición:</label>
+        <select id="posicion" name="posicion" required>
+<option value="R20-1">R20-1</option>
+<option value="R20-2">R20-2</option>
+<option value="R20-3">R20-3</option>
+<option value="R20-4">R20-4</option>
+<option value="R20-5">R20-5</option>
+<option value="R20-6">R20-6</option>
+<option value="R20-7">R20-7</option>
+<option value="R20-8">R20-8</option>
+<option value="R20-9">R20-9</option>
+<option value="R20-10">R20-10</option>
+<option value="R20-11">R20-11</option>
+<option value="R20-12">R20-12</option>
+<option value="R20-13">R20-13</option>
+<option value="R20-14">R20-14</option>
+<option value="R20-15">R20-15</option>
+<option value="R20-16">R20-16</option>
+<option value="R20-17">R20-17</option>
+<option value="R20-18">R20-18</option>
+<option value="R20-19">R20-19</option>
+<option value="R20-20">R20-20</option>
+<option value="R20-21">R20-21</option>
+<option value="R20-22">R20-22</option>
+<option value="R20-23">R20-23</option>
+<option value="R20-24">R20-24</option>
+<option value="R20-25">R20-25</option>
+<option value="R20-26">R20-26</option>
+<option value="R20-27">R20-27</option>
+<option value="R20-28">R20-28</option>
+<option value="R20-29">R20-29</option>
+<option value="R20-30">R20-30</option>
+<option value="R20-31">R20-31</option>
+<option value="R20-32">R20-32</option>
+<option value="R20-33">R20-33</option>
+<option value="R20-34">R20-34</option>
+<option value="R20-35">R20-35</option>
+<option value="R20-36">R20-36</option>
+<option value="R20-37">R20-37</option>
+<option value="R20-38">R20-38</option>
+<option value="R20-39">R20-39</option>
+<option value="R20-40">R20-40</option>
+<option value="R20-41">R20-41</option>
+<option value="R20-42">R20-42</option>
+<option value="R20-43">R20-43</option>
+<option value="R20-44">R20-44</option>
+<option value="R20-45">R20-45</option>
+<option value="R20-46">R20-46</option>
+<option value="R20-47">R20-47</option>
+<option value="R20-48">R20-48</option>
+<option value="R20-49">R20-49</option>
+<option value="R20-50">R20-50</option>
+<option value="R20-51">R20-51</option>
+<option value="R20-52">R20-52</option>
+<option value="R20-53">R20-53</option>
+<option value="R20-54">R20-54</option>
+<option value="R20-55">R20-55</option>
+<option value="R20-56">R20-56</option>
+<option value="R20-57">R20-57</option>
+<option value="R20-58">R20-58</option>
+<option value="R20-59">R20-59</option>
+<option value="R20-60">R20-60</option>
+<option value="R20-61">R20-61</option>
+<option value="R20-62">R20-62</option>
+<option value="R20-63">R20-63</option>
+<option value="R20-64">R20-64</option>
+<option value="R20-65">R20-65</option>
+<option value="R20-66">R20-66</option>
+
+        </select>
+
+        <label for="estado">Estado:</label>
+        <select id="estado" name="estado" required>
+            <option value="ok">Ok</option>
+            <option value="retenido">Retenido</option>
+            <option value="intervenido">Intervenido</option>
+        </select>
+
+<label for="codigoPallet" class="hidden">Código de Pallet (autogenerado):</label>
+<input type="text" id="codigoPallet" name="codigoPallet" readonly class="hidden">
+
+
+        <button type="submit">Agregar</button>
+    </form>
+
+    <!-- Tabla para mostrar los datos cargados -->
+<table id="orderTable">
+    <thead>
+        <tr>
+            <th>Orden</th>
+            <th>Modelo</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Posición</th>
+            <th>Código Pallet</th>
+            <th>Estado</th>
+            <th>Modificar Estado</th> <!-- Nueva columna para seleccionar el estado -->
+        </tr>
+    </thead>
+      <tbody>
+</tbody>
+    </table>
+
+    <script src="r20.js"></script>
+
+</body>
+</html>
