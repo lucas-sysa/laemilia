@@ -133,6 +133,43 @@
         tr:hover {
             background-color: #f1f1f1;
         }
+#button-container {
+    display: flex;
+    justify-content: center; /* Centra los botones en el contenedor */
+    margin: 20px 0;
+}
+
+#button-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 15px; /* Ajusta el margen para separar los botones */
+    transition: background-color 0.3s ease;
+    border: none;
+    color: #fff;
+}
+
+#deleteAllButton {
+    background-color: #e74c3c; /* Rojo para eliminar datos */
+}
+
+#deleteAllButton:hover {
+    background-color: #c0392b;
+}
+
+#generateLabelButton,
+#exportButton,
+#importButton {
+    background-color: #1abc9c; /* Verde para los otros botones */
+}
+
+#generateLabelButton:hover,
+#exportButton:hover,
+#importButton:hover {
+    background-color: #16a085;
+}
+
     </style>
 </head>
 <body>
@@ -183,12 +220,13 @@
     </div>
 
     <div>
-        <button id="deleteAllButton">Eliminar todos los datos</button>
-        <button id="generateLabelButton">Generar Etiqueta</button>
-<button id="exportButton">Exportar Configuración</button>
-<input type="file" id="importFile" accept=".json" style="display: none;">
-<button id="importButton">Importar Configuración</button>
-
+<div id="button-container">
+    <button id="deleteAllButton">Eliminar todos los datos</button>
+    <button id="generateLabelButton">Generar Etiqueta</button>
+    <button id="exportButton">Exportar Configuración</button>
+    <input type="file" id="importFile" accept=".json" style="display: none;">
+    <button id="importButton">Importar Configuración</button>
+</div>
         <table id="orderTable">
             <thead>
                 <tr>
