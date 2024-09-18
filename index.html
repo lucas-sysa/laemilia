@@ -169,6 +169,57 @@
 #importButton:hover {
     background-color: #16a085;
 }
+#button-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los botones se envuelvan en varias líneas si es necesario */
+    justify-content: center; /* Centra los botones en el contenedor */
+    margin: 20px 0;
+}
+
+#button-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px; /* Ajusta el margen para separar los botones */
+    transition: background-color 0.3s ease;
+    border: none;
+    color: #fff;
+}
+
+/* Estilos específicos para los botones */
+#deleteAllButton {
+    background-color: #e74c3c; /* Rojo para eliminar datos */
+}
+
+#deleteAllButton:hover {
+    background-color: #c0392b;
+}
+
+#generateLabelButton,
+#exportButton,
+#importButton {
+    background-color: #1abc9c; /* Verde para los otros botones */
+}
+
+#generateLabelButton:hover,
+#exportButton:hover,
+#importButton:hover {
+    background-color: #16a085;
+}
+
+/* Estilos para pantallas pequeñas (móviles) */
+@media (max-width: 600px) {
+    #button-container {
+        flex-direction: column; /* Apila los botones verticalmente */
+        align-items: center; /* Centra los botones horizontalmente en la columna */
+    }
+
+    #button-container button {
+        width: 90%; /* Ajusta el ancho de los botones en pantallas pequeñas */
+        max-width: 300px; /* Define un ancho máximo para los botones */
+    }
+}
 
     </style>
 </head>
