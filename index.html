@@ -138,7 +138,7 @@
 <body>
 
     <header>
-        <img src="logo.png" alt="Logo">
+        <img src="C:/Users/lcrocetti/Desktop/pagina/logo.png" alt="Logo">
     </header>
 
     <nav>
@@ -185,6 +185,10 @@
     <div>
         <button id="deleteAllButton">Eliminar todos los datos</button>
         <button id="generateLabelButton">Generar Etiqueta</button>
+<button id="exportButton">Exportar Configuración</button>
+<input type="file" id="importFile" accept=".json" style="display: none;">
+<button id="importButton">Importar Configuración</button>
+
         <table id="orderTable">
             <thead>
                 <tr>
@@ -286,6 +290,127 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Generar etiquetas
     generateLabelButton.addEventListener('click', generateLabels);
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const orderTableBody = document.querySelector('#orderTable tbody');
+    const searchInput = document.querySelector('#searchInput');
+    const generateLabelButton = document.getElementById('generateLabelButton');
+    const exportButton = document.getElementById('exportButton');
+    const importButton = document.getElementById('importButton');
+    const importFile = document.getElementById('importFile');
+
+    // Recupera los datos de localStorage
+    let tableData = JSON.parse(localStorage.getItem('orderTableData')) || [];
+
+    function renderTable(data) {
+        orderTableBody.innerHTML = ''; // Limpiar la tabla antes de renderizar
+
+        data.forEach((item, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="checkbox" class="select-checkbox" data-index="${index}"></td>
+                <td>${item.orden !== undefined ? item.orden : 'Sin código'}</td>
+                <td>${item.modelo !== undefined ? item.modelo : 'Sin modelo'}</td>
+                <td>${item.descripcion !== undefined ? item.descripcion : 'Sin descripción'}</td>
+                <td>${item.cantidad !== undefined ? item.cantidad : 'Sin stock'}</td>
+                <td>${item.posicion !== undefined ? item.posicion : 'Sin posición'}</td>
+                <td>${item.codigoPallet !== undefined ? item.codigoPallet : 'Sin código pallet'}</td>
+                <td>${item.estado !== undefined ? item.estado : 'Sin estado'}</td>
+            `;
+            orderTableBody.appendChild(row);
+        });
+    }
+
+    function filterTable() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rows = orderTableBody.querySelectorAll('tr');
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            let isMatch = false;
+
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                    isMatch = true;
+                }
+            });
+
+            if (isMatch) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    function generateLabels() {
+        const checkboxes = document.querySelectorAll('.select-checkbox:checked');
+        const selectedItems = [];
+
+        checkboxes.forEach(checkbox => {
+            const index = checkbox.getAttribute('data-index');
+            selectedItems.push(tableData[index]);
+        });
+
+        // Codifica los datos seleccionados en una cadena de consulta
+        const queryString = encodeURIComponent(JSON.stringify(selectedItems));
+        // Redirige a la página de etiquetas con los datos en la URL
+        window.location.href = `etiquetas.html?data=${queryString}`;
+    }
+
+    function exportData() {
+        const dataStr = JSON.stringify(tableData);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'configuracion.json';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function importData(file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const importedData = JSON.parse(event.target.result);
+            tableData = importedData;
+            localStorage.setItem('orderTableData', JSON.stringify(tableData));
+            renderTable(tableData);
+        };
+        reader.readAsText(file);
+    }
+
+    // Renderizar tabla al cargar
+    renderTable(tableData);
+
+    // Filtrar tabla en base al input
+    searchInput.addEventListener('input', filterTable);
+
+    // Eliminar todos los datos
+    const deleteAllButton = document.getElementById('deleteAllButton');
+    deleteAllButton.addEventListener('click', function() {
+        if (confirm('¿Estás seguro de que quieres eliminar todos los datos?')) {
+            orderTableBody.innerHTML = ''; // Limpiar la tabla
+            localStorage.removeItem('orderTableData'); // Limpiar el localStorage
+        }
+    });
+
+    // Generar etiquetas
+    generateLabelButton.addEventListener('click', generateLabels);
+
+    // Exportar configuración
+    exportButton.addEventListener('click', exportData);
+
+    // Importar configuración
+    importButton.addEventListener('click', function() {
+        importFile.click();
+    });
+    importFile.addEventListener('change', function() {
+        const file = importFile.files[0];
+        if (file) {
+            importData(file);
+        }
+    });
 });
 
     </script>
