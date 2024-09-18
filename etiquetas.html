@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generar Etiquetas</title>
+    <title>Generar Códigos de Barras por Campo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,24 +19,36 @@
 
         #labels-container {
             display: flex;
-            flex-direction: column; /* Colocar etiquetas en columna para una sola página */
-            width: 100%; /* Asegúrate de que el contenedor use todo el ancho */
+            flex-wrap: wrap; /* Permite que las etiquetas se envuelvan en la página */
+            justify-content: space-between; /* Espacio uniforme entre las etiquetas */
+            width: 100%;
         }
 
         .label {
-            width: 7cm; /* Ajusta el tamaño de cada etiqueta */
-            height: 5cm;
+            width: 9cm; /* Ajusta el tamaño de cada etiqueta */
+            height: 13cm; /* Aumenta el tamaño para dos etiquetas por página */
             border: 1px solid #000;
             padding: 10px;
             box-sizing: border-box;
             background-color: #fff;
-            page-break-inside: avoid;
             margin-bottom: 5mm; /* Espacio entre etiquetas */
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Espacio entre cada sección de la etiqueta */
         }
 
         .label p {
             margin: 0;
             padding: 2px 0;
+        }
+
+        .barcode-container {
+            text-align: left; /* Alinea el código de barras a la izquierda */
+        }
+
+        canvas {
+            height: 30px; /* Ajusta la altura del código de barras */
+            margin-top: 5px; /* Espacio entre el código de barras y el texto */
         }
 
         button {
@@ -68,41 +80,41 @@
                 margin: 0;
                 padding: 0;
                 display: block;
-                width: 40cm; /* Ajusta el ancho de la página a la impresora */
-                height: 60cm; /* Ajusta el alto de la página a la impresora */
+                width: 40cm;
+                height: 60cm;
             }
 
             #labels-container {
-                display: flex;
-                flex-direction: column; /* Asegura que las etiquetas se coloquen en columna */
-                width: 50cm; /* Ancho de la hoja para impresión */
-                height: 80cm; /* Alto de la hoja para impresión */
+                width: 40cm; /* Ancho de la página para impresión */
+                height: 60cm; /* Alto de la página para impresión */
                 margin: 0;
                 padding: 0;
             }
 
             .label {
-                width: 50cm; /* Tamaño de las etiquetas en la impresión */
-                height: 80cm;
-                box-shadow: none; /* Elimina sombras en la impresión */
-                border: none; /* Elimina bordes en la impresión */
+                width: 19cm; /* Tamaño de las etiquetas en la impresión */
+                height: 28cm; /* Tamaño ajustado para dos etiquetas */
+                box-shadow: none;
+                border: none;
             }
 
             button {
-                display: none; /* Oculta botones en la impresión */
+                display: none;
             }
 
             h1 {
-                display: none; /* Oculta encabezado en la impresión */
+                display: none;
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
 </head>
 <body>
-    <h1>Etiquetas Generadas</h1>
+    <h1>Etiquetas con Códigos de Barras por Campo</h1>
     <div id="labels-container">
         <!-- Las etiquetas se generarán aquí -->
     </div>
+
     <button onclick="window.location.href='index.html'">Volver</button>
     <button class="print-button" onclick="printLabels()">Imprimir Etiquetas</button>
 
@@ -114,37 +126,77 @@
             const urlParams = new URLSearchParams(window.location.search);
             const data = JSON.parse(decodeURIComponent(urlParams.get('data')));
 
-            // Mostrar los datos en el contenedor
-            data.forEach(item => {
-                const label = document.createElement('div');
-                label.classList.add('label');
-                label.innerHTML = `
-                    <p><strong>Orden:</strong> ${item.orden}</p>
-                    <p><strong>Modelo:</strong> ${item.modelo}</p>
-                    <p><strong>Descripción:</strong> ${item.descripcion}</p>
-                    <p><strong>Cantidad:</strong> ${item.cantidad}</p>
-                    <p><strong>Posición:</strong> ${item.posicion}</p>
-                    <p><strong>Código Pallet:</strong> ${item.codigoPallet}</p>
-                    <p><strong>Estado:</strong> ${item.estado}</p>
-                `;
-                labelsContainer.appendChild(label);
-            });
+            if (data && Array.isArray(data)) {
+                data.forEach((item) => {
+                    const label = document.createElement('div');
+                    label.classList.add('label');
+                    
+                    // Contenido de la etiqueta con valores
+                    const labelContent = `
+                        <p><strong>Orden:</strong> ${item.orden}</p>
+                        <div class="barcode-container" id="orden-barcode"></div>
+
+                        <p><strong>Modelo:</strong> ${item.modelo}</p>
+                        <div class="barcode-container" id="modelo-barcode"></div>
+
+                        <p><strong>Descripción:</strong> ${item.descripcion}</p>
+                        <div class="barcode-container" id="descripcion-barcode"></div>
+
+                        <p><strong>Cantidad:</strong> ${item.cantidad}</p>
+                        <div class="barcode-container" id="cantidad-barcode"></div>
+
+                        <p><strong>Posición:</strong> ${item.posicion}</p>
+                        <div class="barcode-container" id="posicion-barcode"></div>
+
+                        <p><strong>Código Pallet:</strong> ${item.codigoPallet}</p>
+                        <div class="barcode-container" id="codigoPallet-barcode"></div>
+
+                        <p><strong>Estado:</strong> ${item.estado}</p>
+                        <div class="barcode-container" id="estado-barcode"></div>
+                    `;
+
+                    // Añade el contenido de texto
+                    label.innerHTML = labelContent;
+
+                    // Añadir etiqueta al contenedor
+                    labelsContainer.appendChild(label);
+
+                    // Crear y generar código de barras para cada campo
+                    generateBarcode('orden-barcode', item.orden);
+                    generateBarcode('modelo-barcode', item.modelo);
+                    generateBarcode('descripcion-barcode', item.descripcion);
+                    generateBarcode('cantidad-barcode', item.cantidad);
+                    generateBarcode('posicion-barcode', item.posicion);
+                    generateBarcode('codigoPallet-barcode', item.codigoPallet);
+                    generateBarcode('estado-barcode', item.estado);
+                });
+            } else {
+                labelsContainer.innerHTML = '<p>No se encontraron datos para mostrar.</p>';
+            }
+
+            // Función para generar el código de barras
+            function generateBarcode(containerId, value) {
+                const container = document.getElementById(containerId);
+                const canvas = document.createElement('canvas');
+                JsBarcode(canvas, value, {
+                    format: "CODE128",
+                    width: 1, // Reduce el ancho del código de barras
+                    height: 30, // Ajusta la altura del código de barras
+                    displayValue: false
+                });
+                container.appendChild(canvas);
+            }
         });
 
         function printLabels() {
-            // Ocultar elementos no deseados antes de imprimir
             document.querySelector('h1').style.display = 'none';
             document.querySelectorAll('button').forEach(btn => btn.style.display = 'none');
-            
             window.print();
-            
-            // Restaurar visibilidad después de imprimir
             document.querySelector('h1').style.display = 'block';
             document.querySelectorAll('button').forEach(btn => btn.style.display = 'block');
         }
     </script>
 </body>
 </html>
-
 
 
