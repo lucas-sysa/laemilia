@@ -226,7 +226,7 @@
 <body>
 
     <header>
-        <img src="logo.png" alt="Logo">
+        <img src="C:/Users/lcrocetti/Desktop/pagina/logo.png" alt="Logo">
     </header>
 
     <nav>
@@ -501,6 +501,93 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const orderTableBody = document.querySelector('#orderTable tbody');
+    const searchInput = document.querySelector('#searchInput');
+    const generateLabelButton = document.getElementById('generateLabelButton');
+
+    // Recupera los datos de localStorage
+    const tableData = JSON.parse(localStorage.getItem('orderTableData')) || [];
+
+    function renderTable(data) {
+        orderTableBody.innerHTML = ''; // Limpiar la tabla antes de renderizar
+
+        data.forEach((item, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="checkbox" class="select-checkbox" data-index="${index}"></td>
+                <td>${item.orden !== undefined ? item.orden : 'Sin código'}</td>
+                <td>${item.modelo !== undefined ? item.modelo : 'Sin modelo'}</td>
+                <td>${item.descripcion !== undefined ? item.descripcion : 'Sin descripción'}</td>
+                <td><input type="text" class="edit-cantidad" value="${item.cantidad !== undefined ? item.cantidad : ''}" data-index="${index}"></td>
+                <td><input type="text" class="edit-posicion" value="${item.posicion !== undefined ? item.posicion : ''}" data-index="${index}"></td>
+                <td><input type="text" class="edit-codigo-pallet" value="${item.codigoPallet !== undefined ? item.codigoPallet : ''}" data-index="${index}"></td>
+                <td>${item.estado !== undefined ? item.estado : 'Sin estado'}</td>
+            `;
+            orderTableBody.appendChild(row);
+        });
+
+        // Añade los event listeners para actualizar los campos manualmente
+        document.querySelectorAll('.edit-cantidad').forEach(input => {
+            input.addEventListener('change', updateField);
+        });
+
+        document.querySelectorAll('.edit-posicion').forEach(input => {
+            input.addEventListener('change', updateField);
+        });
+
+        document.querySelectorAll('.edit-codigo-pallet').forEach(input => {
+            input.addEventListener('change', updateField);
+        });
+    }
+
+    function updateField(event) {
+        const input = event.target;
+        const index = input.getAttribute('data-index');
+        const fieldName = input.classList.contains('edit-cantidad') ? 'cantidad' : 
+                          input.classList.contains('edit-posicion') ? 'posicion' : 
+                          'codigoPallet';
+
+        // Actualiza el valor en tableData
+        tableData[index][fieldName] = input.value;
+
+        // Guarda los cambios en localStorage
+        localStorage.setItem('orderTableData', JSON.stringify(tableData));
+    }
+
+    function filterTable() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rows = orderTableBody.querySelectorAll('tr');
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            let isMatch = false;
+
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                    isMatch = true;
+                }
+            });
+
+            if (isMatch) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // Filtra la tabla cada vez que se escribe en el campo de búsqueda
+    searchInput.addEventListener('input', filterTable);
+
+    // Renderiza la tabla inicialmente
+    renderTable(tableData);
+});
+
 
     </script>
 
