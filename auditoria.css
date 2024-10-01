@@ -1,263 +1,91 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 20px;
+    background-color: #f9f9f9; /* Color de fondo suave */
 }
 
-h1 {
+h2 {
     text-align: center;
     color: #333;
-    font-size: 36px;
-    margin-bottom: 20px;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.upload-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-input[type="file"] {
-    display: block;
-    font-size: 14px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    width: 200px;
-}
-
-#export-btn, #reset-btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 10px;
-    transition: background-color 0.3s ease;
-}
-
-#export-btn:hover, #reset-btn:hover {
-    background-color: #0056b3;
-}
-
-#excel-table {
+table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    border-radius: 5px;
-    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
-#excel-table thead {
-    background-color: #007bff;
-    color: #fff;
+table, th, td {
+    border: 1px solid #ddd; /* Color de borde más suave */
+    text-align: center;
 }
 
-#excel-table th, #excel-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+th {
+    background-color: #f2c94c; /* Color de fondo más suave para los encabezados */
+    font-weight: bold;
+    padding: 12px; /* Espaciado más amplio */
 }
 
-#excel-table tbody tr:hover {
-    background-color: #f1f1f1;
+td {
+    padding: 12px;
+    transition: background-color 0.3s; /* Transición suave para cambios de color */
 }
 
-#excel-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+.ok {
+    background-color: #6dbf4d; /* Verde más claro */
+    color: white;
 }
 
-#excel-table tbody tr.empty-row {
-    height: 10px;
-    background-color: transparent;
+.pending {
+    background-color: #e74c3c; /* Rojo más claro */
+    color: white;
 }
 
-#excel-table tbody tr.empty-row td {
+button {
+    padding: 8px 12px;
+    font-size: 16px;
+    color: white;
+    background-color: #3498db; /* Color de fondo azul */
     border: none;
-}
-#export-btn, #reset-btn, #print-btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+    border-radius: 5px; /* Bordes redondeados */
     cursor: pointer;
-    font-size: 14px;
-    margin-left: 10px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s; /* Transición suave para cambios de color */
 }
 
-#export-btn:hover, #reset-btn:hover, #print-btn:hover {
-    background-color: #0056b3;
-}
-/* Estilo normal: ocultar el logo */
-#logo {
-    display: none;
+button:hover {
+    background-color: #2980b9; /* Color más oscuro al pasar el mouse */
 }
 
-/* Estilos de impresión */
-@media print {
-    /* Ocultar todo menos el área que deseas imprimir */
-    body * {
-        visibility: hidden;
+input {
+    width: 90%;
+    padding: 8px; /* Espaciado interno para entradas */
+    border: 1px solid #ccc; /* Borde suave */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+input[readonly] {
+    background-color: #f0f0f0;
+    border: none;
+}
+
+@media (max-width: 600px) {
+    td, th {
+        padding: 8px; /* Menos espaciado en pantallas pequeñas */
     }
 
-    /* Mostrar solo el área imprimible y el logo */
-    #printable-area, #printable-area * {
-        visibility: visible;
-    }
-
-    #printable-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
-
-    /* Mostrar el logo solo en la impresión */
-    #logo {
-        display: block;
-        margin-bottom: 20px;
-        width: 150px; /* Puedes ajustar el tamaño del logo aquí */
-        height: auto;
-    }
-
-    /* Ocultar botones y otros elementos que no deben imprimirse */
     button {
-        display: none;
-    }
-}
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.upload-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-input[type="file"] {
-    font-size: 14px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    width: 200px;
-}
-
-#export-btn, #reset-btn, #print-btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 10px;
-    transition: background-color 0.3s ease;
-}
-
-#export-btn:hover, #reset-btn:hover, #print-btn:hover {
-    background-color: #0056b3;
-}
-
-#excel-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-#excel-table thead {
-    background-color: #007bff;
-    color: #fff;
-}
-
-#excel-table th, #excel-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-#excel-table tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-#excel-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-/* Estilos de impresión */
-@media print {
-    /* Ocultar todo menos el área imprimible */
-    body * {
-        visibility: hidden;
+        width: 100%; /* Botones ocupan todo el ancho en pantallas pequeñas */
     }
 
-    /* Mostrar solo el área imprimible */
-    #printable-area, #printable-area * {
-        visibility: visible;
+    input {
+        width: 100%; /* Entradas ocupan todo el ancho en pantallas pequeñas */
     }
-
-    #printable-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
-
-    /* Mostrar el logo solo en impresión */
-    #logo {
-        display: block !important; /* Forzar que se muestre en impresión */
-        margin-bottom: 20px;
-        width: 150px; /* Ajusta el tamaño según sea necesario */
-        height: auto;
-    }
-
-    /* Ocultar botones y otros elementos al imprimir */
-    button, input {
-        display: none;
-    }
+}
+canvas {
+    max-width: 100%;
+    height: auto; /* Permitir que el canvas ajuste su altura */
+    margin: 20px auto; /* Centrar el gráfico */
 }
 

@@ -3,45 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Inventario</title>
-    <link rel="stylesheet" href="auditoria.css"> <!-- Enlazar el archivo CSS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <title>Planilla de Conteo</title>
+    <link rel="stylesheet" href="auditoria.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Gestión de Inventario</h1>
-        <div class="upload-section">
-            <input type="file" id="input-excel" />
-            <div>
-                <button id="print-btn" class="btn">Imprimir Listado</button>
-                <button id="export-btn">Exportar a Excel</button>
-                <button id="reset-btn">Resetear Tabla</button>
-            </div>
-        </div>
-        
-        <!-- Área imprimible -->
-        <div id="printable-area">
-            <img src="C:\Users\lcrocetti\Desktop\pagina\logo.png" alt="Logo" id="logo" style="display:none;">
-            <table id="excel-table">
-                <thead>
-                    <tr>
-                        <th>Número de artículo</th>
-                        <th>Descripción del artículo</th>
-                        <th>Lote</th>
-                        <th>Almacén</th>
-                        <th>Cantidad</th>
-                        <th>Conteo</th>
-                        <th>Diferencia</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Las filas se agregarán dinámicamente aquí -->
-                </tbody>
-            </table>
-        </div>
+    <h2>Planilla de Conteo</h2>
+
+    <!-- Planilla de Conteo -->
+    <table id="conteo">
+        <thead>
+            <tr>
+                <th>Calle</th>
+                <th>Posición</th>
+                <th>Orden</th>
+                <th>Descripción</th>
+                <th>Pallet declarado en sistema</th>
+                <th>Conteo físico de pallet</th>
+                <th>Diferencia</th>
+                <th>Estado del Rack</th>
+                <th>Observaciones</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="conteoBody">
+            <!-- Las filas se agregarán aquí -->
+        </tbody>
+    </table>
+    
+    <!-- Botón para agregar filas -->
+    <button id="addRow">Agregar Fila</button>
+    <button id="exportExcel">Exportar a Excel</button>
+
+    <!-- Contadores de diferencias y racks -->
+    <div>
+        <p>Diferencias Positivas: <span id="positiveCount">0</span></p>
+        <p>Diferencias Negativas: <span id="negativeCount">0</span></p>
+        <p>Racks Ocupados: <span id="occupiedCount">0</span></p>
+        <p>Racks Vacíos: <span id="emptyCount">0</span></p>
+        <p>Cantidad de Posiciones: <span id="positionCount">0</span></p> <!-- Nuevo contador -->
     </div>
-    <script src="auditoria.js"></script> <!-- Enlazar el archivo JavaScript -->
+
+    <script src="auditoria.js"></script>
 </body>
 </html>
-
-
