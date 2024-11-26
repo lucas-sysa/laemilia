@@ -165,24 +165,45 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function addProductToTable(item) {
-        const table = document.getElementById('stockTable').querySelector('tbody');
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = `
-            <td>${item.codigo}</td>
-            <td>${item.modelo}</td>
-            <td>${item.descripcion}</td>
-            <td class="stock">${item.stock}</td>
-            <td><input type="number" class="entrada" min="0"></td>
-            <td><input type="number" class="salida" min="0"></td>
-            <td><input type="number" class="canasto" min="0" value="${item.canasto || 0}"></td>
-            <td class="diferencia">${(item.stock * (item.canasto || 0)).toFixed(2)}</td>
-            <td><button class="deleteBtn">Eliminar</button></td>
-        `;
-        table.appendChild(newRow);
-        attachInputEvents(newRow);
-        attachDeleteEvent(newRow);
-    }
+function addProductToTable(item) {
+    const table = document.getElementById('stockTable').querySelector('tbody');
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${item.codigo}</td>
+        <td>${item.modelo}</td>
+        <td>${item.descripcion}</td>
+        <td class="stock">${item.stock}</td>
+        <td><input type="text" class="estanteria" value="${item.estanteria || ''}"></td> <!-- Columna estantería -->
+        <td><input type="number" class="entrada" min="0"></td>
+        <td><input type="number" class="salida" min="0"></td>
+        <td><input type="number" class="canasto" min="0" value="${item.canasto || 0}"></td>
+        <td class="diferencia">${(item.stock * (item.canasto || 0)).toFixed(2)}</td>
+        <td><button class="deleteBtn">Eliminar</button></td>
+    `;
+    table.appendChild(newRow);
+    attachInputEvents(newRow);
+    attachDeleteEvent(newRow);
+    attachEstanteriaEvent(newRow); // Adjuntar evento a la columna estantería
+}
+
+function attachEstanteriaEvent(row) {
+    const estanteriaInput = row.querySelector('.estanteria');
+    estanteriaInput.addEventListener('input', function () {
+        const codigo = row.children[0].textContent.trim();
+        saveEstanteriaToLocalStorage(codigo, this.value);
+    });
+}
+
+function saveEstanteriaToLocalStorage(codigo, estanteriaValue) {
+    const stockData = JSON.parse(localStorage.getItem('stockData')) || [];
+    const updatedData = stockData.map(item => {
+        if (item.codigo === codigo) {
+            item.estanteria = estanteriaValue;
+        }
+        return item;
+    });
+    localStorage.setItem('stockData', JSON.stringify(updatedData));
+}
 
     function attachInputEvents(row) {
         row.querySelector('.entrada').addEventListener('input', function() {
@@ -297,8 +318,9 @@ function updateLocalStorage() {
             modelo: row.children[1].textContent.trim(),
             descripcion: row.children[2].textContent.trim(),
             stock: parseInt(row.querySelector('.stock').textContent, 10),
-            diferencia: parseFloat(row.querySelector('.diferencia').textContent) || 0, // Guardar la diferencia
-            canasto: parseFloat(row.querySelector('.canasto').value) || 0 // Guardar la cantidad de canastos
+            estanteria: row.querySelector('.estanteria').value.trim(), // Guardar estantería
+            canasto: parseFloat(row.querySelector('.canasto').value) || 0,
+            diferencia: parseFloat(row.querySelector('.diferencia').textContent) || 0
         });
     });
 
@@ -319,7 +341,7 @@ function updateLocalStorage() {
 // Inicializar las tarjetas válidas
 const validCards = {
     '6771931': 'Lucas Crocetti',
-    '0987654321': 'María López'
+    '6771932': 'María López'
 }; // Lista de tarjetas válidas con nombres asociados
 localStorage.setItem('validCards', JSON.stringify(validCards));
 
