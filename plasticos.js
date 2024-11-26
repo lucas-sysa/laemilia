@@ -341,7 +341,9 @@ function updateLocalStorage() {
 // Inicializar las tarjetas válidas
 const validCards = {
     '6771931': 'Lucas Crocetti',
-    '6771932': 'María López'
+    '0669215203': 'Gimena ',
+    '2761687200': 'Claudo Marti',
+    '0521390102': 'Florencia ',
 }; // Lista de tarjetas válidas con nombres asociados
 localStorage.setItem('validCards', JSON.stringify(validCards));
 
