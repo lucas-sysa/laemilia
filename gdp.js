@@ -393,3 +393,38 @@ function addRowToTable(orden, modelo, descripcion, cantidad, posicion, codigoPal
     // Cargar los datos al cargar la página
     loadTableData();
 });
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const exportButton = document.getElementById('exportButton');
+    const orderTable = document.getElementById('orderTable');
+
+    // Función para exportar la tabla a un archivo Excel
+    function exportTableToExcel(tableID, filename = '') {
+        // Obtener la tabla
+        let table = document.getElementById(tableID);
+        let wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+        // Generar el archivo Excel
+        let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+        // Función para convertir los datos a formato binario adecuado
+        function s2ab(s) {
+            var buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+
+        // Guardar el archivo usando FileSaver.js
+        saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename || 'data.xlsx');
+    }
+
+    // Manejar el clic en el botón de exportación
+    exportButton.addEventListener('click', function () {
+        exportTableToExcel('orderTable', 'datos_inventario.xlsx');
+    });
+});
+

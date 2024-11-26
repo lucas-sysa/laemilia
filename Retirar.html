@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Artículos</title>
+    <link rel="stylesheet" href="Retirar.css">
+</head>
+<body>
+
+    <!-- Formulario para agregar artículos -->
+    <h2>Agregar Nuevo Artículo</h2>
+    <form id="agregarArticuloForm">
+        <label for="numeroArticulo">Número de artículo:</label>
+        <input type="text" id="numeroArticulo" name="numeroArticulo" required>
+
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" name="descripcion" required>
+
+        <label for="lote">Lote:</label>
+        <input type="text" id="lote" name="lote" required>
+
+        <label for="almacen">Almacén:</label>
+        <input type="text" id="almacen" name="almacen" required>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" required min="1">
+
+        <button type="submit">Agregar Artículo</button>
+    </form>
+
+    <!-- Tabla con los artículos -->
+    <h2>Lista de Artículos</h2>
+    <table id="orderTable" border="1">
+        <thead>
+            <tr>
+                <th>Número de artículo</th>
+                <th>Descripción del artículo</th>
+                <th>Lote</th>
+                <th>Almacén</th>
+                <th>Cantidad</th>
+                <th>Retirar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>12345</td>
+                <td>Producto A</td>
+                <td>LOTE1</td>
+                <td>ALM1</td>
+                <td>100</td>
+                <td><button class="retirarBtn">Retirar</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal de confirmación de retiro -->
+    <div id="modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2>Confirmar retiro</h2>
+            <form id="retirarForm">
+                <label for="cantidadRetirar">Cantidad a retirar:</label>
+                <input type="number" id="cantidadRetirar" name="cantidadRetirar" placeholder="Ingrese la cantidad" required min="1">
+                
+                <label for="cardCode">Código de tarjeta:</label>
+                <input type="password" id="cardCode" name="cardCode" placeholder="Código de tarjeta" required>
+                
+                <button type="submit" id="confirmBtn">Confirmar</button>
+                <button type="button" id="cancelBtn">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="Retirar.js"></script>
+</body>
+</html>
+
