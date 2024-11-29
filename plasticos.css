@@ -1,3 +1,4 @@
+/* Estilo general */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -5,6 +6,7 @@ body {
     padding: 20px;
 }
 
+/* Contenedor principal */
 .container {
     width: 80%;
     margin: auto;
@@ -13,32 +15,47 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+/* Encabezados */
+h1, h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: #333;
 }
 
+/* Formulario */
 form {
     margin-bottom: 20px;
+    text-align: center;
 }
 
 label {
     display: inline-block;
     width: 100px;
     margin-right: 10px;
+    font-weight: bold;
 }
 
-input[type="text"] {
+input[type="text"], input[type="number"] {
     width: 200px;
     padding: 5px;
     margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #e9ecef;
 }
 
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #28a745;
+    outline: none;
+}
+
+/* Botones */
 button {
     padding: 8px 15px;
     background-color: #28a745;
     color: white;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -46,27 +63,7 @@ button:hover {
     background-color: #218838;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 12px;
-    text-align: center;
-}
-
-input[type="number"] {
-    width: 60px;
-    padding: 5px;
-}
-
-/* Estilos para el campo de escaneo de código de barras */
+/* Campo de escaneo de código de barras */
 #barcodeInput {
     display: block;
     width: 300px;
@@ -77,7 +74,28 @@ input[type="number"] {
     border-radius: 4px;
 }
 
-/* Estilos para el modal de validación de tarjeta */
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #28a745;
+    color: white;
+    text-transform: uppercase;
+}
+
+/* Modal de validación de tarjeta */
 #cardModal {
     display: none;
     position: fixed;
@@ -88,7 +106,7 @@ input[type="number"] {
     border: 1px solid #ccc;
     padding: 20px;
     z-index: 1000;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #cardModal .modal-content {
@@ -99,18 +117,19 @@ input[type="number"] {
     margin-right: 10px;
 }
 
-#cardOverlay {
+/* Overlay para modales */
+#cardOverlay, #actionOverlay {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 999;
 }
 
-/* Estilos para el diálogo de acción */
+/* Diálogo de acción */
 #actionDialog {
     display: none;
     position: fixed;
@@ -121,7 +140,7 @@ input[type="number"] {
     border: 1px solid #ccc;
     padding: 20px;
     z-index: 1000;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #actionDialog p {
@@ -132,14 +151,124 @@ input[type="number"] {
     margin-right: 10px;
 }
 
-/* Estilo para el overlay del diálogo de acción */
-#actionOverlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;
+button:hover {
+    background-color: #218838;
+}
+
+/* Enlace estilo botón */
+a {
+    text-decoration: none;
+    color: white;
+    background-color: #28a745;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: inline-block;
+    margin: 5px;
+    text-align: center;
+}
+
+a:hover {
+    background-color: #218838;
+}
+
+table {
+    width: 90%;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    white-space: nowrap; /* Evita que el texto se divida */
+}
+
+tbody tr {
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+#logContainer {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+#stockTable {
+    font-size: 12px; /* Cambia este valor según el tamaño deseado */
+}
+#stockTable td, #stockTable th {
+    font-size: 10px; /* Cambia este valor según el tamaño deseado */
+}
+/* Estilo general para los botones */
+button, #exportLogBtn, #syncDataBtn, #clearAllBtn, #showLogBtn, #importStockBtn, #exportStockBtn {
+    padding: 8px 20px; /* Menos espacio para hacerlo más elegante */
+    background-color: #007bff; /* Color azul más profesional */
+    color: white;
+    border: 1px solid #007bff; /* Borde del mismo color */
+    border-radius: 4px; /* Bordes ligeramente redondeados */
+    font-size: 14px; /* Tamaño de fuente moderado */
+    font-weight: normal; /* Fuente normal, no en negrita */
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Transición suave */
+    display: inline-block;
+    margin: 8px 12px; /* Separación entre los botones */
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    text-decoration: none; /* Eliminar subrayado de los enlaces */
+}
+
+/* Efecto hover para el botón */
+button:hover, #exportLogBtn:hover, #syncDataBtn:hover, #clearAllBtn:hover, #showLogBtn:hover, #importStockBtn:hover, #exportStockBtn:hover {
+    background-color: #0056b3; /* Cambio de color al pasar el mouse */
+    border-color: #0056b3; /* Borde más oscuro en hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+    transform: translateY(-2px); /* Leve levantar al pasar el mouse */
+}
+
+/* Efecto al hacer clic (focus) */
+button:focus, #exportLogBtn:focus, #syncDataBtn:focus, #clearAllBtn:focus, #showLogBtn:focus, #importStockBtn:focus, #exportStockBtn:focus {
+    outline: none; /* Eliminar el contorno predeterminado */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4); /* Resaltar el borde con un brillo azul */
+}
+
+/* Efecto cuando el botón está deshabilitado */
+button:disabled, #exportLogBtn:disabled, #syncDataBtn:disabled, #clearAllBtn:disabled, #showLogBtn:disabled, #importStockBtn:disabled, #exportStockBtn:disabled {
+    background-color: #c6d9f1; /* Color más claro cuando está deshabilitado */
+    border-color: #b0c7e2;
+    color: #8c8c8c;
+    cursor: not-allowed; /* Cambiar el cursor cuando está deshabilitado */
+    box-shadow: none;
+}
+
+/* Enlace para Código de barras */
+#barcodeLink {
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: #28a745; /* Color verde más sobrio */
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: normal;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin: 8px 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+#barcodeLink:hover {
+    background-color: #218838; /* Cambio de color cuando el mouse pasa por encima */
+    border-color: #218838;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

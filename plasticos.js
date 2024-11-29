@@ -178,7 +178,7 @@ function addProductToTable(item) {
         <td><input type="number" class="salida" min="0"></td>
         <td><input type="number" class="canasto" min="0" value="${item.canasto || 0}"></td>
         <td class="diferencia">${(item.stock * (item.canasto || 0)).toFixed(2)}</td>
-        <td><button class="deleteBtn">Eliminar</button></td>
+       <td><button class="deleteBtn">Eliminar</button></td>
     `;
     table.appendChild(newRow);
     attachInputEvents(newRow);
@@ -466,3 +466,104 @@ function clearAllData() {
     // Opcionalmente, recargar la página para asegurar que los cambios se reflejen
     location.reload();
 }
+document.getElementById('searchInput').addEventListener('input', function () {
+    const searchValue = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#stockTable tbody tr');
+
+    rows.forEach(row => {
+        const codigo = row.children[0].textContent.toLowerCase();
+        const modelo = row.children[1].textContent.toLowerCase();
+        const descripcion = row.children[2].textContent.toLowerCase();
+        const estanteria = row.children[4].textContent.toLowerCase();
+
+        if (codigo.includes(searchValue) || modelo.includes(searchValue) || descripcion.includes(searchValue) || estanteria.includes(searchValue)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+window.addEventListener('resize', adjustTable);
+
+function adjustTable() {
+    const table = document.getElementById('stockTable');
+    const tableWrapper = table.parentElement;
+
+    // Asegúrate de que la tabla se ajuste al contenedor principal
+    table.style.width = `${tableWrapper.offsetWidth}px`;
+
+    // Si tienes columnas con inputs ajustables
+    const inputs = table.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.style.width = '100%';
+    });
+}
+
+// Llama la función al cargar la página por primera vez
+adjustTable();
+function addProductToTable(item) {
+    const table = document.getElementById('stockTable').querySelector('tbody');
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${item.codigo}</td>
+        <td>${item.modelo}</td>
+        <td>${item.descripcion}</td>
+        <td class="stock">${item.stock}</td>
+        <td><input type="text" class="estanteria" value="${item.estanteria || ''}"></td>
+        <td><input type="number" class="entrada" min="0"></td>
+        <td><input type="number" class="salida" min="0"></td>
+        <td><input type="number" class="canasto" min="0" value="${item.canasto || 0}"></td>
+        <td class="diferencia">${(item.stock * (item.canasto || 0)).toFixed(2)}</td>
+
+    `;
+    table.appendChild(newRow);
+    attachInputEvents(newRow);
+    attachDeleteEvent(newRow);
+    attachEstanteriaEvent(newRow);
+
+    adjustTable(); // Ajusta la tabla tras agregar una nueva fila
+}
+window.addEventListener('resize', adjustTableFontSize);
+
+function adjustTableFontSize() {
+    const table = document.getElementById('stockTable');
+    const viewportWidth = window.innerWidth;
+
+    if (viewportWidth < 768) {
+        table.style.fontSize = '0.85rem'; // Tamaño de fuente más pequeño
+    } else if (viewportWidth < 1024) {
+        table.style.fontSize = '1rem'; // Tamaño medio
+    } else {
+        table.style.fontSize = '1.15rem'; // Tamaño normal en pantallas grandes
+    }
+}
+
+// Llamar al ajuste inicial al cargar la página
+adjustTableFontSize();
+const rows = document.querySelectorAll('#stockTable tbody tr');
+rows.forEach(row => {
+    row.style.fontSize = '14px'; // Cambia este valor según sea necesario
+});
+const specificCell = document.querySelector('#stockTable tbody tr:nth-child(1) td:nth-child(2)');
+specificCell.style.fontSize = '16px'; // Cambia el tamaño de letra de la segunda celda de la primera fila
+function addProductToTable(item) {
+    const table = document.getElementById('stockTable').querySelector('tbody');
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td style="font-size: 14px;">${item.codigo}</td>
+        <td style="font-size: 14px;">${item.modelo}</td>
+        <td style="font-size: 14px;">${item.descripcion}</td>
+        <td class="stock" style="font-size: 14px;">${item.stock}</td>
+        <td><input type="text" class="estanteria" value="${item.estanteria || ''}" style="font-size: 14px;"></td>
+        <td><input type="number" class="entrada" min="0" style="font-size: 14px;"></td>
+        <td><input type="number" class="salida" min="0" style="font-size: 14px;"></td>
+        <td><input type="number" class="canasto" min="0" value="${item.canasto || 0}" style="font-size: 14px;"></td>
+        <td class="diferencia" style="font-size: 14px;">${(item.stock * (item.canasto || 0)).toFixed(2)}</td>
+
+    `;
+    table.appendChild(newRow);
+    attachInputEvents(newRow);
+    attachDeleteEvent(newRow);
+    attachEstanteriaEvent(newRow);
+}
+

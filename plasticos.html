@@ -9,25 +9,28 @@
 <body>
     <h1><center>Escanear Codigo</center></h1>
 
-    <!-- Campo para ingresar código de barras (en la parte superior) -->
     <input type="text" id="barcodeInput" placeholder="Escanea el código de barras" autofocus>
 
-<table>
-	<center>
-    <button id="exportStockBtn">Exportar Datos de Stock</button>
-    <input type="file" id="importStockFile" style="display:none;">
-    <button id="importStockBtn">Importar Datos de Stock</button>
-    <button id="syncDataBtn">Sincronizar Datos</button>
-    <button id="clearAllBtn">Limpiar Todo</button>
-    <button id="showLogBtn">Mostrar Log</button>
-    <button id="exportLogBtn">Exportar Historial a Excel</button>
-	</center>
-</table>
+    <table>
+        <center>
+<button id="exportStockBtn">Exportar Datos de Stock</button>
+<input type="file" id="importStockFile" style="display:none;">
+<button id="importStockBtn">Importar Datos de Stock</button>
+<button id="syncDataBtn">Sincronizar Datos</button>
+<button id="clearAllBtn">Limpiar Todo</button>
+<button id="showLogBtn">Mostrar Log</button>
+<button id="exportLogBtn">Exportar Historial a Excel</button>
+<!-- Enlace para Código de Barras -->
+<a id="barcodeLink" href="packing.html">Código de barras</a>
 
+        </center>
+    </table>
+
+    <h2>Búsqueda en Inventario</h2>
+    <center><input type="text" id="searchInput" placeholder="Buscar por Código, Modelo, Descripción o Estantería"></center>
 
     <h1>Control de Inventario</h1>
 
-    <!-- Formulario para agregar productos -->
     <form id="productForm">
         <label for="codigo">Código:</label>
         <input type="text" id="codigo" required>
@@ -45,7 +48,7 @@
                 <th>Modelo</th>
                 <th>Descripción</th>
                 <th>Stock</th>
-		<th>Estantería</th>
+                <th>Estantería</th>
                 <th>Entrada</th>
                 <th>Salida</th>
                 <th>Cantidad por Unidad</th>
@@ -53,12 +56,10 @@
                 <th>Eliminar</th>
             </tr>
         </thead>
-       <tbody>
-
-    </tbody>
+        <tbody>
+        </tbody>
     </table>
 
-    <!-- Diálogo para acción de entrada o salida -->
     <div id="actionOverlay"></div>
     <div id="actionDialog">
         <p id="dialogMessage">Mensaje de acción aquí</p>
@@ -67,9 +68,6 @@
         <button id="cancelBtn">Cancelar</button>
     </div>
 
-    <!-- Botón para mostrar el log -->
-
-    <!-- Contenedor del log -->
     <div id="logContainer" class="modal">
         <div class="modal-content">
             <h2>Registro de Movimientos</h2>
@@ -78,7 +76,6 @@
         </div>
     </div>
 
-    <!-- Modal para la validación de tarjeta -->
     <div id="cardOverlay" class="overlay"></div>
     <div id="cardModal" class="modal">
         <div class="modal-content">
@@ -88,9 +85,7 @@
         </div>
     </div>
 
-
-<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="plasticos.js"></script>
 </body>
 </html>
