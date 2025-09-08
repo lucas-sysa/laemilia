@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Visor Operarios - Pantalla Completa</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    overflow: hidden;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f7fafc;
+    color: #1a202c;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    height: 100vh;
+    transform-origin: top left;
+  }
+  h1 {
+    font-size: 2.5rem;   /* Reducido */
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: center;
+    user-select: none;
+  }
+  #botones {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  button, select {
+    font-size: 1rem;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    background-color: #2b6cb0;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #2c5282;
+  }
+  #estadoFullscreen {
+    font-size: 1rem;
+    color: #4a5568;
+    margin-bottom: 5px;
+    user-select: none;
+  }
+  #listaVisor {
+    flex-grow: 1;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 1400px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.2rem;   /* Reducido */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    user-select: none;
+  }
+  thead {
+    background-color: #2d3748;
+    color: #edf2f7;
+  }
+  th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+  }
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+  tbody tr.no-entregado { background-color: #fed7d7; color: #9b2c2c; }
+  tbody tr.pendiente { background-color: #faf089; color: #744210; }
+  tbody tr.entregado { background-color: #c6f6d5; color: #22543d; }
+  tbody tr.highlight { animation: highlightRow 2s ease; }
+  @keyframes highlightRow { from { background-color: #90cdf4; } to { } }
+</style>
+</head>
+<body>
+
+<h1>Visor de Entregas - Operarios</h1>
+<div id="botones">
+  <button id="btnActualizar">Actualizar</button>
+  <label>
+    Intervalo:
+    <select id="intervalo">
+      <option value="5000">5s</option>
+      <option value="10000" selected>10s</option>
+      <option value="30000">30s</option>
+    </select>
+  </label>
+</div>
+<div id="estadoFullscreen">Estado: No en pantalla completa</div>
+<div id="listaVisor"></div>
+
+<script>
+  let intervalo = 10000;
+  let timer = null;
+  let oldDataHash = "";
+
+  function loadBloques() {
+    return JSON.parse(localStorage.getItem("abastecimiento_bloques") || "[]");
+  }
+  function ordenarDatos(bloques) {
+    bloques.forEach(b => {
+      b.registros.sort((a, b) => a.codigo.localeCompare(b.codigo));
+    });
+    bloques.sort((a, b) => a.linea.localeCompare(b.linea));
+    return bloques;
+  }
+  function renderListaVisor() {
+    const container = document.getElementById("listaVisor");
+    const bloques = ordenarDatos(loadBloques());
+    if (bloques.length === 0) {
+      container.innerHTML = "<p style='font-size:1.5rem; text-align:center; margin-top: 2rem;'>No hay registros cargados.</p>";
+      return;
+    }
+    let html = "<table><thead><tr><th>Línea</th><th>Orden</th><th>Código</th><th>Descripción</th><th>Embalajes Necesarios</th><th>Entregados</th><th>Estado</th></tr></thead><tbody>";
+    let dataHash = "";
+    bloques.forEach(bloque => {
+      bloque.registros.forEach(reg => {
+        let claseFila = "no-entregado";
+        let estado = "Pendiente";
+        if (reg.entregados >= reg.embalajesNecesarios && reg.embalajesNecesarios > 0) {
+          claseFila = "entregado"; estado = "Entregado";
+        } else if (reg.entregados > 0) {
+          claseFila = "pendiente"; estado = "Parcial";
+        }
+        dataHash += `${bloque.linea}-${bloque.orden}-${reg.codigo}-${reg.entregados}|`;
+        html += `<tr class="${claseFila}"><td>${bloque.linea}</td><td>${bloque.orden}</td><td>${reg.codigo}</td><td>${reg.descripcion}</td><td>${reg.embalajesNecesarios}</td><td>${reg.entregados}</td><td>${estado}</td></tr>`;
+      });
+    });
+    html += "</tbody></table>";
+    container.innerHTML = html;
+    if (dataHash !== oldDataHash) {
+      document.querySelectorAll("#listaVisor tbody tr").forEach(row => row.classList.add("highlight"));
+      oldDataHash = dataHash;
+    }
+  }
+  function actualizarEstadoFullscreen() {
+    const fs = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+    document.getElementById("estadoFullscreen").textContent = fs ? "Estado: En pantalla completa" : "Estado: No en pantalla completa";
+  }
+  function requestFullscreen() {
+    const el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen();
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    else if (el.msRequestFullscreen) el.msRequestFullscreen();
+  }
+  function iniciarAutoRefresh() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(renderListaVisor, intervalo);
+  }
+  window.onload = () => {
+    renderListaVisor();
+    actualizarEstadoFullscreen();
+    if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+      requestFullscreen();
+    }
+    iniciarAutoRefresh();
+  };
+  document.getElementById("btnActualizar").onclick = renderListaVisor;
+  document.getElementById("intervalo").onchange = e => {
+    intervalo = parseInt(e.target.value);
+    iniciarAutoRefresh();
+  };
+  document.addEventListener("fullscreenchange", actualizarEstadoFullscreen);
+  document.addEventListener("webkitfullscreenchange", actualizarEstadoFullscreen);
+  document.addEventListener("msfullscreenchange", actualizarEstadoFullscreen);
+</script>
+</body>
+</html>

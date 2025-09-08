@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Stock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-container {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #74ebd5;
+            outline: none;
+        }
+        button {
+            width: 50%;
+            background: #74ebd5;
+            border: none;
+            color: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: block;
+            margin: 0 auto;
+        }
+        button:hover {
+            background: #62d3c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Gestión de Stock</h2>
+        <form id="form">
+            <input placeholder="Escanear tarjeta del operador" id="usuario" required autofocus>
+            <input placeholder="Código" id="codigo" required>
+            <input placeholder="Descripción" id="descripcion" required readonly>
+            <input type="number" placeholder="Entrada de stock" id="entrada">
+            <input type="number" placeholder="Salida de stock" id="salida">
+            <input placeholder="Rack" id="rack" required>
+            <input placeholder="Box" id="box" required>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzcLIGphXIexS9Ycu4usnOBVzWRYLwRCDX0sks1AGp6PCEVQ99bciyAQl7kAloz5G11/exec';
+
+        const entradaInput = document.getElementById('entrada');
+        const salidaInput = document.getElementById('salida');
+
+        entradaInput.addEventListener('input', () => {
+            salidaInput.disabled = entradaInput.value !== "";
+        });
+
+        salidaInput.addEventListener('input', () => {
+            entradaInput.disabled = salidaInput.value !== "";
+        });
+
+    const productos = {
+"MPR36": "PORTA TABLERO NUEVO (A) HOMOPOLÍMERO",
+"MPR46": "CUBRECADENAS (A)",
+"MPR11": "GUARDABARROS TRASERO (A)",
+"MPR394": "BAJO ASIENTO (A) PLÁSTICOS NACIONALES",
+"MPR128": "BASE DE ASIENTOS",
+"MPR10": "POLLERA (A)  PLÁSTICOS NACIONALES / POLLERA (B)",
+"MPR12": "BAULERA (B)",
+"MPR389": "BAULERA (B) PLUS",
+"MPR15": "TAPA BATERÍA ALTA",
+"MPR9": "TAPA N° DE CHASIS (B)",
+"MPR16": "TAPA DE CERRADURA (A)",
+"MPR403": "TAPA FILTRO",
+"MPR402": "CUERPO DE FILTRO",
+"MPR401": "ENTRADA SUPERIOR DE AIRE",
+"MPR436": "CUBRE BARRAL NEGRO",
+"MPR437": "ESCUDO NEGRO",
+"MPR440": "PORTA ÓPTICA NEGRO",
+"MPR438": "GUARDABARRO DELANTERO NEGRO",
+"MPR439": "LATERALES NEGRO",
+"MPR431": "CUBRE BARRAL BLANCO",
+"MPR432": "ESCUDO BLANCO",
+"MPR435": "PORTA ÓPTICA BLANCO",
+"MPR433": "GUARDABARRO DELANTERO BLANCO",
+"MPR434": "LATERALES BLANCO",
+"MPR426": "CUBRE BARRAL ROJO",
+"MPR427": "ESCUDO ROJO",
+"MPR430": "PORTA ÓPTICA ROJO",
+"MPR428": "GUARDABARRO DELANTERO ROJO",
+"MPR429": "LATERALES ROJO",
+"MPR421": "CUBRE BARRAL AZUL",
+"MPR422": "ESCUDO AZUL",
+"MPR425": "PORTA ÓPTICA AZUL",
+"MPR423": "GUARDABARRO DELANTERO AZUL",
+"MPR424": "LATERALES AZUL",
+"MPR216": "Tapa y cuerpo de caja de herram.",
+"MPR408": "Cerradura de caja de herram.",
+"MPR214": "Cubrecadenas",
+"MPR210": "Cachas Laterales [RM]",
+"MPR315": "Cachas Laterales [RM]",
+"MPR211": "Guardabarros trasero",
+"MPR212": "Guia de cadena",
+"MPR213": "Decoracion de porta optica",
+"MPR365": "Decoracion de porta optica",
+"MPR215": "Colín (Blanco)",
+"MPR318": "Porta opticas (Blanco)",
+"MPR410": "Laterales (Blancos)",
+"MPR409": "Laterales (Blancos)",
+"MPR321": "Cubre tanque (Blanco)",
+"MPR322": "Cubre tanque (Blanco)",
+"MPR323": "Guardabarros delantero (Blanco)",
+"MPR441": "Colín (arena)",
+"MPR442": "Porta opticas (arena)",
+"MPR443": "Laterales(arena)",
+"MPR444": "Cubre tanque (arena)",
+"MPR445": "Guardabarro delantero (arena)",
+"MPR446": "Colín (Azul)",
+"MPR447": "Porta opticas (Azul)",
+"MPR448": "Laterales (Azul)",
+"MPR329": "Cubre tanque (Azul)",
+"MPR330": "Cubre tanque (Azul)",
+"MPR333": "Guardabarros delantero (Azul)",
+"MPR449": "Colín (Rojo)",
+"MPR450": "Porta óptica (Rojo)",
+"MPR451": "Laterales (Rojo)",
+"MPR324": "Cubre tanque (Rojo)",
+"MPR325": "Cubre tanque (Rojo)",
+"MPR328": "Guardabarros delantero (Rojo)",
+"MPR452": "Colín (Negro)",
+"MPR453": "Porta óptica (Negro)",
+"MPR454": "Laterales (Negro)",
+"MPR209": "Cubre tanque (Negro)",
+"MPR313": "Cubre tanque (Negro)",
+"MPR317": "Guardabarros delantero (Negro)",
+"KPPPS2-T": "Guardabarros trasero",
+"MPR383": "Cubrebarral izquierdo (NEGRO) ABS",
+"MPR382": "Cubrebarral derecho (NEGRO) ABS",
+"MPR384": "Escudos (NEGRO) ABS",
+"MPR388": "Porta optica (NEGRO) ABS",
+"MPR385": "Guardabarro delantero (NEGRO) ABS",
+"MPR386": "Lateral derecho (NEGRO) ABS",
+"MPR387": "Lateral izquierdo (NEGRO) ABS",
+"PIN383": "Cubrebarral izquierdo (NEGRO) ABS",
+"PIN382": "Cubrebarral derecho (NEGRO) ABS",
+"PIN384": "Escudos (NEGRO) ABS",
+"PIN388": "Porta optica (NEGRO) ABS",
+"PIN385": "Guardabarro delantero (NEGRO) ABS",
+"PIN386": "Lateral derecho (NEGRO) ABS",
+"PIN387": "Lateral izquierdo (NEGRO) ABS",
+"AMB11001-T": "ASIENTO MOTOMEL BLITZ",
+"AMB11002-T": "ASIENTO MOTOMEL BLITZ TUNNING",
+"AMB11003-T": "ASIENTO MOTOMEL BLITZ PLUS",
+"AMDLX11002-T":	"ASIENTO MOTOMEL DLX ROJO",
+"AMDLX11001-T": "ASIENTO MOTOMEL DLX AZUL",
+"AMSKUA01-T": "ASIENTO MOTOMEL SKUA",
+"AMSKUA02-T": "ASIENTO MOTOMEL SKUA 250",
+"MPR411": "ASIENTO SKUA 125 X TREME",
+"AMS201-T": "ASIENTO MOTOMEL S2",
+"AMMAX110-T": "ASIENTO MAX 110",
+"AMXMM250-T": "ASIENTO XMM",
+"AMVICT-T": "ASIENTO MOTOMEL VICTORY 150",
+"AMSTEU1-T": "ASIENTO STRATO EURO",
+"AMSTALP-T": "ASIENTO STRATO ALPINO",
+"AMSI190-T": "ASIENTO SIRIUS 190",
+"AB180S1-T": "ASIENTO 180S CONDUCTOR",
+"AB180S2-T": "ASIENTO 180S ACOMPAÑANTE",
+"ABTRK2511-T": "ASIENTO TRK 251 CONDUCTOR",
+"ABTRK2512-T": "ASIENTO TRK 251 ACOMPAÑANTE",
+"ABLNC250-T": "ASIENTO LEONCINO 250",
+"ABIMP4001-T": "ASIENTO IMPERIALE 400 CONDUCTOR",
+"ABIMP4002-T": "ASIENTO IMPERIALE 400 ACOMPAÑANTE",
+"ABLNC500-T": "LEONCINO 500",
+"AB251S-T": "ASIENTO 251S CONDUCTOR / ACOMPAÑANTE",
+"ABTNT600I1-T":	"ASIENTO TNT 600i CONDUCTOR",
+"ABTNT600I2-T": "ASIENTO TNT 600i ACOMPAÑANTE",
+"AB752S-T": "ASIENTO 752 S",
+"ABTNT152-T": "ASIENTO TNT 15 CONDUCTOR",
+"ABTNT151-T": "ASIENTO TNT 15 ACOMPAÑANTE",
+"ABTRK502-T": "ASIENTO TRK 502 DELANTERO",
+"ABTRK5021-T": "ASIENTO TRK 502 TRASERO",
+"ABTRK7021-T": "ASIENTO CONDUCTOR TRK 702",
+"ABTRK702-T": "ASIENTO ACOMPAÑANTE TRK 702",
+"ABLNC800-T": "ASIENTO LEONCINO 800",
+"ASZAX10001-T":	"ASIENTO AX100",
+"ABRK150-T": "ASIENTO RK150",
+"ABKLIGHT202-T": "ASIENTO KLIGHT 202",
+"ABV302C-T": "ASIENTO V302C",
+"ASJOY300-T": "ASIENTO JOYRIDE 300",
+"ATSLALOMP110": "ASIENTO SLALOM P110",
+"MPR127.": "PP COPOLIMERO DE IMPACTO 16C12NA ESENTTIA / 2630PC PETROCUYO",
+"MPR218": "PP RANDOM 10R10C ESENTTIA",
+"MPR361": "PP HOMOPOLIMERO 11H01A ESENTTIA / SMD 6200 PETROCUYO",
+"MPR220": "PP HOMOPOLIMERO XSD 6200T PETROCUYO",
+"INS2112": "ABS COPOLIMERO",
+"991333": "NEGRO PP 991333 AMPACET",
+"1101465-S": "BLANCO 1101465-S AMPACET",
+"1503702-S": "ROJO 1503702-S AMPACET",
+"1606323-S": "AZUL 1606323-S AMPACET",
+"1900557-S": "NEGRO 1900557-S AMPACET",
+"1802179-S": "BEIGE 1802179-S AMPACET",
+"1101466-SE": "BLANCO PERLADO 1101466-SE AMPACET",
+"1900558-SE": "NEGRO PERLADO 1900558-SE AMPACET",
+"4000238-S": "UV 4000238-S AMPACET",
+"13993": "BLANCO 13993 ARCOLOR",
+"13979": "ROJO 13979 ARCOLOR",
+"13992": "AZUL 13992 ARCOLOR",
+"12584": "PE NEGRO 12584 ARCOLOR",
+"10054": "UV 10054 ARCOLOR",
+"MPR168": "ESPUMA ASIENTO AX 100",
+"MPR149.": "ESPUMA ASIENTO B110",
+"MPR510": "ESPUMA ASIENTO DURBAN 150",
+"MPR507": "ESPUMA ASIENTO NEO 110 NX",
+"MPR502": "ESPUMA ASIENTO NTORQ 125",
+"MPR500": "ESPUMA ASIENTO RAIDER 125 DELANTERO",
+"MPR501": "ESPUMA ASIENTO RAIDER 125 TRASERO",
+"MPR509": "ESPUMA ASIENTO RTR 160",
+"MPR503": "ESPUMA ASIENTO RTR 200 4V DELANTERO",
+"MPR504": "ESPUMA ASIENTO RTR 200 4V TRASERO",
+"MPR505": "ESPUMA ASIENTO RTR 200 EFI DELANTERO",
+"MPR506": "ESPUMA ASIENTO RTR 200 EFI TRASERO",
+"MPR150.": "ESPUMA ASIENTO S2",
+"MPR167": "ESPUMA ASIENTO SKUA",
+"MPR508": "ESPUMA ASIENTO SLALOM P110",
+"MPR339": "Espuma de asiento 180S ACOMPAÑANTE",
+"MPR6001": "Espuma de asiento 180S ACOMPAÑANTE",
+"MPR6002": "Espuma de asiento 180S CONDUCTOR",
+"MPR338": "Espuma de asiento 180S CONDUCTOR",
+"MPR366": "Espuma de asiento 251S delantera",
+"MPR367": "Espuma de asiento 251S trasera",
+"MPR340": "Espuma de asiento 302S",
+"MPR342": "Espuma de asiento 502C ACOMPAÑANTE",
+"MPR341": "Espuma de asiento 502C CONDUCTOR",
+"MPR343": "Espuma de asiento 752S",
+"MPR344": "Espuma de asiento IMPERIALE 400 CONDUCTOR",
+"MPR345": "Espuma de asiento IMPERIALE 400  ACOMPAÑANTE",
+"MPR487": "Espuma de asiento JOYRIDE 300",
+"MPR351": "Espuma de asiento K-LIGHT 202",
+"MPR347": "Espuma de asiento LEONCINO 500",
+"MPR472": "ESPUMA DE ASIENTO LEONCINO 800",
+"MPR346": "Espuma de asiento LEONCINO 250",
+"MPR355": "Espuma de asiento MAX 110",
+"MPR352": "Espuma de asiento RK 150",
+"MPR350": "Espuma de asiento SIRIUS 190",
+"MPR356": "Espuma de asiento SKUA 125",
+"MPR357": "Espuma de asiento SKUA ADVENTURE",
+"MPR358": "Espuma de asiento STRATO ALPINO",
+"MPR359": "Espuma de asiento STRATO EURO",
+"MPR354": "Espuma de asiento TNT 15 ACOMPAÑANTE",
+"MPR353": "Espuma de asiento TNT 15 CONDUCTOR",
+"MPR349": "Espuma de asiento TNT600i ACOMPAÑANTE",
+"MPR348": "Espuma de asiento TNT600i CONDUCTOR",
+"MPR335": "Espuma de asiento TRK 251 ACOMPAÑANTE",
+"MPR334": "Espuma de asiento TRK 251 CONDUCTOR",
+"MPR337": "Espuma de asiento TRK 502 ACOMPAÑANTE",
+"MPR336": "Espuma de asiento TRK 502 CONDUCTOR",
+"MPR474": "ESPUMA DE ASIENTO TRK 702 DELANTERO",
+"MPR475": "ESPUMA DE ASIENTO TRK 702 TRASERO",
+"MPR473": "ESPUMA DE ASIENTO V302C",
+"MPR198": "Espuma de asiento Victory 150",
+"MPR476": "Espuma de asiento XMM",
+"MPR151": "ESPUMA DLX110",
+"MPR470": "ESPUMA STRATO EURO DELANTERO",
+"MPR471": "ESPUMA STRATO EURO TRASERO",
+"MPR511": "ESPUMA DE ASIENTO SC150RE",
+"299064010000-INT": "REGULADOR VOLTAJE (2644)",
+"299066060000-INT": "REGULADOR VOLTAJE (2426)",
+"299066080010-INT": "REGULADOR VOLTAJE (N) (2649)",
+"92039S010000-INT": "RELAY LUCES (9221)",
+"94000S010000-INT": "RELAY ARRANQUE",
+"94100J000002-INT": "Relé de arranque",
+"95100P180000-INT": "BOCINA (11764) Leoncino 500/DIF.800 TRAIL",
+"299065040001-INT": "REGULADOR VOLTAJE (2650)",
+"96400J670000-INT": "DESTELLADOR 12V BENELLI (9369)",
+"2661-INT": "REGULADOR DE VOLTAJE AX 100 (2661)",
+"95100P160001": "BOCINA (11774)",
+"95100J820000": "BOCINA Leoncino 250/TRK 251/DIF. TNT15",
+"6105100419000-INT": "BOBINA DE ALTA",
+"61180100031000-INT": "DESTELLAD.RK150 (9378)",
+"61051002051000-INT": "REGULADOR RK 150 (2673)",
+"P061051001-067000": "ENCENDIDO (10109)",
+"P061051003-022000": "RELÉ (9340)",
+"61180300032000": "BOCINA (11770)",
+"305000-0002": "CDI (10153)",
+"302000-0033": "REGULADOR MONOF. 12A (2437)",
+"94100T850000": "RELAY ARRANQUE (9356)",
+"1.20.26.01.03001": "Regulador (2647)",
+"96400K010001": "RELAY GUIÑOS",
+"94100J000002": "RELAY ARRANQUE",
+"96200J410000": "BOBINA ALTA",
+"299064010000": "REGULADOR VOLTAJE",
+"CH0001": "Chasis",
+"MO0001": "Motores",
+"BU0001": "Buloneria",
+"PA0001": "Partes Comunes",
+"BA0001": "Bateria",
+"RUD001": "Rueda Delantera",
+"RUT001": "Rueda Trasera",
+"KIT001": "Kit de asientos",
+
+    };
+
+document.getElementById('codigo').addEventListener('input', function () {
+    const codigoIngresado = this.value.trim().toUpperCase();
+    const descripcion = productos[codigoIngresado];
+    document.getElementById('descripcion').value = descripcion || '';
+    
+    if (!descripcion && codigoIngresado.length > 3) {
+        document.getElementById('descripcion').placeholder = 'Código no reconocido';
+    } else {
+        document.getElementById('descripcion').placeholder = 'Descripción';
+    }
+});
+
+
+        document.getElementById('form').addEventListener('submit', e => {
+            e.preventDefault();
+
+            const entradaValue = entradaInput.value.trim();
+            const salidaValue = salidaInput.value.trim();
+
+            if (entradaValue === "" && salidaValue === "") {
+                alert("Debes ingresar una entrada o una salida de stock.");
+                return;
+            }
+
+            let salidaNegativa = "0";
+            if (salidaValue) {
+                salidaNegativa = `-${Math.abs(parseInt(salidaValue))}`;
+                const confirmarSalida = confirm(`Vas a registrar una salida de ${salidaNegativa} unidades. ¿Confirmás?`);
+                if (!confirmarSalida) return;
+            }
+
+const data = {
+    usuario: document.getElementById('usuario').value, 
+    codigo: document.getElementById('codigo').value,
+    descripcion: document.getElementById('descripcion').value,
+    entrada: entradaValue || "0",
+    salida: salidaNegativa,
+    rack: document.getElementById('rack').value,
+    box: document.getElementById('box').value
+};
+
+const formData = new FormData();
+formData.append("usuario", data.usuario);
+formData.append("codigo", data.codigo);
+formData.append("descripcion", data.descripcion);
+formData.append("entrada", data.entrada);
+formData.append("salida", data.salida);
+formData.append("rack", data.rack);
+formData.append("box", data.box);
+
+fetch(scriptURL, {
+  method: 'POST',
+  body: formData
+})
+.then(() => {
+  alert('Datos enviados correctamente');
+  document.getElementById('form').reset();
+  entradaInput.disabled = false;
+  salidaInput.disabled = false;
+})
+.catch(error => alert('Error al enviar: ' + error.message));
+        });
+    </script>
+</body>
+</html>

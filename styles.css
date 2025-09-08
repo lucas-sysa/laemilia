@@ -1,0 +1,92 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d8d8d8;
+  background-image: url('fondo.png');
+  background-repeat: no-repeat;
+  background-size: 50% auto; /* ancho 50%, altura proporcional */
+  background-position: right center; /* a la derecha y centrada verticalmente */
+}
+
+/* ===== CONTENEDOR DEL VIDEO ===== */
+.circle-container {
+  position: relative;
+  width: 400px;   
+  height: 400px;
+}
+
+/* ===== VIDEO REDONDO ===== */
+.circle-video {
+  width: 100%;
+  height: 100%;
+  border-radius: 1000px;
+  object-fit: cover;
+  background: #d8d8d8;
+}
+
+/* ===== BOTONES ===== */
+.circle-button {
+  position: absolute;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px; /* esquinas suavemente redondeadas */
+}
+
+
+/* ===== POSICIONES ===== */
+.circle-button.top {
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.circle-button.bottom {
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.circle-button.left {
+  top: 50%;
+  left: -150px;
+  transform: translateY(-50%);
+}
+
+.circle-button.right {
+  top: 50%;
+  right: -150px;
+  transform: translateY(-50%);
+}
+
+/* ===== NUEVOS BOTONES DIAGONALES ===== */
+.circle-button.top-left {
+  top: 31px;
+  left: -90px;
+}
+
+.circle-button.top-right {
+  top: 31px;
+  right: -90px;
+}
+
+.circle-button.bottom-left {
+  bottom: 31px;
+  left: -90px;
+}
+
+.circle-button.bottom-right {
+  bottom: 31px;
+  right: -120px;
+}
+.titulo-izquierda {
+  position: absolute;
+  top: -20px;    /* distancia desde arriba */
+  left: 20px;   /* distancia desde la izquierda */
+  font-size: 100px;
+  font-weight: bold;
+  color: #aaa;  /* color del texto */
+}

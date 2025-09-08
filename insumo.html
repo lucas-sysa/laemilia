@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Registro de Insumos</title>
+<link rel="stylesheet" href="insumo.css">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+<body>
+  <h1>Registro de Insumos</h1>
+  <form id="formRegistro">
+    <div class="form-group">
+      <label>Fecha:</label>
+      <input type="text" id="fecha" value="" readonly>
+    </div>
+
+    <div class="form-group">
+      <label>Cliente:</label>
+      <select id="cliente">
+        <option value="">-- Seleccioná un cliente --</option>
+        <option value="LOGISTICA DESARROLLO">LOGISTICA DESARROLLO</option>
+        <option value="LOGISTICA DESCARGA">LOGISTICA DESCARGA</option>
+        <option value="LOGISTICA EXPEDICION">LOGISTICA EXPEDICION</option>
+        <option value="LOGISTICA GESTION DE PIEZAS">LOGISTICA GESTION DE PIEZAS</option>
+        <option value="LOGISTICA L-12">LOGISTICA L-12</option>
+        <option value="LOGISTICA L-14">LOGISTICA L-14</option>
+        <option value="LOGISTICA L-6">LOGISTICA L-6</option>
+        <option value="LOGISTICA L-9">LOGISTICA L-9</option>
+      </select>
+    </div>
+
+ <div class="form-group">
+    <label>Descripción:</label>
+    <select id="descripcion">
+      <option value="">Seleccionar</option>
+      <option value="INS599       -GUANTE PU NEGRO T7 - STEELPRO MULTIFLEX           "> INS599       -GUANTE PU NEGRO T7 - STEELPRO MULTIFLEX            </option>
+      <option value="INS600       -GUANTE PU NEGRO T8 - STEELPRO MULTIFLEX           "> INS600       -GUANTE PU NEGRO T8 - STEELPRO MULTIFLEX            </option>
+      <option value="INS3770      -MARCADOR TRAZO GRUESO NEGRO MARCA EDDING        "> INS3770      -MARCADOR TRAZO GRUESO NEGRO MARCA EDDING         </option>
+      <option value="INS805       -BIROME TRAZO GRUEZO COLOR NEGRO MARCA BIC        "> INS805       -BIROME TRAZO GRUEZO COLOR NEGRO MARCA BIC         </option>
+      <option value="INS4010      -ROTULO DE DESCARGA-PAPEL OBRA 75GR -210MM X 297 MM"> INS4010      -ROTULO DE DESCARGA-PAPEL OBRA 75GR -210MM X 297 MM </option>
+      <option value="INS891       -HOJA CORTA PARA TRINCHETA (REPUESTO)              "> INS891       -HOJA CORTA PARA TRINCHETA (REPUESTO)               </option>
+      <option value="INS2661      -FILM STRECH MANUAL DE 500 MM                      "> INS2661      -FILM STRECH MANUAL DE 500 MM                       </option>
+      <option value="INS1730      -BOLSAS DE POLIETILENO EN ROLLOS 250 X 350 MM      "> INS1730      -BOLSAS DE POLIETILENO EN ROLLOS 250 X 350 MM       </option>
+      <option value="INS2480      -CINTA DE EMPAQUE TRANSPARENTE DE 48MM             "> INS2480      -CINTA DE EMPAQUE TRANSPARENTE DE 48MM              </option>
+      <option value="INS12261     -PRECINTO AMARILLO PLASTICO NUMERADO 8 X 250 MM    "> INS12261     -PRECINTO AMARILLO PLASTICO NUMERADO 8 X 250 MM     </option>
+      <option value="INS2718      -CAJAS MOTOMEL PARA KIT DE ACCESORIOS              "> INS2718      -CAJAS MOTOMEL PARA KIT DE ACCESORIOS               </option>
+      <option value="INS3772      -MARCADOR TRAZO GRUESO AZUL MARCA EDDING         "> INS3772      -MARCADOR TRAZO GRUESO AZUL MARCA EDDING          </option>
+      <option value="INS2534      -FOLIO A4                                          "> INS2534      -FOLIO A4                                           </option>
+      <option value="INS912       -SOBRE BOLSA MANILA 22,9  X  32,4 CM MARCA MEDORO  "> INS912       -SOBRE BOLSA MANILA 22,9  X  32,4 CM MARCA MEDORO   </option>
+      <option value="INS1168      -CINTA DE ENMASCARAR DE 18MM                      "> INS1168      -CINTA DE ENMASCARAR DE 18MM                       </option>
+      <option value="INS1125      -CINTA DE ENMASCARAR DE 48MM                      "> INS1125      -CINTA DE ENMASCARAR DE 48MM                       </option>
+      <option value="INS2212      -TONER SAMSUNG M2020 W  -  MLT-111 VERYJET         "> INS2212      -TONER SAMSUNG M2020 W  -  MLT-111 VERYJET          </option>
+      <option value="INS447       -ENCHUFE MACHO 3 PATAS REFORZADOS                  "> INS447       -ENCHUFE MACHO 3 PATAS REFORZADOS                   </option>
+      <option value="INS2871      -CUTTER RETRACTIL                                  "> INS2871      -CUTTER RETRACTIL                                   </option>
+      <option value="INS811       -CINTA TRANSPARENTE SCOTCH 500 12 MM  X  33 MTS  "> INS811       -CINTA TRANSPARENTE SCOTCH 500 12 MM  X  33 MTS   </option>
+      <option value="INS904       -MARCADOR NEGRO EDDING 400 PUNTA FINA 1 MM       "> INS904       -MARCADOR NEGRO EDDING 400 PUNTA FINA 1 MM        </option>
+      <option value="INS601       -GUANTE PU NEGRO T9 - STEELPRO MULTIFLEX           "> INS601       -GUANTE PU NEGRO T9 - STEELPRO MULTIFLEX            </option>
+      <option value="INS2536      -RESALTADOR CELESTE MARCA TEXTOS 725              "> INS2536      -RESALTADOR CELESTE MARCA TEXTOS 725               </option>
+      <option value="INS820       -RESALTADOR VERDE MARCA TEXTOS 725                "> INS820       -RESALTADOR VERDE MARCA TEXTOS 725                 </option>
+      <option value="INS2737      -PRECINTOS METALICOS PRENUMERADOS DE 22 CM         "> INS2737      -PRECINTOS METALICOS PRENUMERADOS DE 22 CM          </option>
+      <option value="INS422       -PROTECTORES AUDITIVOS DESCARTABLES                "> INS422       -PROTECTORES AUDITIVOS DESCARTABLES                 </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS3313      -RIBBONS DE 110 X  74 (TECNOLOGISTICA)             "> INS3313      -RIBBONS DE 110 X  74 (TECNOLOGISTICA)              </option>
+      <option value="INS1731      -BOLSAS DE POLIETILENO EN ROLLOS 300 X 450 MM      "> INS1731      -BOLSAS DE POLIETILENO EN ROLLOS 300 X 450 MM       </option>
+      <option value="INS1382      -ZAPATO DE SEGURIDAD Nº 41                         "> INS1382      -ZAPATO DE SEGURIDAD Nº 41                          </option>
+      <option value="MPR405       -MANUAL DE GARANTIA BENELLI                        "> MPR405       -MANUAL DE GARANTIA BENELLI                         </option>
+      <option value="INS1777      -FOLLETO DE BATERIA BENELLI                        "> INS1777      -FOLLETO DE BATERIA BENELLI                         </option>
+      <option value="INS3837      -CINTA DE SEGURIDAD ENGOMADA C/FIBRA SIN IMPRESION "> INS3837      -CINTA DE SEGURIDAD ENGOMADA C/FIBRA SIN IMPRESION  </option>
+      <option value="INS597       -GUANTES MOTEADOS TALLE 8 SIMPLES                  "> INS597       -GUANTES MOTEADOS TALLE 8 SIMPLES                   </option>
+      <option value="MPR302       -MANUAL DE GARANTIA SUZUKI                         "> MPR302       -MANUAL DE GARANTIA SUZUKI                          </option>
+      <option value="INS2558      -CANDADO DE BRONCE 50 X 79 DOBLE TRABA            "> INS2558      -CANDADO DE BRONCE 50 X 79 DOBLE TRABA             </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS1383      -ZAPATO DE SEGURIDAD Nº 42                         "> INS1383      -ZAPATO DE SEGURIDAD Nº 42                          </option>
+      <option value="             -CARPETA TIPO "L" TRASPARENTE                      ">              -CARPETA TIPO "L" TRASPARENTE                       </option>
+      <option value="INS2677      -ETIQUETAS AUTOADHDE 80 X 50 EN ROLLOS X 950 C/U  "> INS2677      -ETIQUETAS AUTOADHDE 80 X 50 EN ROLLOS X 950 C/U   </option>
+      <option value="INS1386      -ZAPATO DE SEGURIDAD Nº 45                         "> INS1386      -ZAPATO DE SEGURIDAD Nº 45                          </option>
+      <option value="INS12085     -TORNILLO AUTOPERFORANTE T1 8X1"                   "> INS12085     -TORNILLO AUTOPERFORANTE T1 8X1"                    </option>
+      <option value="INS3462      -TORNILLO PUNTA AGUJA 6X2"  CAJAS X UNIDADES       "> INS3462      -TORNILLO PUNTA AGUJA 6X2"  CAJAS X UNIDADES        </option>
+      <option value="INS12634     -PALOS DE ESCOBA CORTOS                            "> INS12634     -PALOS DE ESCOBA CORTOS                             </option>
+      <option value="INS4026      -ESCOBAS DE NAYLON CHICAS SIN PALO                 "> INS4026      -ESCOBAS DE NAYLON CHICAS SIN PALO                  </option>
+      <option value="INS1573      -PALAS PLASTICAS PARA BASURA                       "> INS1573      -PALAS PLASTICAS PARA BASURA                        </option>
+      <option value="INS795       -RESMA A4 70 GRS BLANCA                            "> INS795       -RESMA A4 70 GRS BLANCA                             </option>
+      <option value="INS2684      -FILM STRECH MANUAL 500MM CELESTE                  "> INS2684      -FILM STRECH MANUAL 500MM CELESTE                   </option>
+      <option value="INS2492      -CAJAS BENELLI PARA KIT D EACCESORIOS 36 X 20 X 26 "> INS2492      -CAJAS BENELLI PARA KIT D EACCESORIOS 36 X 20 X 26  </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS861       -MARCADOR ROJO EDDING 400 PUNTA FINA 1 MM        "> INS861       -MARCADOR ROJO EDDING 400 PUNTA FINA 1 MM         </option>
+      <option value="INS1017      -PLUMERO                                           "> INS1017      -PLUMERO                                            </option>
+      <option value="INS817       -RESALTADOR AMARILLO MARCA TEXTOS 414             "> INS817       -RESALTADOR AMARILLO MARCA TEXTOS 414              </option>
+      <option value="INS819       -RESALTADOR ROSA MARCA TEXTOS 414                 "> INS819       -RESALTADOR ROSA MARCA TEXTOS 414                  </option>
+      <option value="INS840       -LAPIZ CORRECTOR DE 7 ML MARCA PELIKAN            "> INS840       -LAPIZ CORRECTOR DE 7 ML MARCA PELIKAN             </option>
+      <option value="INS953       -CUADERNO CHICO TAPA BLANDA RAYADO                "> INS953       -CUADERNO CHICO TAPA BLANDA RAYADO                 </option>
+      <option value="INS489       -PINTURA AE BLANCO BRILLANTE                       "> INS489       -PINTURA AE BLANCO BRILLANTE                        </option>
+      <option value="INS1723      -LENTES DE SEGURIDAD OSCUROS                       "> INS1723      -LENTES DE SEGURIDAD OSCUROS                        </option>
+      <option value="S10067       -FLECHAS AMARILLAS                                 "> S10067       -FLECHAS AMARILLAS                                  </option>
+      <option value="INS3773      -TACO PARA NOTAS CON ADHESIVO POST-IT 76 X 76 MM   "> INS3773      -TACO PARA NOTAS CON ADHESIVO POST-IT 76 X 76 MM    </option>
+      <option value="INS2633      -BLEM EN AE (LUSTRAMUEBLES)                       "> INS2633      -BLEM EN AE (LUSTRAMUEBLES)                        </option>
+      <option value="INS899       -MARCADOR EDDING E160 ROJO PARA PIZARRA            "> INS899       -MARCADOR EDDING E160 ROJO PARA PIZARRA             </option>
+      <option value="INS804       -BIROME TRAZO GRUEZO COLOR AZUL MARCA BIC         "> INS804       -BIROME TRAZO GRUEZO COLOR AZUL MARCA BIC          </option>
+      <option value="INS854       -APRIETAPAPELES Nº 4 DE 41MM                       "> INS854       -APRIETAPAPELES Nº 4 DE 41MM                        </option>
+      <option value="INS808       -BROCHES PARA ABROCHADORA Nº 50  X  1000 UNIDADES  "> INS808       -BROCHES PARA ABROCHADORA Nº 50  X  1000 UNIDADES   </option>
+      <option value="INS3792      -ALCOHOL LIQUIDO /SUSTANCIA SANITIZANTE            "> INS3792      -ALCOHOL LIQUIDO /SUSTANCIA SANITIZANTE             </option>
+      <option value="             -ESLINGA X 2MTS                                    ">              -ESLINGA X 2MTS                                     </option>
+      <option value="INS1724      -PROTECTORES AUDITIVOS DE COPA                     "> INS1724      -PROTECTORES AUDITIVOS DE COPA                      </option>
+      <option value="INS937       -MARCADOR EDDING E160 VERDE PARA PIZARRA           "> INS937       -MARCADOR EDDING E160 VERDE PARA PIZARRA            </option>
+      <option value="INS1727      -EQUIPOS DE PVC PARA LLUVIA TALLE XXL (2PIEZAS)    "> INS1727      -EQUIPOS DE PVC PARA LLUVIA TALLE XXL (2PIEZAS)     </option>
+      <option value="INS1384      -ZAPATO DE SEGURIDAD Nº 43                         "> INS1384      -ZAPATO DE SEGURIDAD Nº 43                          </option>
+      <option value="INS1891      -FLEJE PLASTICO DE 13 X 0,8 MM - BLANCO            "> INS1891      -FLEJE PLASTICO DE 13 X 0,8 MM - BLANCO             </option>
+      <option value="INS906       -MARCADOR TRAZO GRUESO ROJO MARCA EDDING         "> INS906       -MARCADOR TRAZO GRUESO ROJO MARCA EDDING          </option>
+      <option value="INS2493      -CAJAS BENELLI PARA KIT DE ACCESORIOS CHICA        "> INS2493      -CAJAS BENELLI PARA KIT DE ACCESORIOS CHICA         </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS908       -RESALTADOR NARANJA MARCA TEXTOS 414              "> INS908       -RESALTADOR NARANJA MARCA TEXTOS 414               </option>
+      <option value="INS2864      -ZAPATO DE SEGURIDAD Nº 38                         "> INS2864      -ZAPATO DE SEGURIDAD Nº 38                          </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="INS4403      -MANUAL DE USUARIO SUZUKI DR650                    "> INS4403      -MANUAL DE USUARIO SUZUKI DR650                     </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS1381      -ZAPATO DE SEGURIDAD Nº 40                         "> INS1381      -ZAPATO DE SEGURIDAD Nº 40                          </option>
+      <option value="INS924       -LIBRETA ESPIRALADA HOJA RAYADA X 80 Nº 8030     "> INS924       -LIBRETA ESPIRALADA HOJA RAYADA X 80 Nº 8030      </option>
+      <option value="INS907       -REGLA CRISTAL DE 20 CM MARCA PIZZINI             "> INS907       -REGLA CRISTAL DE 20 CM MARCA PIZZINI              </option>
+      <option value="MPR420       -MANUAL  DE USUARIO SUZUKI GN125F                  "> MPR420       -MANUAL  DE USUARIO SUZUKI GN125F                   </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS11344     -MANGAS DE PE 2M DE ANCHO X 50  MICRONES DE ESPES"> INS11344     -MANGAS DE PE 2M DE ANCHO X 50  MICRONES DE ESPES </option>
+      <option value="INS1726      -EQUIPOS DE PVC PARA LLUVIA TALLE XL (2 PIEZAS)    "> INS1726      -EQUIPOS DE PVC PARA LLUVIA TALLE XL (2 PIEZAS)     </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS1806      -PINTURA EPOXI/ ALTO TRANSITO COLOR AMARILLO       "> INS1806      -PINTURA EPOXI/ ALTO TRANSITO COLOR AMARILLO        </option>
+      <option value="INS2803      -CAJAS KEEWAY PARA KIT DE ACCESORIOS               "> INS2803      -CAJAS KEEWAY PARA KIT DE ACCESORIOS                </option>
+      <option value="INS11082     -CARPETA TAPA TRANSPARENTE A4 CON VAINA            "> INS11082     -CARPETA TAPA TRANSPARENTE A4 CON VAINA             </option>
+      <option value="INS2170      -CAJAS SIN IMPRESION P/ KIT ACCESORIOS 125X125X320 "> INS2170      -CAJAS SIN IMPRESION P/ KIT ACCESORIOS 125X125X320  </option>
+      <option value="INS2834      -TABLA PARA PAPELES MDF A4/CARTA - PP CLIP        "> INS2834      -TABLA PARA PAPELES MDF A4/CARTA - PP CLIP         </option>
+      <option value="INS913       -SOBRE BOLSA MANILA 24,0  X  30,0 CM MARCA MEDORO  "> INS913       -SOBRE BOLSA MANILA 24,0  X  30,0 CM MARCA MEDORO   </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS11138     -DESODORANTE CHICO DE AMBIENTE SPRAY               "> INS11138     -DESODORANTE CHICO DE AMBIENTE SPRAY                </option>
+      <option value="INS276       -FILM STRECH MANUAL 500MM VERDE                    "> INS276       -FILM STRECH MANUAL 500MM VERDE                     </option>
+      <option value="INS2685      -FILM STRECH MANUAL 500MM ROJO                     "> INS2685      -FILM STRECH MANUAL 500MM ROJO                      </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS977       -FRANELAS                                          "> INS977       -FRANELAS                                           </option>
+      <option value="INS1553      -CADENA PLASTICA                                   "> INS1553      -CADENA PLASTICA                                    </option>
+      <option value="INS525       -IMAN FEXIBLE AUTOADHESIVO A4                      "> INS525       -IMAN FEXIBLE AUTOADHESIVO A4                       </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS441       -TARUGO MEDIDA 10 MM                               "> INS441       -TARUGO MEDIDA 10 MM                                </option>
+      <option value="INS3832      -TARUGO MEDIDA 8 MM                                "> INS3832      -TARUGO MEDIDA 8 MM                                 </option>
+      <option value="INS3378      -CEPILLO DE CERDA FINA                             "> INS3378      -CEPILLO DE CERDA FINA                              </option>
+      <option value="INS4404      -MANUAL DE USUARIO V-TROM 650                      "> INS4404      -MANUAL DE USUARIO V-TROM 650                       </option>
+      <option value="INS3774      -TACO PARA NOTAS ADHESIVO ROSA                     "> INS3774      -TACO PARA NOTAS ADHESIVO ROSA                      </option>
+      <option value="INS3470      -CINTA DEMARCATORIA ALTO TRANSITO AZUL             "> INS3470      -CINTA DEMARCATORIA ALTO TRANSITO AZUL              </option>
+      <option value="INS835       -TIJERA MARCA ISOFIT                               "> INS835       -TIJERA MARCA ISOFIT                                </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="INS1385      -ZAPATO DE SEGURIDAD Nº 44                         "> INS1385      -ZAPATO DE SEGURIDAD Nº 44                          </option>
+      <option value="             -GUANTES DESCARTABLES DE NITRILO TALLE M           ">              -GUANTES DESCARTABLES DE NITRILO TALLE M            </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS1380      -ZAPATO DE SEGURIDAD Nº 39                         "> INS1380      -ZAPATO DE SEGURIDAD Nº 39                          </option>
+      <option value="INS12878     -ZAPATILLA DE 4 TOMAS CON TERMICA CON CABLE        "> INS12878     -ZAPATILLA DE 4 TOMAS CON TERMICA CON CABLE         </option>
+      <option value="INS10116     -INSECTICIDA EN AE (MOSCAS Y MOSQUITOS) X 400 CC "> INS10116     -INSECTICIDA EN AE (MOSCAS Y MOSQUITOS) X 400 CC  </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="INS11396     -ROTULO CELESTE "B" IDENTIFICACIÓN CUBIERTA-CASCO  "> INS11396     -ROTULO CELESTE "B" IDENTIFICACIÓN CUBIERTA-CASCO   </option>
+      <option value="INS12226     -HH MARTILLO SACACLAVOS                            "> INS12226     -HH MARTILLO SACACLAVOS                             </option>
+      <option value="INS898       -MARCADOR EDDING E160 NEGRO PARA PIZARRA           "> INS898       -MARCADOR EDDING E160 NEGRO PARA PIZARRA            </option>
+      <option value="INS339       -PILAS RECARGABLES AAA                             "> INS339       -PILAS RECARGABLES AAA                              </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS758       -HH TIJERA AVIACION CORTE RECTO 10"                "> INS758       -HH TIJERA AVIACION CORTE RECTO 10"                 </option>
+      <option value="INS2231      -CINTA PARA SEÑALIZAR PELIGRO EN ROLLO             "> INS2231      -CINTA PARA SEÑALIZAR PELIGRO EN ROLLO              </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS1418      -LENTES DE SEGURIDAD INCOLOROS                     "> INS1418      -LENTES DE SEGURIDAD INCOLOROS                      </option>
+      <option value="INS12086     -TORNILLO AUTOPERFORANTE T1 8 X 1  1/2"            "> INS12086     -TORNILLO AUTOPERFORANTE T1 8 X 1  1/2"             </option>
+      <option value="INS2742      -PINCELES Nº 25                                    "> INS2742      -PINCELES Nº 25                                     </option>
+      <option value="INS3536      -RODILLO PARA PINTURA EPOXI N°5                    "> INS3536      -RODILLO PARA PINTURA EPOXI N°5                     </option>
+      <option value="INS1023      -PINTURA AE ROJO BRILLANTE                         "> INS1023      -PINTURA AE ROJO BRILLANTE                          </option>
+      <option value="INS10075     -PAPEL BLANCO EN BOBINA DE 0,24 X 400 METROS       "> INS10075     -PAPEL BLANCO EN BOBINA DE 0,24 X 400 METROS        </option>
+      <option value="INS11847     -DESODORANTE DE AMBIENTE EN AE                     "> INS11847     -DESODORANTE DE AMBIENTE EN AE                      </option>
+      <option value="INS10123     -TRAPOS DE PISOS                                   "> INS10123     -TRAPOS DE PISOS                                    </option>
+      <option value="INS10098     -LYSOFORM BACTERICIDA EN AE                       "> INS10098     -LYSOFORM BACTERICIDA EN AE                        </option>
+      <option value="INS12881     -OFF EN AEROSOL                                    "> INS12881     -OFF EN AEROSOL                                     </option>
+      <option value="INS3469      -CINTA DEMARCATORIA ALTO TRANSITO AMARILLA         "> INS3469      -CINTA DEMARCATORIA ALTO TRANSITO AMARILLA          </option>
+      <option value="INS3537      -RODILLO PARA PINTURA EPOXI DE 10 CM               "> INS3537      -RODILLO PARA PINTURA EPOXI DE 10 CM                </option>
+      <option value="INS11286     -CUADERNO CHICO TAPA DURA HOJAS A COLOR RAYADO    "> INS11286     -CUADERNO CHICO TAPA DURA HOJAS A COLOR RAYADO     </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS930       -CUADERNO A4 TAPA BLANDA DE 21 X 29,7 RAYADO 80 HOJ"> INS930       -CUADERNO A4 TAPA BLANDA DE 21 X 29,7 RAYADO 80 HOJ </option>
+      <option value="             -PRECINTOS NEGROS 8 X 400                          ">              -PRECINTOS NEGROS 8 X 400                           </option>
+      <option value="INS1171      -PINTURA AE VERDE BRILLANTE                        "> INS1171      -PINTURA AE VERDE BRILLANTE                         </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS11491     -ETIQUETA 20 X 29 AUTOADHESIVA                     "> INS11491     -ETIQUETA 20 X 29 AUTOADHESIVA                      </option>
+      <option value="             -MARCADOR ROJO EDDING 404 PUNTA FINA 0,75 MM     ">              -MARCADOR ROJO EDDING 404 PUNTA FINA 0,75 MM      </option>
+      <option value="             -ALCOHOL ISOPROPILICO X 1 LTS                      ">              -ALCOHOL ISOPROPILICO X 1 LTS                       </option>
+      <option value="INS12871     -PULVERIZADOR PLASTICO CON GATILLO                 "> INS12871     -PULVERIZADOR PLASTICO CON GATILLO                  </option>
+      <option value="INS4570      -BOLSAS ZIP 17X25                                  "> INS4570      -BOLSAS ZIP 17X25                                   </option>
+      <option value="             -LIQUIDO DE FRENO CHINO DOT4                       ">              -LIQUIDO DE FRENO CHINO DOT4                        </option>
+      <option value="INS532       -PILAS AA                                          "> INS532       -PILAS AA                                           </option>
+      <option value="INS11723     -DIFUSOR AUTOMATICO PARA AE CHICO                  "> INS11723     -DIFUSOR AUTOMATICO PARA AE CHICO                   </option>
+      <option value="INS2747      -CINTA AISLADORA NEGRA TACSA X 20 METROS           "> INS2747      -CINTA AISLADORA NEGRA TACSA X 20 METROS            </option>
+      <option value="INS3466      -CANDADO DE BRONCE 40 X 62 DOBLE TRABA            "> INS3466      -CANDADO DE BRONCE 40 X 62 DOBLE TRABA             </option>
+      <option value="INS1781      -LLAVERO COLOR SURTIDO CODIGO 1420               "> INS1781      -LLAVERO COLOR SURTIDO CODIGO 1420                </option>
+      <option value="             -GUANTES DESCARTABLES DE NITRILO TALLE M           ">              -GUANTES DESCARTABLES DE NITRILO TALLE M            </option>
+      <option value="INS803       -BIBLIORATO PARA HOJA A4                          "> INS803       -BIBLIORATO PARA HOJA A4                           </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS807       -BIROME TRAZO GRUEZO COLOR ROJO MARCA BIC        "> INS807       -BIROME TRAZO GRUEZO COLOR ROJO MARCA BIC         </option>
+      <option value="INS12241     -HH TUBO 17 MM LARGO CON ENCASTRE DE 3/8"          "> INS12241     -HH TUBO 17 MM LARGO CON ENCASTRE DE 3/8"           </option>
+      <option value="INS3529      -PUNTA ALLEN DE 3MM ENCASTRE DE 3/8                "> INS3529      -PUNTA ALLEN DE 3MM ENCASTRE DE 3/8                 </option>
+      <option value="INS11253     -ADAPTADORES PARA TUBOS DE 3/8 H A 1/4 M DE IMPACTO"> INS11253     -ADAPTADORES PARA TUBOS DE 3/8 H A 1/4 M DE IMPACTO </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS974       -FOLIO OFICIO 24 X 36 CM ART 50F0X100           "> INS974       -FOLIO OFICIO 24 X 36 CM ART 50F0X100            </option>
+      <option value="INS802       -BIBLIORATO PARA HOJA OFICIO                       "> INS802       -BIBLIORATO PARA HOJA OFICIO                        </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS1469      -PRECINTOS NEGROS DE 3,6 X 250 MM                  "> INS1469      -PRECINTOS NEGROS DE 3,6 X 250 MM                   </option>
+      <option value="INS944       -ESTUCHE PORTA LAPICERAS                           "> INS944       -ESTUCHE PORTA LAPICERAS                            </option>
+      <option value="             -HORQUILLA DE TAMBOR DE TRABA ASIENTO              ">              -HORQUILLA DE TAMBOR DE TRABA ASIENTO               </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="INS961       -CUADERNO A4 TAPA BLANDA CUADRICULADO              "> INS961       -CUADERNO A4 TAPA BLANDA CUADRICULADO               </option>
+      <option value="INS12210     -HH CAJA DE HERRAMIENTAS                           "> INS12210     -HH CAJA DE HERRAMIENTAS                            </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS3281      -TARUGO MEDIDA 6 MM                                "> INS3281      -TARUGO MEDIDA 6 MM                                 </option>
+      <option value="INS823       -TACO MULTICOLOR PARA NOTAS 7303 MARCA MEDORO     "> INS823       -TACO MULTICOLOR PARA NOTAS 7303 MARCA MEDORO      </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="INS4273      -GUANTES ANTICORTE TALLE 8                         "> INS4273      -GUANTES ANTICORTE TALLE 8                          </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS810       -CARPETA TAPA TRANSPARENTE A4                     "> INS810       -CARPETA TAPA TRANSPARENTE A4                      </option>
+      <option value="             -CAJAS DE BATERIA 16X10X16 (EXPEDICION)            ">              -CAJAS DE BATERIA 16X10X16 (EXPEDICION)             </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS2538      -PORTA TACOS DE COLOR MARCA PIZZINI               "> INS2538      -PORTA TACOS DE COLOR MARCA PIZZINI                </option>
+      <option value="INS4024      -BOLSAS DE POLIETILENO EN ROLLOS 140 X 100 MM      "> INS4024      -BOLSAS DE POLIETILENO EN ROLLOS 140 X 100 MM       </option>
+      <option value="INS800       -PINZA ABROCHADORA FX 50 PARA BROCHES Nº 50        "> INS800       -PINZA ABROCHADORA FX 50 PARA BROCHES Nº 50         </option>
+      <option value="             -PRECINTOS NEGROS 8 X 400                          ">              -PRECINTOS NEGROS 8 X 400                           </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS2673      -ETIQUETAS AUTOADHDE 101X101 EN ROLLOS X 1450 C/U "> INS2673      -ETIQUETAS AUTOADHDE 101X101 EN ROLLOS X 1450 C/U  </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS828       -PILAS AAA                                         "> INS828       -PILAS AAA                                          </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS4605      -CAJAS MORBIDELLI PARA KIT DE ACCESORIO 15X20X30CM "> INS4605      -CAJAS MORBIDELLI PARA KIT DE ACCESORIO 15X20X30CM  </option>
+      <option value="INS2721      -SELLADOR DE SILICONA TRANSPARENTE X 300CC        "> INS2721      -SELLADOR DE SILICONA TRANSPARENTE X 300CC         </option>
+      <option value="INS443       -TORNILLO TIRAFONDO MEDIDA DE 8 MM                 "> INS443       -TORNILLO TIRAFONDO MEDIDA DE 8 MM                  </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS11346     -MANGAS DE P:E 90 CM DE ANCHO X 50 MICRONES DE ESP"> INS11346     -MANGAS DE P:E 90 CM DE ANCHO X 50 MICRONES DE ESP </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS866       -CINTA DOBLE FAZ (12MM X 10M)                      "> INS866       -CINTA DOBLE FAZ (12MM X 10M)                       </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -LIQUIDO DE FRENO CHINO DOT4                       ">              -LIQUIDO DE FRENO CHINO DOT4                        </option>
+      <option value="INS4274      -GUANTES ANTICORTE TALLE 9                         "> INS4274      -GUANTES ANTICORTE TALLE 9                          </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="S10075       -PAPEL BLANCO EN BOBINA DE 0,24 X 400 METROS       "> S10075       -PAPEL BLANCO EN BOBINA DE 0,24 X 400 METROS        </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS4017      -CARPETA SOBRE TIPO L                              "> INS4017      -CARPETA SOBRE TIPO L                               </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS2872      -BOTELLA DE TINTA EPSON ECOTANK NEGRO - COD 664    "> INS2872      -BOTELLA DE TINTA EPSON ECOTANK NEGRO - COD 664     </option>
+      <option value="INS3534      -PAÑO PARA LIMPIEZA DE PLASTICO GKTEX              "> INS3534      -PAÑO PARA LIMPIEZA DE PLASTICO GKTEX               </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="INS1725      -EQUIPOS DE PVC PARA LLUVIA TALLE L (2 PIEZAS)     "> INS1725      -EQUIPOS DE PVC PARA LLUVIA TALLE L (2 PIEZAS)      </option>
+      <option value="INS4606      -CAJAS MORBIDELLI PARA KIT DE ACCESORIO 26X21X36 CM"> INS4606      -CAJAS MORBIDELLI PARA KIT DE ACCESORIO 26X21X36 CM </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="INS865       -RESMA AUTOR A3                                    "> INS865       -RESMA AUTOR A3                                     </option>
+      <option value="INS602       -ESLINGA DE 1MTS                                   "> INS602       -ESLINGA DE 1MTS                                    </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS814       -LAPIZ 1210/B NEGRO MARCA FABER-CASTELL HB-2      "> INS814       -LAPIZ 1210/B NEGRO MARCA FABER-CASTELL HB-2       </option>
+      <option value="INS813       -GOMA DE BORRAR BLANCA                            "> INS813       -GOMA DE BORRAR BLANCA                             </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS1779      -FOLLETO DE BATERIA KEEWAY                         "> INS1779      -FOLLETO DE BATERIA KEEWAY                          </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="INS855       -APRIETAPAPELES Nº 5 DE 51MM                       "> INS855       -APRIETAPAPELES Nº 5 DE 51MM                        </option>
+      <option value="             -MARCADOR ROJO EDDING 404 PUNTA FINA 0,75 MM     ">              -MARCADOR ROJO EDDING 404 PUNTA FINA 0,75 MM      </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="INS2293      -BARBIJOS KN95                                     "> INS2293      -BARBIJOS KN95                                      </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="INS11425     -SECADOR DE PISO X 50CM                            "> INS11425     -SECADOR DE PISO X 50CM                             </option>
+      <option value="INS4011      -SOBRE BOLSA MANILA 19,0  X  24,0 CM MARCA MEDORO  "> INS4011      -SOBRE BOLSA MANILA 19,0  X  24,0 CM MARCA MEDORO   </option>
+      <option value="INS1022      -SECADO ULTRA RAPIDO                             "> INS1022      -SECADO ULTRA RAPIDO                              </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="             -5X32 ( PARA LOG EXPEDICCION)                    ">              -5X32 ( PARA LOG EXPEDICCION)                     </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="INS10099     -BALDES PLASTICOS                                  "> INS10099     -BALDES PLASTICOS                                   </option>
+      <option value="             -CEPILLO LAVA CAMION                               ">              -CEPILLO LAVA CAMION                                </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="             -5X32 ( PARA LOG EXPEDICCION)                    ">              -5X32 ( PARA LOG EXPEDICCION)                     </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="INS936       -MARCADOR EDDING E160 AZUL PARA PIZARRA            "> INS936       -MARCADOR EDDING E160 AZUL PARA PIZARRA             </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="             -5X32 ( PARA LOG EXPEDICCION)                    ">              -5X32 ( PARA LOG EXPEDICCION)                     </option>
+      <option value="             -ESCOBILLON INDUSTRIAL BARRENDERO                  ">              -ESCOBILLON INDUSTRIAL BARRENDERO                   </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -CAJAS DE BATERIA 16X10X16 (EXPEDICION)            ">              -CAJAS DE BATERIA 16X10X16 (EXPEDICION)             </option>
+      <option value="INS867       -MARCADOR NEGRO EDDING 404 PUNTA FINA 0,75 MM     "> INS867       -MARCADOR NEGRO EDDING 404 PUNTA FINA 0,75 MM      </option>
+      <option value="INS258       -PINTURA AE NARANJA BRILLANTE                      "> INS258       -PINTURA AE NARANJA BRILLANTE                       </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="             -5X32 ( PARA LOG EXPEDICCION)                    ">              -5X32 ( PARA LOG EXPEDICCION)                     </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="             -5X32 ( PARA LOG EXPEDICCION)                    ">              -5X32 ( PARA LOG EXPEDICCION)                     </option>
+      <option value="             -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES  ">              -PLANCHA DE PLASTIFICAR EN CALIENTE A3 X UNIDADES   </option>
+      <option value="             -ETIQUETA 25 X 50 EN ROLLO X 1000 U                ">              -ETIQUETA 25 X 50 EN ROLLO X 1000 U                 </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="             -5X32 ( PARA LOG EXPEDICCION)                    ">              -5X32 ( PARA LOG EXPEDICCION)                     </option>
+      <option value="INS1379      -ZAPATO DE SEGURIDAD Nº 37                         "> INS1379      -ZAPATO DE SEGURIDAD Nº 37                          </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="             -5X32 ( PARA LOG EXPEDICCION)                    ">              -5X32 ( PARA LOG EXPEDICCION)                     </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="             -5X32 ( PARA LOG EXPEDICCION)                    ">              -5X32 ( PARA LOG EXPEDICCION)                     </option>
+      <option value="INS12084     -TORNILLO AUTOPERFORANTE T1 8 X 1/2"               "> INS12084     -TORNILLO AUTOPERFORANTE T1 8 X 1/2"                </option>
+      <option value="             -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12,">              -CAJAS PARA KIT DE ACCESORIOS S/INCRIPCION 12,5X12, </option>
+      <option value="             -5X32 ( PARA LOG EXPEDICCION)                    ">              -5X32 ( PARA LOG EXPEDICCION)                     </option>
+      <option value="             -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA">              -PERNOS 19MM X 135MM PARA CAJA DE HERRAMIENTA SKUA </option>
+      <option value="OTROS">OTROS</option>
+    </select>
+    </div>
+
+  <div class="form-group">
+      <label>Cantidad:</label>
+      <input type="number" id="cantidad">
+    </div>
+
+    <div class="form-group" style="flex: 1 1 100%;">
+      <label>Comentarios:</label>
+      <input type="text" id="comentarios">
+    </div>
+
+    <div class="form-group" style="flex: 1 1 100%;">
+      <button type="submit">Enviar</button>
+    </div>
+  </form>
+
+  <script>
+    // Poner fecha actual
+    document.getElementById('fecha').value = new Date().toLocaleString();
+
+    // Inicializar Select2 para búsqueda en descripción
+    $(document).ready(function() {
+      $('#descripcion').select2({
+        placeholder: "Seleccionar descripción",
+        allowClear: true
+      });
+    });
+
+    // Enviar datos al Google Sheet
+    const form = document.getElementById('formRegistro');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const data = {
+        cliente: document.getElementById('cliente').value,
+        descripcion: document.getElementById('descripcion').value,
+        cantidad: document.getElementById('cantidad').value,
+        comentarios: document.getElementById('comentarios').value
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbzOWZmWeqCtl9u-_ZkC6oymcNEYqMOzwrloLF-hL7WJ8AeYQmbrESPutMzqlnUaI_IV/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(resp => {
+        alert("Datos guardados correctamente!");
+        form.reset();
+        document.getElementById('fecha').value = new Date().toLocaleString();
+        // Reiniciar Select2
+        $('#descripcion').val('').trigger('change');
+      })
+      .catch(err => {
+        alert("Error al guardar datos: " + err);
+      });
+    });
+  </script>
+</body>
+</html>

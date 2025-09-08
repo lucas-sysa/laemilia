@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stock por Rack y Box</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f3f4f7, #e8ecf1);
+      margin: 0;
+      padding-top: 70px; /* espacio para menú fijo */
+      color: #333;
+    }
+
+.menu-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #4a77d4;
+  display: flex;
+  justify-content: flex-start; /* Cambiado de center */
+  align-items: center;
+  padding: 0 20px; /* Espaciado interno */
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.logo {
+  height: 40px;
+  margin-right: 350px; /* Espacio entre logo y botones */
+}
+
+
+    .menu-bar button {
+      background: none;
+      color: white;
+      padding: 15px 25px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      border-right: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .menu-bar button:last-child {
+      border-right: none;
+    }
+
+    .menu-bar button:hover {
+      background-color: #355fb4;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4a4a4a;
+    }
+
+    .container {
+      background-color: white;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    input[type="file"] {
+      display: block;
+      margin: 20px auto;
+      padding: 8px;
+    }
+
+    .search-container {
+      text-align: right;
+      margin-bottom: 10px;
+    }
+
+    .search-container input {
+      padding: 7px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 250px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f4f6f8;
+      color: #444;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9fafc;
+    }
+
+    .result-title {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 1.3rem;
+      color: #4a4a4a;
+    }
+
+    @media print {
+      .menu-bar, input, .search-container {
+        display: none;
+      }
+
+      body {
+        padding: 0;
+      }
+
+      .container {
+        box-shadow: none;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="menu-bar">
+    <img src="logo.png" alt="Logo La Emilia" class="logo">
+    <button onclick="calcularStock()">Calcular Stock</button>
+    <button onclick="imprimirTabla()">Imprimir</button>
+    <button onclick="window.location.href='inyecciones/etiqueta.html'">Etiqueta</button>
+  </div>
+
+  <div class="container">
+    <h1>Consulta de Stock por Rack y Box</h1>
+    <input type="file" id="fileInput" />
+
+    <h2 class="result-title">Resultado de Stock por Rack y Box</h2>
+
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Buscar código o descripción..." onkeyup="buscarEnTabla()">
+    </div>
+
+    <table id="resultTable">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Descripción</th>
+          <th>Rack</th>
+          <th>Box</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    let datos = [];
+
+    document.getElementById('fileInput').addEventListener('change', function (e) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        datos = XLSX.utils.sheet_to_json(worksheet);
+      };
+      reader.readAsArrayBuffer(e.target.files[0]);
+    });
+
+    function calcularStock() {
+      const resultados = {};
+      const excedidos = [];
+
+      datos.forEach(item => {
+        const clave = `${item.Rack}-${item.Box}`;
+        if (!resultados[clave]) {
+          resultados[clave] = {
+            Codigo: item.Codigo,
+            Descripción: item.Descripción,
+            Rack: item.Rack,
+            Box: item.Box,
+            Stock: 0
+          };
+        }
+
+        resultados[clave].Stock += (item['Entrada de Stock'] || 0) + (item['Salida de Stock'] || 0);
+      });
+
+      const tabla = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
+      tabla.innerHTML = '';
+
+      Object.values(resultados).forEach(r => {
+        if (r.Stock > 0) {
+          const fila = tabla.insertRow();
+          fila.insertCell().innerText = r.Codigo;
+          fila.insertCell().innerText = r.Descripción;
+          fila.insertCell().innerText = r.Rack;
+          fila.insertCell().innerText = r.Box;
+          fila.insertCell().innerText = r.Stock;
+
+          if (r.Stock > 4) {
+            excedidos.push(`Rack ${r.Rack}, Box ${r.Box} tiene ${r.Stock} unidades`);
+          }
+        }
+      });
+
+      if (excedidos.length > 0) {
+        alert(`⚠️ Atención: Los siguientes espacios tienen MÁS de 4 unidades:\n\n${excedidos.join('\n')}`);
+      }
+    }
+
+    function buscarEnTabla() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const filas = document.getElementById('resultTable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+      for (let i = 0; i < filas.length; i++) {
+        const celdas = filas[i].getElementsByTagName('td');
+        let mostrar = false;
+
+        for (let j = 0; j < celdas.length; j++) {
+          if (celdas[j].innerText.toLowerCase().includes(input)) {
+            mostrar = true;
+            break;
+          }
+        }
+
+        filas[i].style.display = mostrar ? '' : 'none';
+      }
+    }
+
+    function imprimirTabla() {
+      const elementosOcultar = document.querySelectorAll('.menu-bar, input, .search-container');
+      elementosOcultar.forEach(el => el.style.display = 'none');
+      window.print();
+      elementosOcultar.forEach(el => el.style.display = '');
+    }
+  </script>
+</body>
+</html>

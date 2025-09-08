@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #E7E6E6;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.filters {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+label {
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background: #048C7C;
+    color: #fff;
+    font-weight: normal;
+}
+
+input.costo-input {
+    width: 80px;
+    text-align: right;
+    padding: 4px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+#searchInput {
+    padding: 4px;
+    width: 220px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+#chartContainer {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 500px;
+    position: relative;
+}
+
+.total-general {
+    font-weight: bold;
+    color: #333;
+    margin: 5px 0;
+}
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items:;
+    margin-bottom: 20px;
+}
+
+.header .logo {
+    max-width: 300px; /* tamaño del logo */
+    margin-bottom: 5px;
+}
+
+.header h1 {
+    font-size: 2em;
+    color: #333;
+    margin: 0;
+}
+.config-buttons {
+    margin: 15px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.config-buttons button {
+    padding: 6px 12px;
+    background-color: #048C7C;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.config-buttons button:hover {
+    background-color: #036f63;
+}
+

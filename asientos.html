@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro Producción / Kit</title>
+  <link rel="stylesheet" href="asientos.css">
+</head>
+<body>
+  <div class="main-container">
+    <h1>Registro Producción / Kit</h1>
+
+    <!-- Selector de formulario -->
+    <div class="selector">
+      <button type="button" onclick="mostrarFormulario('produccion')">Producción</button>
+      <button type="button" onclick="mostrarFormulario('kit')">Kit entregado</button>
+    </div>
+
+    <!-- Contenedor de formularios -->
+    <div class="forms-container">
+
+      <!-- Formulario Producción -->
+      <form id="formProduccion">
+
+        <div class="form-row">
+          <label>Fecha: <input type="date" name="fecha" required></label>
+          <label>Orden: <input type="text" name="orden" required></label>
+        </div>
+
+        <div class="form-row">
+          <label>Modelo:
+            <select name="modelo" required>
+              <option value="">-- Seleccione --</option>
+              <option value="MOTOMEL">MOTOMEL</option>
+              <option value="BENELLI">BENELLI</option>
+              <option value="SUZUKI">SUZUKI</option>
+              <option value="IKA">IKA</option>
+              <option value="TVS">TVS</option>
+            </select>
+          </label>
+          <label>Descripción:
+            <select name="descripcion" required>
+              <option value="">-- Seleccione --</option>
+              <option value="AMB11001-T">ASIENTO MOTOMEL BLITZ</option>
+              <option value="AMB11002-T">ASIENTO MOTOMEL BLITZ TUNNING</option>
+              <option value="AMB11003-T">ASIENTO MOTOMEL BLITZ PLUS</option>
+              <option value="AMDLX11002-T">ASIENTO MOTOMEL DLX ROJO</option>
+              <option value="AMDLX11001-T">ASIENTO MOTOMEL DLX AZUL</option>
+              <option value="AMSKUA01-T">ASIENTO MOTOMEL SKUA</option>
+              <option value="AMSKUA02-T">ASIENTO MOTOMEL SKUA 250</option>
+              <option value="MPR411">ASIENTO SKUA 125 X TREME</option>
+              <option value="AMS201-T">ASIENTO MOTOMEL S2</option>
+              <option value="AMMAX110-T">ASIENTO MAX 110</option>
+              <option value="AMMAX110-TA">ASIENTO MAX AMARILLO 110</option>
+              <option value="AMMAX110-TR">ASIENTO MAX ROJO 110</option>
+              <option value="AMMAX110-TV">ASIENTO MAX VIOLETA 110</option>
+              <option value="ATSLALOMP110">ASIENTO SLALOM 110</option>
+              <option value="AISPOT-T">ASIENTO SPOT S150</option>
+              <option value="AMXMM250-T">ASIENTO XMM 250</option>
+              <option value="AMVICT-T">ASIENTO MOTOMEL VICTORY 150</option>
+              <option value="AMSTEU1-T">ASIENTO STRATO EURO</option>
+              <option value="AMSTALP-T">ASIENTO STRATO ALPINO</option>
+              <option value="AMSI190-T">ASIENTO SIRIUS 190</option>
+              <option value="AB180S1-T">ASIENTO 180S CONDUCTOR</option>
+              <option value="AB180S2-T">ASIENTO 180S ACOMPAÑANTE</option>
+              <option value="ABTRK2511-T">ASIENTO TRK 251 CONDUCTOR</option>
+              <option value="ABTRK2512-T">ASIENTO TRK 251 ACOMPAÑANTE</option>
+              <option value="ABLNC250-T">ASIENTO LEONCINO 250</option>
+              <option value="ABIMP4001-T">ASIENTO IMPERIALE 400 CONDUCTOR</option>
+              <option value="ABIMP4002-T">ASIENTO IMPERIALE 400 ACOMPAÑANTE</option>
+              <option value="ABLNC500-T">LEONCINO 500</option>
+              <option value="AB251S-T">ASIENTO 251S CONDUCTOR / ACOMPAÑANTE</option>
+              <option value="ABTNT600I1-T">ASIENTO TNT 600i CONDUCTOR</option>
+              <option value="ABTNT600I2-T">ASIENTO TNT 600i ACOMPAÑANTE</option>
+              <option value="AB752S-T">ASIENTO 752 S</option>
+              <option value="ABTNT152-T">ASIENTO TNT 15 CONDUCTOR</option>
+              <option value="ABTNT151-T">ASIENTO TNT 15 ACOMPAÑANTE</option>
+              <option value="ABTRK502-T">ASIENTO TRK 502 DELANTERO</option>
+              <option value="ABTRK5021-T">ASIENTO TRK 502 TRASERO</option>
+              <option value="ABTRK7021-T">ASIENTO CONDUCTOR TRK 702</option>
+              <option value="ABTRK702-T">ASIENTO ACOMPAÑANTE TRK 702</option>
+              <option value="ABLNC800-T">ASIENTO LEONCINO 800</option>
+              <option value="ASZAX10001-T">ASIENTO AX100</option>
+              <option value="ABRK150-T">ASIENTO RK150</option>
+              <option value="ABKLIGHT202-T">ASIENTO KLIGHT 202</option>
+              <option value="ABV302C-T">ASIENTO V302C</option>
+              <option value="ASJOY300-T">ASIENTO JOYRIDE 300</option>
+              <option value="AMBPSC150RE-T">ASIENTO SC150RE</option>
+              <option value="ATDURBAN150-T">ASIENTO DURBAN 150</option>
+              <option value="AIDURBAN150-T">ASIENTO DURBAN 150</option>
+              <option value="ASORBITIII-T">ASIENTO ORBIT III 125</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>Cantidad a producir: <input type="number" name="cantidadProducir" required></label>
+          <label>Cantidad producida: <input type="number" name="cantidadProducida" required></label>
+        </div>
+
+        <div class="form-row">
+          <label>Cantidad por faltante: <input type="number" name="cantidadFaltante" required></label>
+          <label>Cantidad por rotura: <input type="number" name="cantidadRotura" required></label>
+        </div>
+
+        <label>Comentarios: <input type="text" name="comentarios"></label>
+        <button type="submit">Enviar Producción</button>
+      </form>
+
+      <!-- Formulario Kit -->
+      <form id="formKit">
+
+        <div class="form-row">
+          <label>Fecha: <input type="date" name="fecha" required></label>
+          <label>Orden: <input type="text" name="orden" required></label>
+        </div>
+
+        <div class="form-row">
+          <label>Modelo:
+            <select name="modelo" required>
+              <option value="">-- Seleccione --</option>
+              <option value="MOTOMEL">MOTOMEL</option>
+              <option value="BENELLI">BENELLI</option>
+              <option value="SUZUKI">SUZUKI</option>
+              <option value="IKA">IKA</option>
+              <option value="TVS">TVS</option>
+            </select>
+          </label>
+          <label>Descripción:
+<select name="descripcion" required>
+      <option value="">-- Seleccione --</option>
+      <option value="AMB11001-T">ASIENTO MOTOMEL BLITZ</option>
+      <option value="AMB11002-T">ASIENTO MOTOMEL BLITZ TUNNING</option>
+      <option value="AMB11003-T">ASIENTO MOTOMEL BLITZ PLUS</option>
+      <option value="AMDLX11002-T">ASIENTO MOTOMEL DLX ROJO</option>
+      <option value="AMDLX11001-T">ASIENTO MOTOMEL DLX AZUL</option>
+      <option value="AMSKUA01-T">ASIENTO MOTOMEL SKUA</option>
+      <option value="AMSKUA02-T">ASIENTO MOTOMEL SKUA 250</option>
+      <option value="MPR411">ASIENTO SKUA 125 X TREME</option>
+      <option value="AMS201-T">ASIENTO MOTOMEL S2</option>
+      <option value="AMMAX110-T">ASIENTO MAX 110</option>
+      <option value="AMMAX110-TA">ASIENTO MAX AMARILLO 110</option>
+      <option value="AMMAX110-TR">ASIENTO MAX ROJO 110</option>
+      <option value="AMMAX110-TV">ASIENTO MAX VIOLETA 110</option>
+      <option value="ATSLALOMP110">ASIENTO SLALOM 110</option>
+      <option value="AISPOT-T">ASIENTO SPOT S150</option>
+      <option value="AMXMM250-T">ASIENTO XMM 250</option>
+      <option value="AMVICT-T">ASIENTO MOTOMEL VICTORY 150</option>
+      <option value="AMSTEU1-T">ASIENTO STRATO EURO</option>
+      <option value="AMSTALP-T">ASIENTO STRATO ALPINO</option>
+      <option value="AMSI190-T">ASIENTO SIRIUS 190</option>
+      <option value="AB180S1-T">ASIENTO 180S CONDUCTOR</option>
+      <option value="AB180S2-T">ASIENTO 180S ACOMPAÑANTE</option>
+      <option value="ABTRK2511-T">ASIENTO TRK 251 CONDUCTOR</option>
+      <option value="ABTRK2512-T">ASIENTO TRK 251 ACOMPAÑANTE</option>
+      <option value="ABLNC250-T">ASIENTO LEONCINO 250</option>
+      <option value="ABIMP4001-T">ASIENTO IMPERIALE 400 CONDUCTOR</option>
+      <option value="ABIMP4002-T">ASIENTO IMPERIALE 400 ACOMPAÑANTE</option>
+      <option value="ABLNC500-T">LEONCINO 500</option>
+      <option value="AB251S-T">ASIENTO 251S CONDUCTOR / ACOMPAÑANTE</option>
+      <option value="ABTNT600I1-T">ASIENTO TNT 600i CONDUCTOR</option>
+      <option value="ABTNT600I2-T">ASIENTO TNT 600i ACOMPAÑANTE</option>
+      <option value="AB752S-T">ASIENTO 752 S</option>
+      <option value="ABTNT152-T">ASIENTO TNT 15 CONDUCTOR</option>
+      <option value="ABTNT151-T">ASIENTO TNT 15 ACOMPAÑANTE</option>
+      <option value="ABTRK502-T">ASIENTO TRK 502 DELANTERO</option>
+      <option value="ABTRK5021-T">ASIENTO TRK 502 TRASERO</option>
+      <option value="ABTRK7021-T">ASIENTO CONDUCTOR TRK 702</option>
+      <option value="ABTRK702-T">ASIENTO ACOMPAÑANTE TRK 702</option>
+      <option value="ABLNC800-T">ASIENTO LEONCINO 800</option>
+      <option value="ASZAX10001-T">ASIENTO AX100</option>
+      <option value="ABRK150-T">ASIENTO RK150</option>
+      <option value="ABKLIGHT202-T">ASIENTO KLIGHT 202</option>
+      <option value="ABV302C-T">ASIENTO V302C</option>
+      <option value="ASJOY300-T">ASIENTO JOYRIDE 300</option>
+      <option value="AMBPSC150RE-T">ASIENTO SC150RE</option>
+      <option value="ATDURBAN150-T">ASIENTO DURBAN 150</option>
+      <option value="AIDURBAN150-T">ASIENTO DURBAN 150</option>
+      <option value="ASORBITIII-T">ASIENTO ORBIT III 125</option>
+    </select>
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>Cantidad por kit: <input type="number" name="cantidadKit" required></label>
+          <label>Espuma: <input type="text" name="espuema" required></label>
+        </div>
+
+        <div class="form-row">
+          <label>Funda de asientos: <input type="number" name="fundaAsientos" required></label>
+          <label>Base de asientos: <input type="number" name="baseAsientos" required></label>
+        </div>
+
+        <label>Comentarios: <input type="text" name="comentarios"></label>
+        <button type="submit">Enviar Kit</button>
+      </form>
+
+    </div>
+
+    <!-- Historiales -->
+    <div class="historiales-grid">
+      <div class="historial-container">
+        <h3>Historial Producción</h3>
+        <button class="btnLimpiar" onclick="limpiarHistorial('historialProduccionLS','historialProduccion')">Limpiar</button>
+        <div id="historialProduccion" class="historial"></div>
+      </div>
+
+      <div class="historial-container">
+        <h3>Historial Kit</h3>
+        <button class="btnLimpiar" onclick="limpiarHistorial('historialKitLS','historialKit')">Limpiar</button>
+        <div id="historialKit" class="historial"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="asientos.js"></script>
+</body>
+</html>
+
+
+

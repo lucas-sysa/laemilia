@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestión de Piezas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+    .form-container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 400px;
+    }
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: border-color 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #74ebd5;
+      outline: none;
+    }
+    button {
+      width: 50%;
+      background: #74ebd5;
+      border: none;
+      color: #fff;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: block;
+      margin: 0 auto;
+    }
+    button:hover {
+      background: #62d3c0;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Gestión de Piezas</h2>
+    <form id="form">
+      <input placeholder="Escanear tarjeta del operador" id="usuario" required autofocus />
+      <input placeholder="Código" id="codigo" required />
+      <input placeholder="Descripción" id="descripcion" required readonly />
+      <input type="number" placeholder="Entrada de stock" id="entrada" />
+      <input type="number" placeholder="Salida de stock" id="salida" />
+      <input placeholder="Estantería" id="rack" required />
+      
+      <select id="box" required>
+        <option value="">Seleccionar línea</option>
+        <option>Pañol</option>
+        <option>L21</option>
+        <option>L14</option>
+        <option>L12</option>
+        <option>L09</option>
+        <option>L06</option>
+        <option>Reparaciones</option>
+        <option>Pintura</option>
+      </select>
+
+      <select id="observaciones">
+        <option value="">Seleccionar observación</option>
+        <option>ok</option>
+        <option>Scrap</option>
+        <option>Venta Especial</option>
+        <option>Faltante de origen</option>
+        <option>Faltante en fábrica</option>
+        <option>Dañado de origen</option>
+        <option>Dañado en fábrica</option>
+        <option>Dañado en línea</option>
+        <option>Defectuoso de origen</option>
+      </select>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbx3HUQsI1kMjnWx8rtfb6c4ih9_1f1hEcAm37uc4gVEsmD65wrzrHikDGPtgaabCQ1OJw/exec';
+
+    const entradaInput = document.getElementById('entrada');
+    const salidaInput = document.getElementById('salida');
+
+    entradaInput.addEventListener('input', () => {
+      salidaInput.disabled = entradaInput.value !== "";
+    });
+
+    salidaInput.addEventListener('input', () => {
+      entradaInput.disabled = salidaInput.value !== "";
+    });
+
+    const productos = {
+      "MPR394": "Bajoasiento A",
+      "MPR12": "Baulera B",
+      "MPR389": "Baulera B plus",
+      "MPR421": "Cubrebarral AZUL",
+      "MPR431": "Cubrebarral BLANCO",
+      "MPR436": "Cubrebarral NEGRO",
+      "MPR426": "Cubrebarral ROJO",
+    };
+
+    document.getElementById('codigo').addEventListener('input', function () {
+      const codigoIngresado = this.value.trim().toUpperCase();
+      const descripcion = productos[codigoIngresado];
+      document.getElementById('descripcion').value = descripcion || '';
+
+      if (!descripcion && codigoIngresado.length > 3) {
+        document.getElementById('descripcion').placeholder = 'Código no reconocido';
+      } else {
+        document.getElementById('descripcion').placeholder = 'Descripción';
+      }
+    });
+
+    document.getElementById('form').addEventListener('submit', e => {
+      e.preventDefault();
+
+      const entradaValue = entradaInput.value.trim();
+      const salidaValue = salidaInput.value.trim();
+
+      if (entradaValue === "" && salidaValue === "") {
+        alert("Debes ingresar una entrada o una salida de stock.");
+        return;
+      }
+
+      let salidaNegativa = "0";
+      if (salidaValue) {
+        salidaNegativa = `-${Math.abs(parseInt(salidaValue))}`;
+        const confirmarSalida = confirm(`Vas a registrar una salida de ${salidaNegativa} unidades. ¿Confirmás?`);
+        if (!confirmarSalida) return;
+      }
+
+      const data = {
+        usuario: document.getElementById('usuario').value,
+        codigo: document.getElementById('codigo').value,
+        descripcion: document.getElementById('descripcion').value,
+        entrada: entradaValue || "0",
+        salida: salidaNegativa,
+        estanteria: document.getElementById('rack').value,
+        linea: document.getElementById('box').value,
+        observaciones: document.getElementById('observaciones').value
+      };
+
+fetch(scriptURL, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' }
+})
+
+      .then(() => {
+        alert('Datos enviados correctamente');
+        document.getElementById('form').reset();
+        entradaInput.disabled = false;
+        salidaInput.disabled = false;
+      })
+      .catch(error => alert('Error al enviar: ' + error.message));
+    });
+  </script>
+</body>
+</html>

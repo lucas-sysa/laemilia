@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stock por Rack y Box</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f3f4f7, #e8ecf1);
+      margin: 0;
+      padding-top: 70px;
+      color: #333;
+    }
+    .menu-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background-color: #4a77d4;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .logo {
+      height: 40px;
+      margin-right: 350px;
+    }
+    .menu-bar button {
+      background: none;
+      color: white;
+      padding: 15px 25px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      border-right: 1px solid rgba(255,255,255,0.3);
+    }
+    .menu-bar button:last-child {
+      border-right: none;
+    }
+    .menu-bar button:hover {
+      background-color: #355fb4;
+    }
+    h1 {
+      text-align: center;
+      color: #4a4a4a;
+    }
+    .container {
+      background-color: white;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    input[type="file"] {
+      display: block;
+      margin: 20px auto 10px auto;
+      padding: 8px;
+    }
+    .search-container {
+      text-align: right;
+      margin-bottom: 10px;
+    }
+    .search-container input {
+      padding: 7px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 300px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f4f6f8;
+      color: #444;
+    }
+    tr:nth-child(even) {
+      background-color: #f9fafc;
+    }
+    .result-title {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 1.3rem;
+      color: #4a4a4a;
+    }
+    .mensaje {
+      text-align: center;
+      padding: 10px;
+      font-style: italic;
+      color: #888;
+    }
+
+    /* Clase para resaltar filas con Box 1a, 1b, 1c, ... */
+    .resaltado {
+      background-color: #fff3a3 !important;
+    }
+
+    /* --- SOLO PARA IMPRESIÓN --- */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #resultTable, #resultTable * {
+        visibility: visible;
+      }
+      #resultTable {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        font-size: 7pt; /* letra muy pequeña */
+      }
+      #resultTable th,
+      #resultTable td {
+        padding: 2px 4px; /* celdas compactas */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="menu-bar">
+    <img src="logo.png" alt="Logo La Emilia" class="logo">
+    <button onclick="imprimirTabla()">Imprimir</button>
+    <button onclick="window.location.href='inyecciones/etiqueta.html'">Etiqueta</button>
+  </div>
+
+  <div class="container">
+    <h1>Consulta de Stock por Rack y Box</h1>
+    <input type="file" id="fileInput" accept=".xls,.xlsx" />
+
+    <h2 class="result-title">Resultado de Stock por Rack y Box</h2>
+
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Buscar código, descripción, rack o box..." oninput="buscarEnTabla()">
+    </div>
+
+    <table id="resultTable">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Descripción</th>
+          <th>Rack</th>
+          <th>Box</th>
+          <th>Stock Real</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="mensaje" colspan="5">Carga un archivo para ver los resultados</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    let datos = [];
+
+    document.getElementById('fileInput').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (!file) {
+        console.warn('No se seleccionó archivo');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        datos = XLSX.utils.sheet_to_json(worksheet);
+
+        calcularStock();
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    function calcularStock() {
+      if (!datos.length) {
+        mostrarMensaje('No hay datos cargados');
+        return;
+      }
+
+      const resultados = {};
+      let itemsConStock = 0;
+
+      datos.forEach(item => {
+        const codigo = (item['Codigo'] || '').toString().trim().toUpperCase();
+        const descripcion = (item['Descripción'] || '').toString().trim();
+        const rack = (item['Rack'] || '').toString().trim().toUpperCase();
+        const box = (item['Box'] || '').toString().trim().toUpperCase();
+        const entrada = Math.abs(parseFloat(item['Entrada de Stock']) || 0);
+        const salida = Math.abs(parseFloat(item['Salida de Stock']) || 0);
+
+        if (!codigo || !rack || !box) return;
+
+        const clave = `${codigo}|${rack}|${box}`;
+
+        if (!resultados[clave]) {
+          resultados[clave] = {
+            codigo,
+            descripcion,
+            rack,
+            box,
+            stock: 0
+          };
+        }
+
+        resultados[clave].stock += entrada;
+        resultados[clave].stock -= salida;
+      });
+
+      const tbody = document.querySelector('#resultTable tbody');
+      tbody.innerHTML = '';
+
+      Object.values(resultados).forEach(item => {
+        if (item.stock > 0) {
+          itemsConStock++;
+          const tr = document.createElement('tr');
+
+          // Resaltar filas cuyo Box empiece con "1" y luego una letra
+          if (/^1[a-z]/i.test(item.box)) {
+            tr.classList.add('resaltado');
+          }
+
+          tr.innerHTML = `
+            <td>${item.codigo}</td>
+            <td>${item.descripcion}</td>
+            <td>${item.rack}</td>
+            <td>${item.box}</td>
+            <td>${item.stock}</td>
+          `;
+          tbody.appendChild(tr);
+        }
+      });
+
+      if (itemsConStock === 0) {
+        mostrarMensaje('No se encontraron items con stock positivo');
+      }
+    }
+
+    function mostrarMensaje(msg) {
+      const tbody = document.querySelector('#resultTable tbody');
+      tbody.innerHTML = `<tr><td class="mensaje" colspan="5">${msg}</td></tr>`;
+    }
+
+    function buscarEnTabla() {
+      const filtro = document.getElementById('searchInput').value.toLowerCase();
+      const filas = document.querySelectorAll('#resultTable tbody tr');
+
+      filas.forEach(fila => {
+        const textoFila = fila.innerText.toLowerCase();
+        fila.style.display = textoFila.includes(filtro) ? '' : 'none';
+      });
+    }
+
+    function imprimirTabla() {
+      window.print();
+    }
+  </script>
+</body>
+</html>
+
+

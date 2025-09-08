@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datos Filtrados</title>
+<style>
+    @page {
+        size: 80mm 50mm; /* Tamaño de la página */
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #contenido {
+        margin: 10px;
+    }
+
+    .celda {
+        width: 80mm;
+        border: 1px solid black;
+        padding: 10px;
+        box-sizing: border-box;
+        text-align: center; /* Centrar el contenido horizontalmente */
+        overflow: hidden; /* Para asegurar que el contenido no se desborde */
+        font-size: 12px; /* Tamaño de fuente inicial */
+        margin-bottom: 20px; /* Espacio entre celdas */
+    }
+
+    .dato {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    @media print {
+        body {
+            visibility: hidden; /* Ocultar el cuerpo de la página durante la impresión */
+        }
+
+        #contenido {
+            visibility: visible; /* Mostrar solo el contenido durante la impresión */
+        }
+
+        @page {
+            size: 80mm 50mm; /* Tamaño de la página */
+            margin: 0;
+            padding: 0;
+        }
+
+        .celda {
+            margin: auto;
+            page-break-inside: avoid; /* Evitar que la celda se divida en dos páginas */
+        }
+
+        .dato {
+            margin-bottom: 3px; /* Ajustar el espaciado entre los datos para imprimir */
+        }
+    }
+</style>
+</head>
+<body>
+<h1>Datos Filtrados</h1>
+<div id="contenido"></div>
+
+<button onclick="imprimir()">Imprimir</button>
+<button onclick="volver()">Volver</button>
+
+<script>
+var celdasData = []; // Almacenar los datos de las celdas
+
+// Obtener los datos filtrados de la URL
+var params = new URLSearchParams(window.location.search);
+var datosFiltradosBase64 = params.get('datos');
+
+if (datosFiltradosBase64) {
+    // Decodificar los datos base64
+    var datosFiltradosJSON = atob(datosFiltradosBase64);
+    // Convertir los datos a objeto JavaScript
+    var datosFiltrados = JSON.parse(datosFiltradosJSON);
+    // Mostrar los datos en la página
+    mostrarDatos(datosFiltrados);
+} else {
+    // Si no hay datos filtrados en la URL, mostrar un mensaje de error
+    document.getElementById('contenido').innerHTML = "<p>No se encontraron datos filtrados.</p>";
+}
+
+// Función para mostrar los datos en la página
+function mostrarDatos(datos) {
+    var contenidoDiv = document.getElementById('contenido');
+    
+    // Limpiar el contenido anterior
+    contenidoDiv.innerHTML = '';
+    
+    // Iterar sobre los datos
+    datos.forEach(function(fila) {
+        // Crear una nueva celda para cada fila de datos
+        var celda = document.createElement('div');
+        celda.classList.add('celda');
+        
+        // Iterar sobre los elementos de la fila
+        fila.forEach(function(dato) {
+            var spanDato = document.createElement('span');
+            spanDato.textContent = dato;
+            spanDato.classList.add('dato');
+            celda.appendChild(spanDato);
+        });
+        
+        // Agregar la celda al contenido
+        contenidoDiv.appendChild(celda);
+        
+        // Guardar los datos de la celda
+        celdasData.push(fila);
+    });
+}
+
+// Función para imprimir solo el contenido de la celda
+function imprimir() {
+    window.print();
+}
+
+// Función para redirigir a la página de inicio
+function volver() {
+    window.location.href = "index.html"; // Cambia "index.html" al nombre de tu página de inicio
+}
+</script>
+</body>
+</html>
+
+

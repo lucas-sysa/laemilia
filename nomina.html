@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Dotación</title>
+  <link rel="stylesheet" href="nomina.css">
+  <!-- Librerías externas -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Dashboard Dotación</h1>
+
+  <div class="controls">
+    <input type="file" id="excelFile" accept=".xlsx, .xls" />
+
+    <select id="filterSector"><option value="">Todos los Sectores</option></select>
+    <select id="filterMoi"><option value="">Todos (MOI/MOD)</option></select>
+    <select id="filterNomina"><option value="">Todas las Nóminas</option></select>
+
+    <input type="text" id="filterLegajo" placeholder="Filtrar por Legajo" />
+    <input type="text" id="filterNombre" placeholder="Filtrar por Apellido y Nombre" />
+    <input type="text" id="filterClasificacion" placeholder="Filtrar por Clasificación" />
+    <input type="text" id="filterLinea" placeholder="Filtrar por Línea" />
+  </div>
+
+  <div class="dashboard">
+    <canvas id="barChart"></canvas>
+    <canvas id="pieChart"></canvas>
+  </div>
+
+  <h2>Detalle</h2>
+  <div id="totalContainer" style="margin-bottom: 10px; font-weight: bold;"></div>
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>Legajo</th>
+        <th>Apellido y Nombre</th>
+        <th>Nómina</th>
+        <th>Sector</th>
+        <th>Clasificación</th>
+        <th>MOI / MOD</th>
+        <th>Línea</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="nomina.js"></script>
+</body>
+</html>

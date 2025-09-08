@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cargar y extraer datos de archivo Excel</title>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+<style>
+    .botones-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+    }
+
+    .botones-container button {
+        margin-left: 10px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <img src="C:\Users\lcrocetti\Desktop\Buloneria\imagenes\logo.png" alt="Imagen" style="width: 30%;">
+    <h1>Generador de etiquetas</h1>
+    <h2>Extraer datos de archivo Excel</h2>
+    <div class="botones-container">
+        <form id="formArchivo" enctype="multipart/form-data">
+            <input type="file" id="archivo" accept=".xls,.xlsx" required>
+            <button type="submit">Cargar</button>
+        </form>
+        <button id="botonAgrupar">Agrupar datos</button>
+    </div>
+    <div class="search-container">
+        <input type="text" id="buscador" placeholder="Buscar..." maxlength="11">
+    </div>
+    <div id="contenido"></div>
+</div>
+
+<script>
+document.getElementById('formArchivo').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
+    var archivo = document.getElementById('archivo').files[0]; // Obtener el archivo seleccionado
+    
+    if (archivo) {
+        var lector = new FileReader(); // Crear un objeto FileReader
+        
+        lector.onload = function(e) {
+            // Leer el contenido del archivo como array buffer
+            var arrayBuffer = e.target.result;
+            
+            // Procesar el array buffer con SheetJS
+            var datos = new Uint8Array(arrayBuffer);
+            var workbook = XLSX.read(datos, {type: 'array'});
+            
+            // Extraer los datos de la primera hoja del archivo Excel
+            var firstSheetName = workbook.SheetNames[0];
+            var worksheet = workbook.Sheets[firstSheetName];
+            var datosJson = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+            
+            // Guardar los datos en sessionStorage
+            sessionStorage.setItem('datosExcel', JSON.stringify(datosJson));
+            
+            // Mostrar los datos en la página
+            mostrarDatos(datosJson);
+        }
+        
+        // Leer el contenido del archivo como array buffer
+        lector.readAsArrayBuffer(archivo);
+    } else {
+        alert('Por favor, seleccione un archivo Excel.');
+    }
+});
+
+document.getElementById('buscador').addEventListener('input', function() {
+    var term = this.value.toLowerCase();
+    var rows = document.querySelectorAll("#contenido table tr");
+    
+    rows.forEach(function(row) {
+        var cells = row.querySelectorAll("td");
+        var found = false;
+        
+        cells.forEach(function(cell) {
+            var text = cell.textContent.toLowerCase();
+            
+            if (text.includes(term)) {
+                found = true;
+            }
+        });
+        
+        if (found) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+});
+
+document.getElementById('botonAgrupar').addEventListener('click', function() {
+    var term = document.getElementById('buscador').value.toLowerCase();
+    var datosFiltrados = [];
+    var rows = document.querySelectorAll("#contenido table tr");
+    
+    rows.forEach(function(row) {
+        var cells = row.querySelectorAll("td");
+        var found = false;
+        var rowData = [];
+        
+        cells.forEach(function(cell) {
+            var text = cell.textContent.toLowerCase();
+            
+            if (text.includes(term)) {
+                found = true;
+            }
+            
+            rowData.push(cell.textContent);
+        });
+        
+        if (found) {
+            datosFiltrados.push(rowData);
+        }
+    });
+
+    // Convertir los datos filtrados a una cadena JSON
+    var datosFiltradosJSON = JSON.stringify(datosFiltrados);
+    // Codificar los datos en base64 para incluirlos en la URL
+    var datosFiltradosBase64 = btoa(datosFiltradosJSON);
+    // Construir la URL con los datos filtrados como parámetro
+    var nuevaPaginaURL = "nueva_pagina.html?datos=" + encodeURIComponent(datosFiltradosBase64);
+    
+    // Redireccionar a la nueva página
+    window.location.href = nuevaPaginaURL;
+});
+
+// Función para mostrar los datos en la página actual
+function mostrarDatos(datos) {
+    var contenidoDiv = document.getElementById('contenido');
+    contenidoDiv.innerHTML = ''; // Limpiar el contenido anterior
+    
+    var tabla = '<table border="1">';
+    for (var i = 0; i < datos.length; i++) {
+        tabla += '<tr>';
+        for (var j = 0; j < datos[i].length; j++) {
+            tabla += '<td>' + datos[i][j] + '</td>';
+        }
+        tabla += '</tr>';
+    }
+    tabla += '</table>';
+    
+    contenidoDiv.innerHTML = tabla;
+}
+
+// Al cargar la página, comprobar si hay datos guardados en sessionStorage y mostrarlos
+document.addEventListener('DOMContentLoaded', function() {
+    var datosGuardados = sessionStorage.getItem('datosExcel');
+    
+    if (datosGuardados) {
+        var datosJson = JSON.parse(datosGuardados);
+        mostrarDatos(datosJson);
+    }
+});
+</script>
+</body>
+</html>
+

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Panel Administrativo - Abastecimiento</title>
+<style>
+  /* --- estilos básicos --- */
+  * { box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background: #f9fafb; color: #222; }
+  h1 { color: #04847c; margin-top: 0; }
+  .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+  .tab { padding: 10px 20px; cursor: pointer; background: #e3eefe; border-radius: 6px 6px 0 0; border: 1px solid transparent; border-bottom: none; font-weight: 600; color: #04847c; transition: background .3s; }
+  .tab:hover { background: #c8dbf7; }
+  .tab.active { background: #fff; border: 1px solid #04847c; border-bottom: none; }
+  .tab-content { border: 1px solid #1a73e8; background: #fff; padding: 20px; border-radius: 0 6px 6px 6px; }
+  .hidden { display: none; }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #E7E6E6; color: #2B2827; }
+  tr.pendiente { background: #fff7e6; }
+  tr.entregado { background: #d7f0d7; }
+  tr.no-entregado { background: #fde6e6; }
+  tr.correccion { background: #fff0b3; font-weight: bold; }
+  button { background: #AEAAAA; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-weight: 600; cursor: pointer; }
+  button:hover { background: #757171; }
+  input[type="number"], select, input[type="text"] { padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; }
+  #errorExcel, #mensajeExcel { padding: 10px 15px; margin: 10px 0; border-radius: 6px; font-weight: 600; display: none; }
+  #errorExcel { background: #fde6e6; color: #b00000; }
+  #mensajeExcel { background: #d7f0d7; color: #007a00; }
+  #contenedorLogs { max-height: 180px; overflow-y: auto; background: #f1f5fa; border: 1px solid #ddd; padding: 10px; border-radius: 6px; font-size: .9em; }
+  .btnEliminarArticulo { background: #c44; padding: 4px 10px; font-size: .9em; border-radius: 6px; color: white; border: none; cursor: pointer; }
+  .btnEliminarArticulo:hover { background: #a22; }
+  .btnEliminarOrden { background: #e63946; padding: 6px 12px; font-size: .95em; border-radius: 8px; color: white; border: none; cursor: pointer; margin-bottom: 10px; }
+  .btnEliminarOrden:hover { background: #b82e39; }
+</style>
+</head>
+<body>
+
+<h1>Panel Administrativo - Abastecimiento</h1>
+
+<div class="tabs">
+  <div class="tab active" data-tab="admin">Panel Administrativo</div>
+  <div class="tab" data-tab="actualizar">Actualizar Entregas</div>
+  <div class="tab" data-tab="embalajes">Datos de Embalajes</div>
+  <div class="tab" data-tab="logs">Logs</div>
+</div>
+
+<div id="admin" class="tab-content">
+  <div style="margin-bottom: 10px;">
+    <input type="text" id="lineaExcel" placeholder="Línea" style="width:120px; margin-right:10px;" />
+    <input type="text" id="ordenExcel" placeholder="Orden" style="width:120px; margin-right:10px;" />
+    <button id="btnCargarExcelSAP">Cargar Excel SAP</button>
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    <button id="btnModoCorreccion">Activar Modo Corrección</button>
+    <select id="selectCorreccion" style="width: 350px; margin-left: 10px;"></select>
+    <button id="btnDesactivarCorreccion">Desactivar Corrección</button>
+  </div>
+
+  <div id="listaRegistrosAdmin"></div>
+</div>
+
+<div id="actualizar" class="tab-content hidden">
+  <label for="lineaActualizar">Seleccionar línea:</label>
+  <select id="lineaActualizar" style="margin-left: 10px; margin-bottom: 10px; width: 120px;"></select>
+  <div id="formulariosActualizar"></div>
+</div>
+
+<div id="embalajes" class="tab-content hidden">
+  <button id="btnCargarExcelEmbalajes">Cargar Excel Embalajes</button>
+  <input type="file" id="inputExcelEmbalajes" accept=".xlsx,.xls" style="display:none" />
+  <table id="tablaEmbalajes" aria-label="Tabla de embalajes" style="margin-top: 20px;">
+    <thead><tr><th>Código</th><th>Descripción</th><th>Cantidad por embalaje</th><th>Tipo de embalaje</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div id="logs" class="tab-content hidden">
+  <button id="btnLimpiarLogs" style="margin-bottom:10px;">Limpiar Logs</button>
+  <div id="contenedorLogs"></div>
+</div>
+
+<div id="errorExcel"></div>
+<div id="mensajeExcel"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  let correccionActivaClave = "";
+
+  // helpers almacenamiento
+  function saveBloques(b) { localStorage.setItem("abastecimiento_bloques", JSON.stringify(b)); }
+  function loadBloques() { return JSON.parse(localStorage.getItem("abastecimiento_bloques") || "[]"); }
+  function saveEmbData(d) { localStorage.setItem("embalajesData", JSON.stringify(d)); }
+  function loadEmbData() { return JSON.parse(localStorage.getItem("embalajesData") || "[]"); }
+  function saveLogs(l) { localStorage.setItem("abastecimiento_logs", JSON.stringify(l)); }
+  function loadLogs() { return JSON.parse(localStorage.getItem("abastecimiento_logs") || "[]"); }
+  function agregarLog(t) { const l = loadLogs(); l.push({ texto: t, fecha: new Date().toLocaleString() }); saveLogs(l); renderLogs(); }
+  function calcularEmbalajesNecesarios(codigo, cantidad) { const emb = loadEmbData(); const item = emb.find(e => e.codigo === codigo); return item && item.cantidad ? Math.ceil(cantidad / item.cantidad) : 0; }
+
+  // carga excel SAP
+  document.getElementById("btnCargarExcelSAP").onclick = async () => {
+    const linea = document.getElementById("lineaExcel").value.trim();
+    const orden = document.getElementById("ordenExcel").value.trim();
+    if (!linea || !orden) return mostrarError("Debe completar Línea y Orden");
+
+    const input = document.createElement("input");
+    input.type = "file"; input.accept = ".xlsx,.xls";
+    input.onchange = e => {
+      const file = e.target.files[0]; if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const data = new Uint8Array(ev.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
+          const json = XLSX.utils.sheet_to_json(sheet);
+          const bloques = loadBloques();
+          const nuevo = { linea, orden, registros: [] };
+          json.forEach(row => {
+            const codigo = row["Nº"]?.toString().trim();
+            const descripcion = row["Descripción"]?.toString().trim();
+            const cantidadTotal = parseInt(row["Ctd.requerida"]) || 0;
+            if (codigo && descripcion && cantidadTotal > 0) {
+              nuevo.registros.push({
+                codigo, descripcion, cantidadTotal,
+                embalajesNecesarios: calcularEmbalajesNecesarios(codigo, cantidadTotal),
+                entregados: 0
+              });
+            }
+          });
+          bloques.push(nuevo);
+          saveBloques(bloques);
+          agregarLog(`Archivo SAP cargado: ${linea} - ${orden}`);
+          mostrarMensaje("Archivo SAP cargado correctamente.");
+          renderListaRegistrosAdmin();
+          actualizarSelectCorreccion();
+        } catch (err) {
+          mostrarError("Error al procesar el archivo SAP: " + err.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    };
+    input.click();
+
+  };
+
+  // carga excel embalajes
+  document.getElementById("btnCargarExcelEmbalajes").onclick = () => {
+    document.getElementById("inputExcelEmbalajes").click();
+  };
+
+  document.getElementById("inputExcelEmbalajes").addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = new Uint8Array(ev.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(sheet);
+        const embalajes = [];
+        json.forEach(row => {
+          const codigo = row["Código"]?.toString().trim();
+          const descripcion = row["Descripción"]?.toString().trim() || "";
+          const cantidad = parseInt(row["Cantidad"]) || 0;
+const tipo = (row["Tipo"] || row["Tipo embalaje"] || row["Tipo de embalaje"] || "").toString().trim();
+          if (codigo && cantidad > 0) {
+            embalajes.push({ codigo, descripcion, cantidad, tipo });
+          }
+        });
+        saveEmbData(embalajes);
+        agregarLog("Archivo Embalajes cargado.");
+        mostrarMensaje("Datos de embalajes cargados correctamente.");
+        renderTablaEmbalajes();
+      } catch (err) {
+        mostrarError("Error al procesar archivo de embalajes: " + err.message);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+    // Reset input to allow same file re-upload if needed
+    e.target.value = "";
+  });
+
+  // Render registros admin
+  function renderListaRegistrosAdmin() {
+    const cont = document.getElementById("listaRegistrosAdmin");
+    const bloques = loadBloques();
+    if (!bloques.length) return cont.innerHTML = "<p>No hay registros cargados.</p>";
+
+    cont.innerHTML = "";
+    bloques.forEach(bloque => {
+      const tabla = document.createElement("table");
+      const thead = document.createElement("thead");
+      thead.innerHTML = `<tr><th colspan="7">Línea ${bloque.linea} - Orden ${bloque.orden} 
+        <button class="btnEliminarOrden" data-linea="${bloque.linea}" data-orden="${bloque.orden}">Eliminar Orden</button></th></tr>
+        <tr><th>Código</th><th>Descripción</th><th>Cantidad Total</th><th>Embalajes Necesarios</th><th>Entregados</th><th>Estado</th><th>Acciones</th></tr>`;
+      tabla.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+      bloque.registros.forEach((reg, idx) => {
+        const clave = `${bloque.linea}||${bloque.orden}||${reg.codigo}`;
+        const entregaCompleta = reg.entregados >= reg.embalajesNecesarios && reg.embalajesNecesarios > 0;
+        const estado = entregaCompleta ? "Entregado" : reg.entregados > 0 ? "Parcial" : "Pendiente";
+        const fila = document.createElement("tr");
+        fila.className = entregaCompleta ? "entregado" : reg.entregados > 0 ? "pendiente" : "no-entregado";
+        if (correccionActivaClave === clave) fila.classList.add("correccion");
+
+        fila.innerHTML = `<td>${reg.codigo}</td><td>${reg.descripcion}</td><td>${reg.cantidadTotal}</td>
+                          <td>${reg.embalajesNecesarios}</td><td>${reg.entregados}</td><td>${estado}</td>
+                          <td><button class="btnEliminarArticulo" data-linea="${bloque.linea}" data-orden="${bloque.orden}" data-codigo="${reg.codigo}">Eliminar</button></td>`;
+        tbody.appendChild(fila);
+      });
+      tabla.appendChild(tbody);
+      cont.appendChild(tabla);
+      cont.appendChild(document.createElement("hr"));
+    });
+
+    cont.querySelectorAll(".btnEliminarOrden").forEach(btn => btn.onclick = () => {
+      const linea = btn.dataset.linea, orden = btn.dataset.orden;
+      const bloques = loadBloques().filter(b => !(b.linea == linea && b.orden == orden));
+      saveBloques(bloques); agregarLog(`Orden eliminada: ${linea}-${orden}`); renderListaRegistrosAdmin(); actualizarSelectCorreccion();
+    });
+
+    cont.querySelectorAll(".btnEliminarArticulo").forEach(btn => btn.onclick = () => {
+      const linea = btn.dataset.linea, orden = btn.dataset.orden, codigo = btn.dataset.codigo;
+      const bloques = loadBloques();
+      const bloque = bloques.find(b => b.linea == linea && b.orden == orden);
+      if (!bloque) return;
+      bloque.registros = bloque.registros.filter(r => r.codigo != codigo);
+      saveBloques(bloques); agregarLog(`Artículo eliminado: ${codigo}`); renderListaRegistrosAdmin(); actualizarSelectCorreccion();
+    });
+  }
+
+  // Render actualizar entregas
+  function renderFormActualizar() {
+    const cont = document.getElementById("formulariosActualizar");
+    const linea = document.getElementById("lineaActualizar").value;
+    if (!linea) {
+      cont.innerHTML = "<p>No hay líneas seleccionadas.</p>";
+      return;
+    }
+    const bloque = loadBloques().find(b => b.linea === linea);
+    if (!bloque) return cont.innerHTML = "<p>No hay registros para esta línea.</p>";
+
+    let html = `<form id="formActualizarEntrega"><table><thead><tr><th>Código</th><th>Descripción</th><th>Cantidad Total</th><th>Embalajes Necesarios</th><th>Entregados</th><th>Actualizar</th></tr></thead><tbody>`;
+    bloque.registros.forEach((reg, i) => {
+      const clave = `${bloque.linea}||${bloque.orden}||${reg.codigo}`;
+      const entregaCompleta = reg.entregados >= reg.embalajesNecesarios && reg.embalajesNecesarios > 0;
+      const editable = !entregaCompleta || correccionActivaClave === clave;
+      html += `<tr><td>${reg.codigo}</td><td>${reg.descripcion}</td><td>${reg.cantidadTotal}</td>
+               <td>${reg.embalajesNecesarios}</td><td>${reg.entregados}</td>
+               <td><input type="number" min="0" max="${reg.embalajesNecesarios}" data-index="${i}" data-clave="${clave}" value="${reg.entregados}" ${editable?"":"disabled"} /></td></tr>`;
+    });
+    html += `</tbody></table><div style="text-align:right;margin-top:10px;"><button type="submit">Guardar Cambios</button></div></form>`;
+    cont.innerHTML = html;
+
+    document.getElementById("formActualizarEntrega").onsubmit = e => {
+      e.preventDefault();
+      const bloques = loadBloques();
+      const b = bloques.find(b => b.linea === linea);
+      let cambios = false;
+      e.target.querySelectorAll("input[type=number]").forEach(inp => {
+        if (!inp.disabled) {
+          const idx = inp.dataset.index; const nuevo = parseInt(inp.value);
+          if (!isNaN(nuevo) && b.registros[idx].entregados !== nuevo) {
+            b.registros[idx].entregados = nuevo; cambios = true;
+            agregarLog(`Entrega actualizada: ${b.linea}-${b.orden}-${b.registros[idx].codigo} = ${nuevo}`);
+          }
+        }
+      });
+      if (cambios) { saveBloques(bloques); mostrarMensaje("Datos actualizados correctamente."); renderListaRegistrosAdmin(); renderFormActualizar(); }
+      else mostrarMensaje("No se detectaron cambios.");
+    };
+  }
+
+  // Actualiza los select de corrección y línea, y renderiza formulario actualizar
+  function actualizarSelectCorreccion() {
+    const select = document.getElementById("selectCorreccion");
+    const lineaSelect = document.getElementById("lineaActualizar");
+    const bloques = loadBloques();
+
+    // Actualizar selectCorreccion (modo corrección)
+    select.innerHTML = '<option value="">Seleccione línea|orden|código a desbloquear</option>';
+    bloques.forEach(b => b.registros.forEach(r => {
+      const val = `${b.linea}||${b.orden}||${r.codigo}`;
+      select.innerHTML += `<option value="${val}">Línea:${b.linea} | Orden:${b.orden} | Código:${r.codigo}</option>`;
+    }));
+
+    // Actualizar select lineaActualizar (Actualizar Entregas)
+    const lineasUnicas = [...new Set(bloques.map(b => b.linea))];
+    if(lineasUnicas.length) {
+      lineaSelect.innerHTML = lineasUnicas.map(l=>`<option value="${l}">${l}</option>`).join('');
+      if(!lineaSelect.value) lineaSelect.value = lineasUnicas[0];
+    } else {
+      lineaSelect.innerHTML = '<option value="">-- No hay líneas --</option>';
+    }
+
+    renderFormActualizar();
+  }
+
+  // Listener para cambio de línea actualizar
+  document.getElementById("lineaActualizar").addEventListener("change", () => {
+    renderFormActualizar();
+  });
+
+  // Botón modo corrección
+  document.getElementById("btnModoCorreccion").onclick = () => {
+    const select = document.getElementById("selectCorreccion");
+    const val = select.value;
+    if (!val) return mostrarError("Seleccione una línea|orden|código para desbloquear.");
+    correccionActivaClave = val;
+    mostrarMensaje("Modo corrección activado para: " + val);
+    renderListaRegistrosAdmin();
+    renderFormActualizar();
+  };
+
+  // Botón desactivar corrección
+  document.getElementById("btnDesactivarCorreccion").onclick = () => {
+    correccionActivaClave = "";
+    mostrarMensaje("Modo corrección desactivado.");
+    renderListaRegistrosAdmin();
+    renderFormActualizar();
+  };
+
+  // Render tabla embalajes
+  function renderTablaEmbalajes() {
+    const tbody = document.querySelector("#tablaEmbalajes tbody");
+    const embalajes = loadEmbData();
+    if(!embalajes.length) {
+      tbody.innerHTML = "<tr><td colspan='4'>No hay datos de embalajes cargados.</td></tr>";
+      return;
+    }
+    tbody.innerHTML = embalajes.map(e => `<tr><td>${e.codigo}</td><td>${e.descripcion}</td><td>${e.cantidad}</td><td>${e.tipo}</td></tr>`).join("");
+  }
+
+  // Mostrar mensajes y errores
+  function mostrarError(msg) {
+    const e = document.getElementById("errorExcel");
+    e.style.display = "block";
+    e.innerText = msg;
+    setTimeout(() => { e.style.display = "none"; }, 5000);
+  }
+  function mostrarMensaje(msg) {
+    const m = document.getElementById("mensajeExcel");
+    m.style.display = "block";
+    m.innerText = msg;
+    setTimeout(() => { m.style.display = "none"; }, 5000);
+  }
+
+  // Render logs
+  function renderLogs() {
+    const cont = document.getElementById("contenedorLogs");
+    const logs = loadLogs();
+    if (!logs.length) cont.innerHTML = "<p>No hay logs.</p>";
+    else cont.innerHTML = logs.map(l => `<div>[${l.fecha}] ${l.texto}</div>`).join("");
+  }
+
+  // Limpiar logs
+  document.getElementById("btnLimpiarLogs").onclick = () => {
+    if(confirm("¿Confirma limpiar todos los logs?")) {
+      saveLogs([]);
+      renderLogs();
+    }
+  };
+
+  // Inicializo
+  renderListaRegistrosAdmin();
+  actualizarSelectCorreccion();
+  renderTablaEmbalajes();
+  renderLogs();
+
+  // Cambiar pestañas
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.onclick = () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(tc => tc.classList.add("hidden"));
+      tab.classList.add("active");
+      document.getElementById(tab.dataset.tab).classList.remove("hidden");
+    };
+  });
+
+});
+</script>
+
+</body>
+</html>
