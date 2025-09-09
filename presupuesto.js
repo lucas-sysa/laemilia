@@ -37,19 +37,18 @@ function calcularPresupuesto() {
     }
   });
 
-  // actualizar totales de presupuesto
   actualizarTotalesPresupuesto();
-  // recalcular diferencias
   calcularDiferencias();
 }
 
+// --- Inflación editable ---
 function habilitarEdicionInflacion() {
   const inflacionFila = document.querySelector('#premisas-table tbody tr:first-child');
   for (let i=1;i<inflacionFila.cells.length;i++) {
     const celda = inflacionFila.cells[i];
     celda.contentEditable='true';
     celda.title="Editar inflación (%)";
-    celda.addEventListener('blur',()=>{
+    celda.addEventListener('blur',()=> {
       let val = celda.textContent.trim().replace('%','').replace(/[^\d,\.]/g,'');
       if(val==='') val='0';
       celda.textContent = val.replace('.',',')+'%';
@@ -57,7 +56,7 @@ function habilitarEdicionInflacion() {
       calcularPresupuesto();
       savePresupuestoBase();
     });
-    celda.addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault(); celda.blur();}});
+    celda.addEventListener('keydown', e=> { if(e.key==='Enter'){e.preventDefault(); celda.blur();}});
   }
 }
 
@@ -91,7 +90,7 @@ function habilitarGastoMesAnterior() {
     celda.title="Editar gasto mes anterior";
     if(saved[i]) celda.textContent=saved[i];
     celda.addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault(); celda.blur();}});
-    celda.addEventListener('blur', ()=>{
+    celda.addEventListener('blur', ()=> {
       celda.textContent=formatCellValue(celda.textContent);
       savePresupuestoBase();
       calcularPresupuesto();
@@ -118,11 +117,11 @@ function loadRealTable(){
   const saved = JSON.parse(localStorage.getItem('gastosReales'))||[];
   Array.from(realTable.rows).forEach((row,i)=>{
     Array.from(row.cells).forEach((cell,j)=>{
-      if(j>0 && j<=12){ // solo meses editables
+      if(j>0 && j<=12){ 
         cell.contentEditable='true';
         if(saved[i]&&saved[i][j]) cell.textContent=saved[i][j];
         cell.addEventListener('keydown', e=>{if(e.key==='Enter'){e.preventDefault(); cell.blur();}});
-        cell.addEventListener('blur', ()=>{
+        cell.addEventListener('blur', ()=> {
           cell.textContent=formatCellValue(cell.textContent);
           saveRealTable();
           actualizarTotalesReales();
@@ -130,13 +129,10 @@ function loadRealTable(){
       }
     });
   });
-
-  // actualizar totales al cargar
   actualizarTotalesReales();
 }
 
 function saveRealTable(){
-  // guardar solo meses 1..12
   const data = Array.from(realTable.rows).map(row=>{
     const arr = [];
     for(let j=1;j<=12;j++){
@@ -148,17 +144,14 @@ function saveRealTable(){
   calcularDiferencias();
 }
 
-// --- Totales por tabla ---
+// --- Totales ---
 function actualizarTotalesPresupuesto(){
   const filas = document.querySelectorAll('#presupuesto-table tbody tr');
   filas.forEach(fila=>{
     const celdas = fila.cells;
     let suma = 0;
-    // sumar Enero..Diciembre (índices 2..13)
-    for(let j=2;j<=13;j++){
-      suma += parseNumber(celdas[j].textContent);
-    }
-    const idxTotal = celdas.length - 1; // última celda
+    for(let j=2;j<=13;j++) suma += parseNumber(celdas[j].textContent);
+    const idxTotal = celdas.length - 1;
     celdas[idxTotal].textContent = formatNumber(suma);
   });
 }
@@ -168,10 +161,7 @@ function actualizarTotalesReales(){
   filas.forEach(fila=>{
     const celdas = fila.cells;
     let suma = 0;
-    // meses 1..12
-    for(let j=1;j<=12;j++){
-      suma += parseNumber(celdas[j].textContent);
-    }
+    for(let j=1;j<=12;j++) suma += parseNumber(celdas[j].textContent);
     const idxTotal = celdas.length - 1;
     celdas[idxTotal].textContent = formatNumber(suma);
   });
@@ -190,8 +180,8 @@ function calcularDiferencias() {
 
     let suma = 0;
     for(let mes=1;mes<=12;mes++){
-      const valPres=parseNumber(filaPres.cells[mes+1].textContent); // 2..13
-      const valReal=parseNumber(filaReal.cells[mes].textContent);   // 1..12
+      const valPres=parseNumber(filaPres.cells[mes+1].textContent); 
+      const valReal=parseNumber(filaReal.cells[mes].textContent);   
       const dif=valPres-valReal;
       suma += dif;
 
@@ -199,14 +189,13 @@ function calcularDiferencias() {
       filaDif.cells[mes].style.backgroundColor=dif>0?'#d0f0c0':dif<0?'#f8d7da':'';
     }
 
-    // escribir total de diferencias (última celda)
     const idxTotal = filaDif.cells.length - 1;
     filaDif.cells[idxTotal].textContent = formatNumber(suma);
     filaDif.cells[idxTotal].style.backgroundColor = suma>0?'#d0f0c0':suma<0?'#f8d7da':'';
   });
 }
 
-// --- Comentarios por mes ---
+// --- Comentarios ---
 const listaComentarios = document.getElementById('lista-comentarios');
 const selectMes = document.getElementById('mes-comentario');
 
@@ -243,30 +232,18 @@ document.getElementById('eliminar-comentario').addEventListener('click',()=>{
 
 listaComentarios.addEventListener('input', guardarComentarios);
 
-// --- Inicialización ---
-window.addEventListener('DOMContentLoaded', ()=>{
-  cargarInflacionGuardada();
-  habilitarEdicionInflacion();
-  habilitarGastoMesAnterior();
-  calcularPresupuesto();      // esto también actualiza totales y diferencias
-  loadRealTable();            // setea editables y totales en reales
-  calcularDiferencias();      // asegura inicial
-  cargarComentarios();
-});
-
-// --- Exportar configuración ---
+// --- Exportar / Importar ---
 document.getElementById('export-config').addEventListener('click', () => {
   const dataStr = JSON.stringify(localStorage, null, 2);
   const blob = new Blob([dataStr], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = "Presupuesto.json"; // se mantiene como lo tenías
+  a.download = "Presupuesto.json";
   a.click();
   URL.revokeObjectURL(url);
 });
 
-// --- Importar configuración ---
 document.getElementById('import-btn').addEventListener('click', () => {
   document.getElementById('import-config').click();
 });
@@ -290,3 +267,114 @@ document.getElementById('import-config').addEventListener('change', (e) => {
   };
   reader.readAsText(file);
 });
+
+// --- Obtener datos fila por mes ---
+function obtenerDatosFilaPorMes(fila, tipo="presupuesto") {
+  const celdas = fila.querySelectorAll("td");
+  const datos = [];
+  let startIdx = tipo === "presupuesto" ? 2 : 1;
+  for (let i=startIdx; i<=startIdx+11; i++){
+    let valor = celdas[i].textContent.trim().replace(/\./g,'').replace(',', '.');
+    datos.push(parseFloat(valor)||0);
+  }
+  return datos;
+}
+
+// --- Gráfico Presupuesto vs Real ---
+let presupuestoVsRealChart;
+
+function crearGraficoTotalesMensuales() {
+  const ctx = document.getElementById('presupuestoVsRealChart').getContext('2d');
+  const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+  const filasPresupuesto = document.querySelectorAll("#presupuesto-table tbody tr");
+  const filasReal = document.querySelectorAll("#real-table tbody tr");
+
+  const totalesPresupuesto = Array(12).fill(0);
+  const totalesReal = Array(12).fill(0);
+
+  filasPresupuesto.forEach(fila=>{
+    const datos = obtenerDatosFilaPorMes(fila, "presupuesto");
+    datos.forEach((v, idx)=> totalesPresupuesto[idx]+=v);
+  });
+
+  filasReal.forEach(fila=>{
+    const datos = obtenerDatosFilaPorMes(fila, "real");
+    datos.forEach((v, idx)=> totalesReal[idx]+=v);
+  });
+
+  if(presupuestoVsRealChart) presupuestoVsRealChart.destroy();
+
+  presupuestoVsRealChart = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels: meses,
+      datasets:[
+        {
+          label:'Presupuesto',
+          data: totalesPresupuesto,
+          backgroundColor:'rgba(54,162,235,0.7)',
+          borderColor:'rgba(54,162,235,1)',
+          borderWidth:1
+        },
+        {
+          label:'Gastos Reales',
+          data: totalesReal,
+          backgroundColor:'rgba(255,99,132,0.7)',
+          borderColor:'rgba(255,99,132,1)',
+          borderWidth:1
+        }
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{display:true, position:'top'},
+        tooltip:{
+          mode:'index',
+          intersect:false,
+          callbacks:{
+            label:function(context){
+              return context.dataset.label+': '+context.raw.toLocaleString('es-AR',{minimumFractionDigits:2});
+            }
+          }
+        }
+      },
+      scales:{
+        x:{stacked:false},
+        y:{
+          beginAtZero:true,
+          ticks:{
+            callback:function(value){ return value.toLocaleString('es-AR',{minimumFractionDigits:2}); }
+          }
+        }
+      }
+    }
+  });
+}
+
+// --- Actualizar gráfico al editar ---
+function habilitarEdicionYActualizar(idTabla){
+  const celdas = document.querySelectorAll(`#${idTabla} tbody td`);
+  celdas.forEach(celda=>{
+    celda.setAttribute("contenteditable","true");
+    celda.addEventListener("input", ()=>crearGraficoTotalesMensuales());
+  });
+}
+
+// --- Inicialización ---
+window.addEventListener('DOMContentLoaded', ()=>{
+  cargarInflacionGuardada();
+  habilitarEdicionInflacion();
+  habilitarGastoMesAnterior();
+  calcularPresupuesto();
+  loadRealTable();
+  calcularDiferencias();
+  cargarComentarios();
+  crearGraficoTotalesMensuales();
+  habilitarEdicionYActualizar("presupuesto-table");
+  habilitarEdicionYActualizar("real-table");
+});
+
+
+
