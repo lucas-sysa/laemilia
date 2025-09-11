@@ -348,46 +348,57 @@
     </div>
   </form>
 
-  <script>
-    // Poner fecha actual
-    document.getElementById('fecha').value = new Date().toLocaleString();
+<script>
+  // Poner fecha actual
+  document.getElementById('fecha').value = new Date().toLocaleString();
 
-    // Inicializar Select2 para búsqueda en descripción
-    $(document).ready(function() {
-      $('#descripcion').select2({
-        placeholder: "Seleccionar descripción",
-        allowClear: true
-      });
+  // Inicializar Select2 para búsqueda en descripción
+  $(document).ready(function() {
+    $('#descripcion').select2({
+      placeholder: "Seleccionar descripción",
+      allowClear: true
     });
+  });
 
-    // Enviar datos al Google Sheet
-    const form = document.getElementById('formRegistro');
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
+  // Enviar datos al Google Sheet
+  const form = document.getElementById('formRegistro');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-      const data = {
-        cliente: document.getElementById('cliente').value,
-        descripcion: document.getElementById('descripcion').value,
-        cantidad: document.getElementById('cantidad').value,
-        comentarios: document.getElementById('comentarios').value
-      };
+    const cliente = document.getElementById('cliente').value.trim();
+    const descripcion = document.getElementById('descripcion').value.trim();
+    const cantidad = document.getElementById('cantidad').value.trim();
+    const comentarios = document.getElementById('comentarios').value.trim();
 
-      fetch("https://script.google.com/macros/s/AKfycbzOWZmWeqCtl9u-_ZkC6oymcNEYqMOzwrloLF-hL7WJ8AeYQmbrESPutMzqlnUaI_IV/exec", {
-        method: "POST",
-        body: JSON.stringify(data)
-      })
-      .then(response => response.json())
-      .then(resp => {
-        alert("Datos guardados correctamente!");
-        form.reset();
-        document.getElementById('fecha').value = new Date().toLocaleString();
-        // Reiniciar Select2
-        $('#descripcion').val('').trigger('change');
-      })
-      .catch(err => {
-        alert("Error al guardar datos: " + err);
-      });
+    // 🚨 Validación de campos obligatorios
+    if (!cliente || !descripcion || !cantidad) {
+      alert("⚠️ Por favor, completá todos los campos obligatorios (Cliente, Descripción y Cantidad).");
+      return; // No se envía nada
+    }
+
+    const data = {
+      cliente,
+      descripcion,
+      cantidad,
+      comentarios
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbzOWZmWeqCtl9u-_ZkC6oymcNEYqMOzwrloLF-hL7WJ8AeYQmbrESPutMzqlnUaI_IV/exec", {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resp => {
+      alert("✅ Datos guardados correctamente!");
+      form.reset();
+      document.getElementById('fecha').value = new Date().toLocaleString();
+      // Reiniciar Select2
+      $('#descripcion').val('').trigger('change');
+    })
+    .catch(err => {
+      alert("❌ Error al guardar datos: " + err);
     });
-  </script>
+  });
+</script>
 </body>
 </html>
