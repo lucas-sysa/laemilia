@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist Autoelevadores</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana; margin: 0; background: #eef2f7; }
+  h1 { text-align: center; color: #333; margin-top: 20px; }
+  .selector { text-align: center; margin: 20px 0; }
+  select { padding: 10px 15px; font-size: 1em; border-radius: 8px; border: 1px solid #ccc; cursor: pointer; }
+  form { background: #fff; padding: 20px; border-radius: 12px; margin: 0 auto 25px auto; max-width: 500px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: none; }
+  .control { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; font-size: 1em; padding: 6px 0; border-bottom: 1px solid #eee; }
+  .toggle { font-size: 1.4em; cursor: pointer; user-select: none; width: 40px; text-align: center; transition: transform 0.2s; }
+  .toggle:hover { transform: scale(1.2); }
+  input[type="text"], input[type="date"], input[type="time"], input[type="number"] {
+    width: 48%; padding: 8px 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc;
+  }
+  label { display: flex; justify-content: space-between; margin-top: 10px; }
+  button { width: 100%; padding: 12px; font-size: 1.1em; background: #28a745; color: white; border: none; border-radius: 12px; margin-top: 20px; cursor: pointer; transition: 0.3s; }
+  button:hover { background: #218838; }
+  h3 { margin-top: 20px; color: #007bff; text-align: center; }
+  @media (max-width: 480px) {
+    label { flex-direction: column; align-items: flex-start; }
+    input { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Checklist Autoelevadores</h1>
+
+<div class="selector">
+  <label>Seleccione tipo de autoelevador:
+    <select id="tipoSelector">
+      <option value="">-- Elegir --</option>
+      <option value="combustion">Combustión</option>
+      <option value="electrico">Eléctrico</option>
+    </select>
+  </label>
+</div>
+
+<!-- Combustión -->
+<form id="formCombustion">
+  <label>Fecha registro: <input type="date" name="fechaRegistro" required></label>
+  <label>Número equipo: <input type="text" name="numeroEquipo" required></label>
+  <label>Fecha: <input type="date" name="fecha" required></label>
+  <label>Hora: <input type="time" name="hora" required></label>
+  <label>Hodómetro inicio: <input type="text" name="hodometro" required></label>
+  <label>Responsable: <input type="text" name="responsable" required></label>
+
+  <h3>Controles</h3>
+  <div class="control">Revisión carrocería <span class="toggle" data-key="carroceria">⬜</span></div>
+  <div class="control">Espejos <span class="toggle" data-key="espejos">⬜</span></div>
+  <div class="control">Asiento <span class="toggle" data-key="asiento">⬜</span></div>
+  <div class="control">Ruedas <span class="toggle" data-key="ruedas">⬜</span></div>
+  <div class="control">Uñas y parrilla <span class="toggle" data-key="unasParrilla">⬜</span></div>
+  <div class="control">Cinturón <span class="toggle" data-key="cinturon">⬜</span></div>
+  <div class="control">Extintor <span class="toggle" data-key="extintor">⬜</span></div>
+  <div class="control">Aceite <span class="toggle" data-key="aceite">⬜</span></div>
+  <div class="control">Refrigerante <span class="toggle" data-key="refrigerante">⬜</span></div>
+  <div class="control">Avance/Retroceso/Mandos <span class="toggle" data-key="mandos">⬜</span></div>
+  <div class="control">Frenos pie y mano <span class="toggle" data-key="frenos">⬜</span></div>
+  <div class="control">Sirena retroceso <span class="toggle" data-key="sirena">⬜</span></div>
+  <div class="control">Luces y bocina <span class="toggle" data-key="luces">⬜</span></div>
+
+  <button type="submit">Enviar Combustión</button>
+</form>
+
+<!-- Eléctricos -->
+<form id="formElectrico">
+  <label>Nombre operador: <input type="text" name="nombreOperador" required></label>
+  <label>Legajo: <input type="text" name="legajo" required></label>
+  <label>Sector: <input type="text" name="sector" required></label>
+  <label>Hora inicio jornada: <input type="time" name="horaInicioJornada" required></label>
+  <label>Hora fin jornada: <input type="time" name="horaFinJornada" required></label>
+  <label>Hora inicio (hodómetro): <input type="text" name="horaInicioHodometro" required></label>
+  <label>Voltaje batería: <input type="number" name="voltaje" step="0.1" required></label>
+  <label>Amper batería: <input type="number" name="amper" step="0.1" required></label>
+  <label>% batería: <input type="number" name="porcentajeBateria" min="0" max="100" step="1" required></label>
+  <label>Kilómetros total: <input type="number" name="kmTotal" step="0.1" required></label>
+
+  <h3>Controles</h3>
+  <div class="control">Aspecto general equipo <span class="toggle" data-key="aspectoGeneral">⬜</span></div>
+  <div class="control">Estado asiento y cinturón <span class="toggle" data-key="asientoCinturon">⬜</span></div>
+  <div class="control">Estado manguera <span class="toggle" data-key="manguera">⬜</span></div>
+  <div class="control">Visual ruedas <span class="toggle" data-key="ruedas">⬜</span></div>
+  <div class="control">Luces, bocina, sirena retroceso <span class="toggle" data-key="lucesBocina">⬜</span></div>
+  <div class="control">Funcionamiento mandos <span class="toggle" data-key="mandos">⬜</span></div>
+  <div class="control">Frenos pie y mano <span class="toggle" data-key="frenos">⬜</span></div>
+
+  <button type="submit">Enviar Eléctrico</button>
+</form>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbzXllQrg-alVQg12K4XDMqEvf4KzVup3ZqzBjCAxWZRIQ7ogyzGJItHcoJYUT3aBmIH/exec";
+
+// Selector de tipo
+const tipoSelector = document.getElementById("tipoSelector");
+const formCombustion = document.getElementById("formCombustion");
+const formElectrico = document.getElementById("formElectrico");
+
+tipoSelector.addEventListener('change', () => {
+  if(tipoSelector.value === "combustion") {
+    formCombustion.style.display = "block";
+    formElectrico.style.display = "none";
+  } else if(tipoSelector.value === "electrico") {
+    formCombustion.style.display = "none";
+    formElectrico.style.display = "block";
+  } else {
+    formCombustion.style.display = "none";
+    formElectrico.style.display = "none";
+  }
+});
+
+// Inicializa toggles
+document.querySelectorAll('.toggle').forEach(el => { el.dataset.state = "0"; });
+
+// Ciclo de 3 estados
+document.querySelectorAll('.toggle').forEach(el => {
+  el.addEventListener('click', () => {
+    let state = parseInt(el.dataset.state);
+    state = (state + 1) % 3;
+    el.dataset.state = state;
+    if(state === 0) el.textContent = '⬜';
+    if(state === 1) el.textContent = '✅';
+    if(state === 2) el.textContent = '❌';
+  });
+});
+
+// Validación completa antes de enviar
+function handleSubmit(form, tipo) {
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = { tipo };
+
+    // Validar inputs requeridos
+    const inputsRequeridos = Array.from(form.querySelectorAll('[required]'));
+    for(const input of inputsRequeridos) {
+      if(!input.value) {
+        alert(`Por favor completa el campo: ${input.name}`);
+        input.focus();
+        return;
+      }
+    }
+
+    // Validar toggles
+    const toggles = Array.from(form.querySelectorAll('.toggle'));
+    for(const el of toggles) {
+      const state = parseInt(el.dataset.state);
+      if(state === 0) {
+        alert("Por favor completa todos los controles antes de enviar.");
+        el.scrollIntoView({behavior: "smooth", block: "center"});
+        return;
+      }
+      const key = el.dataset.key;
+      data[key] = state === 1 ? "OK" : "NO";
+    }
+
+    // Guardar datos de inputs
+    formData.forEach((value, key) => { data[key] = value; });
+
+    // Enviar a Google Sheets
+    fetch(scriptURL, {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(res => alert("Registro guardado"))
+    .catch(err => alert("Error al enviar: " + err));
+
+    // Reset formulario y toggles
+    form.reset();
+    form.querySelectorAll('.toggle').forEach(el => { el.dataset.state = "0"; el.textContent = '⬜'; });
+  });
+}
+
+handleSubmit(formCombustion, "combustion");
+handleSubmit(formElectrico, "electrico");
+</script>
+
+</body>
+</html>
