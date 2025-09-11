@@ -313,15 +313,15 @@ function crearGraficoTotalesMensuales() {
         {
           label:'Presupuesto',
           data: totalesPresupuesto,
-          backgroundColor:'rgba(54,162,235,0.7)',
-          borderColor:'rgba(54,162,235,1)',
+          backgroundColor:'rgba(4, 78, 71, 0.48)',
+          borderColor:'rgba(4, 78, 71, 0.48)',
           borderWidth:1
         },
         {
           label:'Gastos Reales',
           data: totalesReal,
-          backgroundColor:'rgba(255,99,132,0.7)',
-          borderColor:'rgba(255,99,132,1)',
+          backgroundColor:'rgba(12, 175, 162, 0.57)',
+          borderColor:'rgba(12, 175, 162, 0.57)',
           borderWidth:1
         }
       ]
@@ -375,6 +375,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
   habilitarEdicionYActualizar("presupuesto-table");
   habilitarEdicionYActualizar("real-table");
 });
+
 
 
 
