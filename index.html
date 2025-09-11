@@ -8,7 +8,6 @@
 </head>
 
 <body>
-  <!-- Título a la izquierda -->
   <h1 class="titulo-izquierda">Logística</h1>
 
   <div class="circle-container">
@@ -17,39 +16,34 @@
       Tu navegador no soporta video.
     </video>
 
-    <!-- Botones alrededor -->
-    <a href="presupuesto.html">
-      <button class="circle-button top small">Presupuesto</button>
-    </a>
-
-    <a href="buscadormp.html">
-      <button class="circle-button right medium">Materia Prima</button>
-    </a>
-
-    <a href="buscadorfiscal.html">
-      <button class="circle-button bottom large">Fiscal</button>
-    </a>
-
-    <a href="buscadorgdp.html">
-      <button class="circle-button left medium">Gestión de Pieza</button>
-    </a>
-
-    <!-- Botones diagonales -->
-    <a href="asientos.html">
-      <button class="circle-button top-left small">Asientos</button>
-    </a>
-
-    <a href="adminvisor.html">
-      <button class="circle-button top-right small">Admin MP/visor</button>
-    </a>
-
-    <a href="boluneria.html">
-      <button class="circle-button bottom-left small">Bulonería</button>
-    </a>
-
-    <a href="insumo.html">
-      <button class="circle-button bottom-right small">Retiro de Insumos</button>
-    </a>
+    <!-- Botones -->
+    <a href="presupuesto.html"><button class="circle-button">Presupuesto</button></a>
+    <a href="buscadormp.html"><button class="circle-button">Materia Prima</button></a>
+    <a href="buscadorfiscal.html"><button class="circle-button">Fiscal</button></a>
+    <a href="buscadorgdp.html"><button class="circle-button">Gestión de Pieza</button></a>
+    <a href="asientos.html"><button class="circle-button">Asientos</button></a>
+    <a href="adminvisor.html"><button class="circle-button">Admin MP/visor</button></a>
+    <a href="boluneria.html"><button class="circle-button">Bulonería</button></a>
+    <a href="insumo.html"><button class="circle-button">Retiro de Insumos</button></a>
+    <a href="autoelevadores.html"><button class="circle-button">Checklist Autoelevadores</button></a>
   </div>
+
+<script>
+  const container = document.querySelector('.circle-container');
+  const buttons = container.querySelectorAll('.circle-button');
+  const radius = 280; // más separado del video
+  const centerX = container.offsetWidth / 2;
+  const centerY = container.offsetHeight / 2;
+  const total = buttons.length;
+
+  buttons.forEach((btn, i) => {
+    const angle = (i / total) * 2 * Math.PI; // ángulo en radianes
+    const x = centerX + radius * Math.cos(angle) - btn.offsetWidth / 2;
+    const y = centerY + radius * Math.sin(angle) - btn.offsetHeight / 2;
+    btn.style.left = x + 'px';
+    btn.style.top = y + 'px';
+  });
+</script>
+
 </body>
 </html>
