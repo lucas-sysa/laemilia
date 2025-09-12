@@ -212,6 +212,7 @@ tbody td[contenteditable="true"]:focus {
 #agregar-comentario,
 #eliminar-comentario,
 .btn-panol,
+.btn-nomina,
 .acciones-excel button {
     background-color: #048C7C;
     color: #fff;
@@ -226,6 +227,7 @@ tbody td[contenteditable="true"]:focus {
 #agregar-comentario:hover,
 #eliminar-comentario:hover,
 .btn-panol:hover,
+.btn-nomina:hover,
 .acciones-excel button:hover {
     background-color: #03655F;
     transform: translateY(-1px);
@@ -236,7 +238,7 @@ tbody td[contenteditable="true"]:focus {
 .header {
   display: flex;
   flex-direction: column;
-  align-items:;
+  align-items: center;
   margin-bottom: 20px;
 }
 
@@ -266,6 +268,7 @@ td[contenteditable="true"] {
 .negativo {
   background-color: #f8d7da !important;
 }
+
 #grafico-comparativo-container {
   background: #fff;
   padding: 20px;
