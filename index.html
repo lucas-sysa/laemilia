@@ -17,7 +17,7 @@
     </video>
 
     <!-- Botones -->
-    <a href="presupuesto.html"><button class="circle-button">Presupuesto</button></a>
+    <a href="presupuesto.html" id="btn-presupuesto"><button class="circle-button">Administración</button></a>
     <a href="buscadormp.html"><button class="circle-button">Materia Prima</button></a>
     <a href="buscadorfiscal.html"><button class="circle-button">Fiscal</button></a>
     <a href="buscadorgdp.html"><button class="circle-button">Gestión de Pieza</button></a>
@@ -29,19 +29,39 @@
   </div>
 
 <script>
+  // --- Distribución circular de botones ---
   const container = document.querySelector('.circle-container');
   const buttons = container.querySelectorAll('.circle-button');
-  const radius = 280; // más separado del video
+  const radius = 280;
   const centerX = container.offsetWidth / 2;
   const centerY = container.offsetHeight / 2;
   const total = buttons.length;
 
   buttons.forEach((btn, i) => {
-    const angle = (i / total) * 2 * Math.PI; // ángulo en radianes
+    const angle = (i / total) * 2 * Math.PI;
     const x = centerX + radius * Math.cos(angle) - btn.offsetWidth / 2;
     const y = centerY + radius * Math.sin(angle) - btn.offsetHeight / 2;
     btn.style.left = x + 'px';
     btn.style.top = y + 'px';
+  });
+
+  // --- Login solo para Presupuesto ---
+  const btnPresupuesto = document.getElementById("btn-presupuesto");
+
+  btnPresupuesto.addEventListener("click", function (event) {
+    event.preventDefault(); // bloquea entrada directa
+
+    const usuarioValido = "admin";   // 👈 cambia esto
+    const claveValida = "1234";      // 👈 cambia esto
+
+    const usuario = prompt("Ingrese usuario:");
+    const clave = prompt("Ingrese contraseña:");
+
+    if (usuario === usuarioValido && clave === claveValida) {
+      window.location.href = btnPresupuesto.getAttribute("href");
+    } else {
+      alert("Usuario o contraseña incorrectos.");
+    }
   });
 </script>
 
