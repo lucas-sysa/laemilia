@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyQ5-8JuPzqIppAEC0IXnsFpk_2BI0lYGNWjuDp9JUGClUzXjM7dD8aU1BXIcLTplwN/exec"; 
+  const scriptURL = "https://script.google.com/macros/s/AKfycbwic815TCF9mLI5JlE2fgnfDtfAmkAnNPjLFb_3PSQVD6akq7VPyuu1PcOBoBO7YLXv/exec"; 
   const formProduccion = document.getElementById("formProduccion");
   const formKit = document.getElementById("formKit");
 
@@ -99,4 +99,5 @@ function limpiarHistorial(localStorageKey, historialId) {
 
 // Inicialmente mostramos el formulario Producción
 mostrarFormulario('produccion');
+
 
