@@ -376,6 +376,56 @@ window.addEventListener('DOMContentLoaded', ()=>{
   habilitarEdicionYActualizar("real-table");
 });
 
+document.getElementById("exportar-excel").addEventListener("click", () => {
+  const wb = XLSX.utils.book_new();
 
+  const tablas = [
+    { id: "presupuesto-table", nombre: "Presupuesto" },
+    { id: "real-table", nombre: "Real" },
+    { id: "diferencia-table", nombre: "Diferencias" }
+  ];
 
+  tablas.forEach(t => {
+    const tabla = document.getElementById(t.id);
+    if (!tabla) return;
 
+    const ws = XLSX.utils.table_to_sheet(tabla);
+
+    // --- Aplicar estilo a encabezados ---
+    const rango = XLSX.utils.decode_range(ws['!ref']);
+    for (let C = rango.s.c; C <= rango.e.c; ++C) {
+      const cell = ws[XLSX.utils.encode_cell({r:0, c:C})];
+      if(cell) cell.s = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "4E4E4E" } },
+        alignment: { horizontal: "center", vertical: "center" },
+        border: {
+          top: { style: "thin", color: { rgb: "000000" } },
+          bottom: { style: "thin", color: { rgb: "000000" } },
+          left: { style: "thin", color: { rgb: "000000" } },
+          right: { style: "thin", color: { rgb: "000000" } }
+        }
+      };
+    }
+
+    // --- Opcional: aplicar bordes a todas las celdas ---
+    for(let R=rango.s.r+1; R<=rango.e.r; ++R){
+      for(let C=rango.s.c; C<=rango.e.c; ++C){
+        const cell = ws[XLSX.utils.encode_cell({r:R,c:C})];
+        if(cell){
+          cell.s = cell.s || {};
+          cell.s.border = {
+            top: { style: "thin", color: { rgb: "000000" } },
+            bottom: { style: "thin", color: { rgb: "000000" } },
+            left: { style: "thin", color: { rgb: "000000" } },
+            right: { style: "thin", color: { rgb: "000000" } }
+          };
+        }
+      }
+    }
+
+    XLSX.utils.book_append_sheet(wb, ws, t.nombre);
+  });
+
+  XLSX.writeFile(wb, "presupuesto_formateado.xlsx");
+});
