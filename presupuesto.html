@@ -10,11 +10,11 @@
 </head>
 <body>
     <div class="header">
-        <img src="Logo.png" alt="Logo Pañol" class="logo">
+        <img src="logo.png" alt="Logo Pañol" class="logo">
     </div>
 
   <h1><center>Presupuesto Logística 2025</center></h1>
-  
+
 <h2>Comparativo Mensual</h2>
 <canvas id="presupuestoVsRealChart" width="1000" height="400"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -169,15 +169,12 @@
   <button id="export-config">Exportar Configuración</button>
   <input type="file" id="import-config" style="display:none" />
   <button id="import-btn">Importar Configuración</button>
+  <button id="exportar-excel">Exportar a Excel</button>
 
   <ul id="lista-comentarios" style="margin-top:10px;"></ul>
 </div>
-
   <script src="presupuesto.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 </body>
 </html>
-
-
-
-
-
