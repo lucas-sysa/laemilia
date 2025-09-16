@@ -2,50 +2,91 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard Dotación</title>
-  <link rel="stylesheet" href="nomina.css">
-  <!-- Librerías externas -->
+  <title>Dashboard Maestro</title>
+  <link rel="stylesheet" href="dashboard.css">
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <h1>Dashboard Dotación</h1>
+
+  <h1>Dashboard Maestro</h1>
 
   <div class="controls">
     <input type="file" id="excelFile" accept=".xlsx, .xls" />
+    <button id="btnLimpiar">Limpiar Datos</button>
 
-    <select id="filterSector"><option value="">Todos los Sectores</option></select>
-    <select id="filterMoi"><option value="">Todos (MOI/MOD)</option></select>
-    <select id="filterNomina"><option value="">Todas las Nóminas</option></select>
+    <select id="filterMes">
+      <option value="">Todos los Meses</option>
+    </select>
 
-    <input type="text" id="filterLegajo" placeholder="Filtrar por Legajo" />
-    <input type="text" id="filterNombre" placeholder="Filtrar por Apellido y Nombre" />
-    <input type="text" id="filterClasificacion" placeholder="Filtrar por Clasificación" />
-    <input type="text" id="filterLinea" placeholder="Filtrar por Línea" />
+    <input type="text" id="filterLegajo" placeholder="Legajo" />
+    <input type="text" id="filterNombre" placeholder="Apellido y Nombre" />
+
+    <select id="filterNomina">
+      <option value="">Todas las Nóminas</option>
+    </select>
+
+    <select id="filterSector">
+      <option value="">Todos los Sectores</option>
+      <option value="Logística">Logística</option>
+    </select>
+
+    <select id="filterClasificacion">
+      <option value="">Todas las Clasificaciones</option>
+      <option value="Jornales">Jornales</option>
+      <option value="Mensuales">Mensuales</option>
+    </select>
+
+    <select id="filterManoObra">
+      <option value="">Todas las Mano de Obra</option>
+      <option value="Directa">Directa</option>
+      <option value="Indirecta">Indirecta</option>
+    </select>
+
+    <select id="filterLinea">
+      <option value="">Todas las Líneas</option>
+      <option value="L06">L06</option>
+      <option value="L09">L09</option>
+      <option value="L12">L12</option>
+      <option value="L14">L14</option>
+      <option value="L21">L21</option>
+      <option value="Log">Log</option>
+    </select>
+
+    <select id="filterIncidencia">
+      <option value="">Todas las Incidencias</option>
+      <option value="Cambio de sector">Cambio de sector</option>
+      <option value="Renuncia">Renuncia</option>
+      <option value="Despido">Despido</option>
+    </select>
   </div>
 
   <div class="dashboard">
     <canvas id="barChart"></canvas>
-    <canvas id="pieChart"></canvas>
+    <canvas id="barChartMeses"></canvas>
+
   </div>
 
-  <h2>Detalle</h2>
+  <h2>Detalle Maestro</h2>
   <div id="totalContainer" style="margin-bottom: 10px; font-weight: bold;"></div>
   <table id="dataTable">
     <thead>
       <tr>
+        <th>Mes/Año</th>
         <th>Legajo</th>
         <th>Apellido y Nombre</th>
         <th>Nómina</th>
         <th>Sector</th>
         <th>Clasificación</th>
-        <th>MOI / MOD</th>
-        <th>Línea</th>
+        <th>Mano de Obra</th>
+        <th>Líneas Afectadas</th>
+        <th>Incidencia</th>
+        <th>Observaciones</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 
-  <script src="nomina.js"></script>
+  <script src="dashboard.js"></script>
 </body>
 </html>
