@@ -6,23 +6,18 @@
   <title>Presupuesto</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="presupuesto.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
-    <div class="header">
-        <img src="Logo.png" alt="Logo Pañol" class="logo">
-    </div>
+  <div class="header">
+    <img src="logo.png" alt="Logo Pañol" class="logo">
+  </div>
 
-  <h1><center>Presupuesto Logística 2025</center></h1>
+  <h1 style="text-align:center;">Presupuesto Logística 2025</h1>
 
-<h2>Comparativo Mensual</h2>
-<canvas id="presupuestoVsRealChart" width="1000" height="400"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="graficoComparativo.js"></script>
-
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="graficoComparativo.js"></script>
+  <h2>Comparativo Mensual</h2>
+  <canvas id="presupuestoVsRealChart" width="1000" height="400"></canvas>
 
 
   <!-- Tabla de Premisas -->
@@ -67,13 +62,13 @@
       <thead>
         <tr>
           <th>Cuenta Contable</th>
-          <th>Mes Anterior</th><th>Enero</th><th>Febrero</th><th>Marzo</th><th>Abril</th>
+          <th>Enero</th><th>Febrero</th><th>Marzo</th><th>Abril</th>
           <th>Mayo</th><th>Junio</th><th>Julio</th><th>Agosto</th>
           <th>Septiembre</th><th>Octubre</th><th>Noviembre</th><th>Diciembre</th>
           <th>Totales</th>
         </tr>
       </thead>
-      <tbody>
+<tbody>
         <tr><td>Gastos Extras</td><td></td><td class="fijo">18.678,00</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td>Descarga de Contenedores</td><td></td><td class="fijo">19.415.296,00</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td>Gastos de Papelería y útiles</td><td></td><td class="fijo">763.561,00</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -89,7 +84,8 @@
     </table>
   </div>
 
- <h2>Gastos Reales</h2>
+  <!-- Gastos Reales -->
+  <h2>Gastos Reales</h2>
   <div id="real-container">
     <table id="real-table">
       <thead>
@@ -101,7 +97,7 @@
           <th>Totales</th>
         </tr>
       </thead>
-      <tbody>
+<tbody>
         <tr><td>Gastos Extras</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td>Descarga de Contenedores</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td>Gastos de Papelería y útiles</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -117,65 +113,65 @@
     </table>
   </div>
 
-<h2>Diferencia (Presupuesto - Gastos Reales)</h2>
-<div id="diferencia-container">
-  <table id="diferencia-table">
-    <thead>
-      <tr>
-        <th>Cuenta Contable</th>
-        <th>Enero</th><th>Febrero</th><th>Marzo</th><th>Abril</th>
-        <th>Mayo</th><th>Junio</th><th>Julio</th><th>Agosto</th>
-        <th>Septiembre</th><th>Octubre</th><th>Noviembre</th><th>Diciembre</th>
-        <th>Totales</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Gastos Extras</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>Descarga de Contenedores</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>Gastos de Papelería y útiles</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>Alquileres pagados</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>Gastos de Movilidad</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>Gastos de Comidas y Refrigerios</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>Fletes Varios</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>Desagotadora Andino (Módulo)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>Desagotadora Andino (Baño químico)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>Gastos de Embalaje</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>Reclutamiento</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-    </tbody>
-  </table>
-</div>
+  <!-- Diferencia -->
+  <h2>Diferencia (Presupuesto - Gastos Reales)</h2>
+  <div id="diferencia-container">
+    <table id="diferencia-table">
+      <thead>
+        <tr>
+          <th>Cuenta Contable</th>
+          <th>Enero</th><th>Febrero</th><th>Marzo</th><th>Abril</th>
+          <th>Mayo</th><th>Junio</th><th>Julio</th><th>Agosto</th>
+          <th>Septiembre</th><th>Octubre</th><th>Noviembre</th><th>Diciembre</th>
+          <th>Totales</th>
+        </tr>
+      </thead>
+<tbody>
+        <tr><td>Gastos Extras</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Descarga de Contenedores</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Gastos de Papelería y útiles</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Alquileres pagados</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Gastos de Movilidad</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Gastos de Comidas y Refrigerios</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Fletes Varios</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Desagotadora Andino (Módulo)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Desagotadora Andino (Baño químico)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Gastos de Embalaje</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Reclutamiento</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
 
-<div id="comentarios-generales">
-  <label for="mes-comentario">Seleccionar mes:</label>
-  <select id="mes-comentario">
-    <option value="Enero">Enero</option>
-    <option value="Febrero">Febrero</option>
-    <option value="Marzo">Marzo</option>
-    <option value="Abril">Abril</option>
-    <option value="Mayo">Mayo</option>
-    <option value="Junio">Junio</option>
-    <option value="Julio">Julio</option>
-    <option value="Agosto">Agosto</option>
-    <option value="Septiembre">Septiembre</option>
-    <option value="Octubre">Octubre</option>
-    <option value="Noviembre">Noviembre</option>
-    <option value="Diciembre">Diciembre</option>
-  </select>
+ <!-- Comentarios y botones -->
+  <div id="comentarios-generales">
+    <label for="mes-comentario">Seleccionar mes:</label>
+    <select id="mes-comentario">
+      <option value="Enero">Enero</option>
+      <option value="Febrero">Febrero</option>
+      <option value="Marzo">Marzo</option>
+      <option value="Abril">Abril</option>
+      <option value="Mayo">Mayo</option>
+      <option value="Junio">Junio</option>
+      <option value="Julio">Julio</option>
+      <option value="Agosto">Agosto</option>
+      <option value="Septiembre">Septiembre</option>
+      <option value="Octubre">Octubre</option>
+      <option value="Noviembre">Noviembre</option>
+      <option value="Diciembre">Diciembre</option>
+    </select>
 
-  <button id="agregar-comentario">+ Agregar comentario</button>
-  <button id="eliminar-comentario">- Eliminar último comentario</button>
-  <button class="btn-panol" onclick="window.location.href='file:///C:/Users/lcrocetti/Desktop/Presupuesto/panol.html'">Abrir Pañol</button>
-  <button class="btn-nomina" onclick="window.location.href='nomina.html'">Abrir Nómina</button>
-  <button id="export-config">Exportar Configuración</button>
-  <input type="file" id="import-config" style="display:none" />
-  <button id="import-btn">Importar Configuración</button>
-  <button id="exportar-excel">Exportar a Excel</button>
+    <button id="agregar-comentario">+ Agregar comentario</button>
+    <button id="eliminar-comentario">- Eliminar último comentario</button>
+    <button class="btn-panol" onclick="window.location.href='panol.html'">Abrir Pañol</button>
+    <button class="btn-nomina" onclick="window.location.href='nomina.html'">Abrir Nómina</button>
+    <button id="export-config">Exportar Configuración</button>
+    <input type="file" id="import-config" style="display:none" />
+    <button id="import-btn">Importar Configuración</button>
+    <button id="exportar-excel">Exportar a Excel</button>
+    <ul id="lista-comentarios" style="margin-top:10px;"></ul>
+  </div>
 
-  <ul id="lista-comentarios" style="margin-top:10px;"></ul>
-</div>
+  <!-- Tu JS principal -->
   <script src="presupuesto.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
 </body>
 </html>
-
