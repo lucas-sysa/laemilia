@@ -99,5 +99,3 @@ function limpiarHistorial(localStorageKey, historialId) {
 
 // Inicialmente mostramos el formulario Producción
 mostrarFormulario('produccion');
-
-
