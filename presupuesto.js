@@ -33,6 +33,7 @@ function formatearPremisa(fila) {
 
 function actualizarTablaPremisas(idTabla, datos) {
   const tabla = document.getElementById(idTabla);
+  if (!tabla) return;
   const tbody = tabla.querySelector("tbody");
   tbody.innerHTML = "";
   datos.forEach((fila) => {
@@ -48,37 +49,6 @@ function actualizarTablaPremisas(idTabla, datos) {
 }
 
 // ---------------------------
-// Presupuesto y Real
-// ---------------------------
-function actualizarTablaPresupuesto(datos) {
-  const tabla = document.querySelector("#presupuesto-table tbody");
-  tabla.innerHTML = "";
-  datos.forEach((fila) => {
-    const tr = document.createElement("tr");
-    Object.values(fila).forEach((valor, idx) => {
-      const td = document.createElement("td");
-      td.textContent = idx === 0 ? valor : formatNumber(parseNumber(valor));
-      tr.appendChild(td);
-    });
-    tabla.appendChild(tr);
-  });
-}
-
-function actualizarTablaReal(datos) {
-  const tabla = document.querySelector("#real-table tbody");
-  tabla.innerHTML = "";
-  datos.forEach((fila) => {
-    const tr = document.createElement("tr");
-    Object.values(fila).forEach((valor, idx) => {
-      const td = document.createElement("td");
-      td.textContent = idx === 0 ? valor : formatNumber(parseNumber(valor));
-      tr.appendChild(td);
-    });
-    tabla.appendChild(tr);
-  });
-}
-
-// ---------------------------
 // Cargar datos desde Google Sheet
 // ---------------------------
 async function cargarDatosDesdeGoogleSheet() {
@@ -87,32 +57,41 @@ async function cargarDatosDesdeGoogleSheet() {
     const data = await response.json();
 
     // Premisas
-    actualizarTablaPremisas("premisas-table", data.premisas);
+    actualizarTablaPremisas("premisas-table", data.premisas || []);
 
-    // Presupuesto y Real
-    actualizarTablaPresupuesto(data.presupuesto);
-    actualizarTablaReal(data.real);
-
-    // Crear filas de diferencias
-    const diferenciaTable = document.querySelector("#diferencia-table tbody");
-    diferenciaTable.innerHTML = "";
-    if (data.presupuesto && data.real) {
-      data.presupuesto.forEach(() => {
-        const tr = document.createElement("tr");
-        for (let i = 0; i <= 12; i++) { // 12 meses + total
-          const td = document.createElement("td");
-          tr.appendChild(td);
-        }
-        diferenciaTable.appendChild(tr);
+    // Presupuesto
+    const presupuestoTable = document.querySelector("#presupuesto-table tbody");
+    presupuestoTable.innerHTML = "";
+    (data.presupuesto || []).forEach((fila) => {
+      const tr = document.createElement("tr");
+      const valores = Object.values(fila);
+      valores.forEach((valor, idx) => {
+        const td = document.createElement("td");
+        td.textContent = idx === 0 ? valor : formatNumber(parseNumber(valor));
+        tr.appendChild(td);
       });
-    }
+      presupuestoTable.appendChild(tr);
+    });
+
+    // Real
+    const realTable = document.querySelector("#real-table tbody");
+    realTable.innerHTML = "";
+    (data.real || []).forEach((fila) => {
+      const tr = document.createElement("tr");
+      const valores = Object.values(fila);
+      valores.forEach((valor, idx) => {
+        const td = document.createElement("td");
+        td.textContent = idx === 0 ? valor : formatNumber(parseNumber(valor));
+        tr.appendChild(td);
+      });
+      realTable.appendChild(tr);
+    });
 
     // Totales y diferencias
     actualizarTotalesPresupuesto();
     actualizarTotalesReales();
     calcularDiferencias();
     crearGraficoTotalesMensuales();
-
     habilitarEdicionYActualizar("presupuesto-table");
     habilitarEdicionYActualizar("real-table");
 
@@ -126,6 +105,7 @@ async function cargarDatosDesdeGoogleSheet() {
 // ---------------------------
 function getInflacionMeses() {
   const inflacionFila = document.querySelector("#premisas-table tbody tr:first-child");
+  if (!inflacionFila) return Array(12).fill(0);
   const inflacionValores = [];
   for (let i = 1; i < inflacionFila.cells.length; i++) {
     let val = inflacionFila.cells[i].textContent.trim().replace("%", "");
@@ -142,6 +122,7 @@ function calcularPresupuesto() {
   const inflacion = getInflacionMeses();
   filas.forEach((fila) => {
     const celdas = fila.cells;
+    if (!celdas || celdas.length < 13) return;
     const valorBase = parseNumber(celdas[1].textContent);
     for (let mes = 1; mes <= 12; mes++) {
       let nuevoValor = valorBase * (1 + inflacion[mes - 1]);
@@ -159,18 +140,20 @@ function calcularPresupuesto() {
 function actualizarTotalesPresupuesto() {
   const filas = document.querySelectorAll("#presupuesto-table tbody tr");
   filas.forEach((fila) => {
+    const celdas = fila.cells;
     let suma = 0;
-    for (let j = 1; j <= 12; j++) suma += parseNumber(fila.cells[j].textContent);
-    fila.cells[fila.cells.length - 1].textContent = formatNumber(suma);
+    for (let j = 1; j <= 12; j++) suma += parseNumber(celdas[j].textContent);
+    celdas[celdas.length - 1].textContent = formatNumber(suma);
   });
 }
 
 function actualizarTotalesReales() {
   const filas = document.querySelectorAll("#real-table tbody tr");
   filas.forEach((fila) => {
+    const celdas = fila.cells;
     let suma = 0;
-    for (let j = 1; j <= 12; j++) suma += parseNumber(fila.cells[j].textContent);
-    fila.cells[fila.cells.length - 1].textContent = formatNumber(suma);
+    for (let j = 1; j <= 12; j++) suma += parseNumber(celdas[j].textContent);
+    celdas[celdas.length - 1].textContent = formatNumber(suma);
   });
 }
 
@@ -289,8 +272,3 @@ function habilitarEdicionYActualizar(idTabla) {
 window.addEventListener("DOMContentLoaded", () => {
   cargarDatosDesdeGoogleSheet();
 });
-
-
-  XLSX.writeFile(wb, "presupuesto_formateado.xlsx");
-});
-
