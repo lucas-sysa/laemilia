@@ -284,8 +284,80 @@ function habilitarEdicionYActualizar(idTabla) {
 }
 
 // ---------------------------
+// Comentarios (Agregar / Eliminar) - con localStorage
+// ---------------------------
+const STORAGE_KEY_COMMENTS = "presupuesto:comentarios:v1";
+let comentarios = [];
+
+function cargarComentariosDeStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_COMMENTS);
+    comentarios = raw ? JSON.parse(raw) : [];
+  } catch {
+    comentarios = [];
+  }
+}
+
+function guardarComentariosEnStorage() {
+  localStorage.setItem(STORAGE_KEY_COMMENTS, JSON.stringify(comentarios));
+}
+
+function renderizarComentarios() {
+  const ul = document.getElementById("lista-comentarios");
+  if (!ul) return;
+  ul.innerHTML = "";
+  comentarios.forEach((c) => {
+    const li = document.createElement("li");
+    li.textContent = `${c.mes} — ${c.text} (${c.fecha})`;
+    li.title = c.text;
+    ul.appendChild(li);
+  });
+}
+
+function agregarComentarioHandler() {
+  const select = document.getElementById("mes-comentario");
+  if (!select) return;
+  const mes = select.value || select.options[select.selectedIndex]?.text || "Mes";
+  const texto = prompt(`Agregar comentario para ${mes}:`);
+  if (texto === null) return;
+  const t = texto.trim();
+  if (t === "") {
+    alert("No se agregó: comentario vacío.");
+    return;
+  }
+  comentarios.push({ mes, text: t, fecha: new Date().toLocaleString() });
+  guardarComentariosEnStorage();
+  renderizarComentarios();
+}
+
+function eliminarComentarioHandler() {
+  if (comentarios.length === 0) {
+    alert("No hay comentarios para eliminar.");
+    return;
+  }
+  const ultimo = comentarios[comentarios.length - 1];
+  const confirmDel = confirm(`¿Eliminar último comentario de ${ultimo.mes}?\n\n"${ultimo.text}"`);
+  if (!confirmDel) return;
+  comentarios.pop();
+  guardarComentariosEnStorage();
+  renderizarComentarios();
+}
+
+function setupComentarios() {
+  cargarComentariosDeStorage();
+  renderizarComentarios();
+
+  const btnAdd = document.getElementById("agregar-comentario");
+  const btnDel = document.getElementById("eliminar-comentario");
+
+  if (btnAdd) btnAdd.addEventListener("click", agregarComentarioHandler);
+  if (btnDel) btnDel.addEventListener("click", eliminarComentarioHandler);
+}
+
+// ---------------------------
 // Inicialización
 // ---------------------------
 window.addEventListener("DOMContentLoaded", () => {
   cargarDatosDesdeGoogleSheet();
+  setupComentarios();
 });
