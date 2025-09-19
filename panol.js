@@ -1,27 +1,22 @@
+// URL del Google Apps Script publicado como web app
+const endpoint = "https://script.google.com/macros/s/AKfycbwpbSz5dykDI8v0JJZ4Olm4xdMaeNXlyTypVLdaFqTcS_JOrLLPlfb3Ao2cYGdlBqk/exec"; // <-- poné tu URL
+
 let rawData = [];
 let costos = JSON.parse(localStorage.getItem('costosUnitarios')) || {};
 let clienteChart;
 
-document.getElementById('excelFile').addEventListener('change', handleFile);
+document.addEventListener("DOMContentLoaded", loadData);
 document.getElementById('searchInput').addEventListener('input', renderTable);
 
-function handleFile(e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+async function loadData() {
+    try {
+        const response = await fetch(endpoint);
+        const data = await response.json();
 
-    reader.onload = function(event) {
-        const data = new Uint8Array(event.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-
-        rawData = XLSX.utils.sheet_to_json(sheet, { defval: '' })
+        rawData = data
             .filter(r => parseFloat(r.Cantidad) > 0)
             .map(r => {
-                r.FechaObj = r.Fecha ? XLSX.SSF.parse_date_code(r.Fecha) : null;
-                if (r.FechaObj) {
-                    r.FechaObj = new Date(r.FechaObj.y, r.FechaObj.m - 1, r.FechaObj.d);
-                }
+                r.FechaObj = r.Fecha ? new Date(r.Fecha) : null;
                 if (costos[r.Código]) {
                     r.CostoUnitario = costos[r.Código];
                 }
@@ -30,9 +25,9 @@ function handleFile(e) {
 
         populateFilters();
         renderTable();
-    };
-
-    reader.readAsArrayBuffer(file);
+    } catch (err) {
+        console.error("Error cargando datos desde Google Sheet:", err);
+    }
 }
 
 function populateFilters() {
