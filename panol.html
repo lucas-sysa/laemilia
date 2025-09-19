@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <title>Pañol</title>
     <link rel="stylesheet" href="panol.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="header">
         <img src="logo.png" alt="Pañol" class="logo">
-          </div>
+    </div>
 
-<h1><center>Reporte de Consumo</center></h1>
-
-    <input type="file" id="excelFile" accept=".xlsx, .xls">
+    <h1><center>Reporte de Consumo</center></h1>
 
     <div class="filters">
         <label>Grupo: <select id="filterGrupo"><option value="">Todos</option></select></label>
@@ -26,15 +23,14 @@
         <label>Buscar: <input type="text" id="searchInput" placeholder="Buscar..."></label>
     </div>
 
-<div class="config-buttons">
-    <button id="exportConfig">Exportar Configuración</button>
-    <input type="file" id="importConfigFile" style="display:none;">
-    <button id="importConfig">Importar Configuración</button>
-    <button id="goIndex">Volver a Inicio</button>
-</div>
+    <div class="config-buttons">
+        <button id="exportConfig">Exportar Configuración</button>
+        <input type="file" id="importConfigFile" style="display:none;">
+        <button id="importConfig">Importar Configuración</button>
+        <button id="goIndex">Volver a Inicio</button>
+    </div>
 
-
-    <!-- Gráfico arriba -->
+    <!-- Gráfico -->
     <div id="chartContainer">
         <canvas id="clienteChart"></canvas>
     </div>
@@ -67,5 +63,3 @@
     <script src="panol.js"></script>
 </body>
 </html>
-
-
