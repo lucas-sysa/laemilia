@@ -203,9 +203,8 @@ function calcularDiferencias() {
       suma > 0 ? "#d0f0c0" : suma < 0 ? "#f8d7da" : "";
   });
 }
-
 // ---------------------------
-// Gráfico de barras
+// Gráfico de barras con valores sobre las barras
 // ---------------------------
 let presupuestoVsRealChart;
 function crearGraficoTotalesMensuales() {
@@ -213,7 +212,10 @@ function crearGraficoTotalesMensuales() {
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
 
-  const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  const meses = [
+    "Enero","Febrero","Marzo","Abril","Mayo","Junio",
+    "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
+  ];
 
   const filasPresupuesto = document.querySelectorAll("#presupuesto-table tbody tr");
   const filasReal = document.querySelectorAll("#real-table tbody tr");
@@ -221,6 +223,7 @@ function crearGraficoTotalesMensuales() {
   const totalesPresupuesto = Array(12).fill(0);
   const totalesReal = Array(12).fill(0);
 
+  // Sumar valores de cada mes
   filasPresupuesto.forEach((fila) => {
     for (let mes = 0; mes < 12; mes++) {
       totalesPresupuesto[mes] += parseNumber(fila.cells[mes + 1].textContent);
@@ -240,8 +243,16 @@ function crearGraficoTotalesMensuales() {
     data: {
       labels: meses,
       datasets: [
-        { label: "Presupuesto", data: totalesPresupuesto, backgroundColor: "rgba(4, 78, 71, 0.48)" },
-        { label: "Gastos Reales", data: totalesReal, backgroundColor: "rgba(12, 175, 162, 0.57)" },
+        { 
+          label: "Presupuesto", 
+          data: totalesPresupuesto, 
+          backgroundColor: "rgba(4, 78, 71, 0.48)" 
+        },
+        { 
+          label: "Gastos Reales", 
+          data: totalesReal, 
+          backgroundColor: "rgba(12, 175, 162, 0.57)" 
+        },
       ],
     },
     options: {
@@ -255,6 +266,16 @@ function crearGraficoTotalesMensuales() {
             label: (ctx) => ctx.dataset.label + ": " + formatNumber(ctx.raw),
           },
         },
+        datalabels: {                   // <- muestra los valores sobre las barras
+          anchor: 'end',
+          align: 'end',
+          color: '#000',
+          font: {
+            weight: 'bold',
+            size: 12
+          },
+          formatter: (value) => formatNumber(value)
+        }
       },
       scales: {
         x: { stacked: false },
@@ -264,6 +285,23 @@ function crearGraficoTotalesMensuales() {
         },
       },
     },
+    plugins: [ChartDataLabels] // <- registrar plugin
+  });
+}
+
+// ---------------------------
+// Edición de celdas y actualización
+// ---------------------------
+function habilitarEdicionYActualizar(idTabla) {
+  const celdas = document.querySelectorAll(`#${idTabla} tbody td`);
+  celdas.forEach((celda) => {
+    celda.setAttribute("contenteditable", "true");
+    celda.addEventListener("input", () => {
+      actualizarTotalesPresupuesto();
+      actualizarTotalesReales();
+      calcularDiferencias();
+      crearGraficoTotalesMensuales();
+    });
   });
 }
 
@@ -361,3 +399,4 @@ window.addEventListener("DOMContentLoaded", () => {
   cargarDatosDesdeGoogleSheet();
   setupComentarios();
 });
+
