@@ -1,88 +1,114 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard Semanal</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
-    h1 { text-align: center; margin-bottom: 10px; }
-    #reloj { 
-      text-align: center; 
-      font-size: 28px; 
-      font-weight: bold; 
-      color: #007bff; 
-      margin-bottom: 20px;
-    }
-    table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-    th { background: #007bff; color: #fff; }
-    tr:nth-child(even) { background: #f9f9f9; }
-    .objetivo { font-weight: bold; color: #007bff; }
-    .cumple { color: green; font-weight: bold; }
-    .no-cumple { color: red; font-weight: bold; }
-    #ultima-actualizacion { font-size: 14px; color: #555; text-align: right; margin-top: 5px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TABLERO RPL</title>
+<style>
+body { 
+  font-family: Arial, sans-serif; 
+  padding: 20px; 
+  background: #f4f4f4; 
+  text-align: center; 
+}
+.logo { max-width: 200px; margin-bottom: 10px; }
+h1 { margin-bottom: 10px; color: #333; }
+#reloj { font-size: 18px; font-weight: bold; color: #444; margin-bottom: 20px; }
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  background: white; 
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+  margin-bottom: 10px; 
+}
+th, td { 
+  padding: 8px 12px; 
+  border: 1px solid #ddd; 
+  text-align: center; 
+}
+th { 
+  background: #048c7c; 
+  color: white; 
+  font-weight: bold; 
+}
+tr:nth-child(even) { background: #f9f9f9; }
+tr:hover { background: #e3f2fd; }
+.objetivo { font-weight: bold; color: #048c7c; }
+.cumple { color: green; font-weight: bold; }
+.no-cumple { color: red; font-weight: bold; }
+#ultima-actualizacion { font-size: 14px; color: #555; text-align: right; margin-top: 5px; }
+</style>
 </head>
 <body>
-  <h1>📊 Dashboard de Indicadores</h1>
-  <div id="reloj"></div>
-  <table id="dashboard"></table>
-  <div id="ultima-actualizacion"></div>
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyealWyhnT1-Q2yoPQzRGjk5RJZmB7Dc77JmlcrwS6iW2-nyEqK1nlqus4VyoA1-syXFg/exec"; 
+<img src="Logo.png" alt="Logo de la empresa" class="logo">
+<h1>TABLERO RPL</h1>
+<div id="reloj"></div>
+<table id="dashboard"></table>
+<div id="ultima-actualizacion"></div>
 
-    // Función para cargar datos
-    async function cargarDatos() {
-      let res = await fetch(scriptURL);
-      let data = await res.json();
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbyealWyhnT1-Q2yoPQzRGjk5RJZmB7Dc77JmlcrwS6iW2-nyEqK1nlqus4VyoA1-syXFg/exec";
 
-      let headers = data[0];
-      let rows = data.slice(1);
-      let table = document.getElementById("dashboard");
+// 🔹 Función para cargar datos
+async function cargarDatos() {
+  try {
+    let res = await fetch(scriptURL);
+    let data = await res.json();
+    if(!data || data.length===0) return;
 
-      table.innerHTML = "<thead><tr>" + headers.map(h => `<th>${h}</th>`).join("") + "</tr></thead>";
+    let headers = data[0];
+    let rows = data.slice(1);
+    let table = document.getElementById("dashboard");
 
-      let body = "<tbody>";
-      rows.forEach(r => {
-        let objetivo = parseFloat(r[2]) || 0; 
-        body += "<tr>" + r.map((c,i) => {
-          if(i===2) {
-            return `<td class="objetivo">${c || ""}</td>`;
-          } else if(i > 2) { 
-            let valor = parseFloat(c);
-            if(!isNaN(valor)) {
-              return `<td class="${valor >= objetivo ? 'cumple' : 'no-cumple'}">${c}</td>`;
-            }
+    table.innerHTML = "<thead><tr>" + headers.map(h => `<th>${h}</th>`).join("") + "</tr></thead>";
+
+    let body = "<tbody>";
+    rows.forEach(r => {
+      let objetivo = parseFloat(r[2]) || 0;
+      body += "<tr>" + r.map((c,i) => {
+        if(i===2) {
+          return `<td class="objetivo">${c || ""}</td>`;
+        } else if(i > 2) {
+          let valor = parseFloat(c);
+          if(!isNaN(valor)) {
+            return `<td class="${valor >= objetivo ? 'cumple' : 'no-cumple'}">${c}</td>`;
           }
-          return `<td>${c || ""}</td>`;
-        }).join("") + "</tr>";
-      });
-      body += "</tbody>";
-      table.innerHTML += body;
+        }
+        return `<td>${c || ""}</td>`;
+      }).join("") + "</tr>";
+    });
+    body += "</tbody>";
+    table.innerHTML += body;
 
-      // Actualizar hora de última actualización
-      const ahora = new Date();
-      document.getElementById("ultima-actualizacion").innerText = 
-        "Última actualización: " + ahora.toLocaleString();
-    }
+    // Actualizar hora de última actualización
+    const ahora = new Date();
+    document.getElementById("ultima-actualizacion").innerText = 
+      "Última actualización: " + ahora.toLocaleString();
+  } catch(err) {
+    console.error("Error cargando datos:", err);
+  }
+}
 
-    // Reloj en vivo con fecha completa
-    function actualizarReloj() {
-      const ahora = new Date();
-      const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit', second:'2-digit' };
-      document.getElementById("reloj").innerText = ahora.toLocaleDateString('es-ES', opciones);
-    }
-    // Primera carga
-    cargarDatos();
-    actualizarReloj();
+// 🔹 Reloj en vivo
+function actualizarReloj() {
+  const ahora = new Date();
+  const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', 
+                     hour: '2-digit', minute:'2-digit', second:'2-digit' };
+  document.getElementById("reloj").innerText = ahora.toLocaleDateString('es-ES', opciones);
+}
 
-    // Refrescar datos cada 1 minuto
-    setInterval(cargarDatos, 60000);
+// 🔹 Inicialización
+cargarDatos();
+actualizarReloj();
 
-    // Actualizar reloj cada segundo
-    setInterval(actualizarReloj, 1000);
-  </script>
+// 🔹 Refrescar datos y reloj
+setInterval(cargarDatos, 60000);
+setInterval(actualizarReloj, 1000);
+</script>
+<button class="btn-nomina" onclick="window.location.href='https://docs.google.com/spreadsheets/d/1-GmaJLTzJv27b6aTxWa2FR6UW_g5FWoKJ-SIBbsMGks/edit?gid=0#gid=0'">
+  Cargar Tablero
+</button>
+
 </body>
 </html>
-
