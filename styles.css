@@ -37,22 +37,31 @@ body {
 
 .circle-button {
   position: absolute;
-  padding: 10px 25px;        /* más espacio horizontal para textos largos */
+  padding: 10px 25px;        
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  background-color: #27ae60; /* color verde elegante */
+  background-color: #27ae60; /* verde elegante */
   color: white;
   font-weight: bold;
-  font-size: 12px;           /* tamaño de letra */
-  white-space: nowrap;        /* evita que el texto se divida */
+  font-size: 12px;           
+  white-space: nowrap;        
   display: inline-block;
   text-align: center;
-  min-width: 100px;           /* ancho mínimo para que textos largos quepan */
+  min-width: 100px;           
   transition: all 0.3s ease;
 }
 
 .circle-button:hover {
   background-color: #1e8449; /* verde más oscuro al pasar el mouse */
   transform: scale(1.1);
+}
+
+/* 🔹 Auditoría con un verde un poco más oscuro */
+.circle-button.auditoria {
+  background-color: #229954; /* más oscuro que el verde base */
+}
+
+.circle-button.auditoria:hover {
+  background-color: #196f3d; /* aún más oscuro al pasar el mouse */
 }
