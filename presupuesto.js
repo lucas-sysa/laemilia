@@ -6,8 +6,8 @@ const endpoint = "https://script.google.com/macros/s/AKfycbwcK9dCB15BJZv9Ski0iWH
 function parseNumber(str) {
   if (!str) return 0;
   str = str.toString().trim();
-  str = str.replace(/\./g, ""); // elimina separador de miles
-  str = str.replace(",", ".");  // reemplaza coma decimal por punto
+  str = str.replace(/\./g, "");
+  str = str.replace(",", ".");
   const n = parseFloat(str);
   return isNaN(n) ? 0 : n;
 }
@@ -25,8 +25,8 @@ function formatNumber(num) {
 // ---------------------------
 function formatearPremisa(fila) {
   return fila.map((val, idx) => {
-    if (idx === 0) return val; // nombre de la premisa
-    if (fila[0].toLowerCase().includes("inflación")) return val; // mantiene %
+    if (idx === 0) return val;
+    if (fila[0].toLowerCase().includes("inflación")) return val;
     return formatNumber(parseNumber(val));
   });
 }
@@ -86,20 +86,16 @@ async function cargarDatosDesdeGoogleSheet() {
     const response = await fetch(endpoint);
     const data = await response.json();
 
-    // Premisas
     actualizarTablaPremisas("premisas-table", data.premisas);
-
-    // Presupuesto y Real
     actualizarTablaPresupuesto(data.presupuesto);
     actualizarTablaReal(data.real);
 
-    // Crear filas de diferencias
     const diferenciaTable = document.querySelector("#diferencia-table tbody");
     diferenciaTable.innerHTML = "";
     if (data.presupuesto && data.real) {
       data.presupuesto.forEach(() => {
         const tr = document.createElement("tr");
-        for (let i = 0; i <= 12; i++) { // 12 meses + total
+        for (let i = 0; i <= 12; i++) {
           const td = document.createElement("td");
           tr.appendChild(td);
         }
@@ -107,15 +103,12 @@ async function cargarDatosDesdeGoogleSheet() {
       });
     }
 
-    // Totales y diferencias
     actualizarTotalesPresupuesto();
     actualizarTotalesReales();
     calcularDiferencias();
     crearGraficoTotalesMensuales();
-
     habilitarEdicionYActualizar("presupuesto-table");
     habilitarEdicionYActualizar("real-table");
-
   } catch (err) {
     console.error("Error cargando datos desde Google Sheet:", err);
   }
@@ -186,9 +179,7 @@ function calcularDiferencias() {
     const filaReal = filasReal[i];
     const filaDif = filasDif[i];
     if (!filaReal || !filaDif) return;
-
     filaDif.cells[0].textContent = filaPres.cells[0].textContent;
-
     let suma = 0;
     for (let mes = 1; mes <= 12; mes++) {
       const valPres = parseNumber(filaPres.cells[mes].textContent);
@@ -199,14 +190,15 @@ function calcularDiferencias() {
       filaDif.cells[mes].style.backgroundColor = dif > 0 ? "#d0f0c0" : dif < 0 ? "#f8d7da" : "";
     }
     filaDif.cells[filaDif.cells.length - 1].textContent = formatNumber(suma);
-    filaDif.cells[filaDif.cells.length - 1].style.backgroundColor =
-      suma > 0 ? "#d0f0c0" : suma < 0 ? "#f8d7da" : "";
+    filaDif.cells[filaDif.cells.length - 1].style.backgroundColor = suma > 0 ? "#d0f0c0" : suma < 0 ? "#f8d7da" : "";
   });
 }
+
 // ---------------------------
-// Gráfico de barras con valores sobre las barras
+// Gráfico de barras (con diferencia)
 // ---------------------------
 let presupuestoVsRealChart;
+
 function crearGraficoTotalesMensuales() {
   const canvas = document.getElementById("presupuestoVsRealChart");
   if (!canvas) return;
@@ -223,18 +215,19 @@ function crearGraficoTotalesMensuales() {
   const totalesPresupuesto = Array(12).fill(0);
   const totalesReal = Array(12).fill(0);
 
-  // Sumar valores de cada mes
+  // Sumar valores por mes
   filasPresupuesto.forEach((fila) => {
     for (let mes = 0; mes < 12; mes++) {
       totalesPresupuesto[mes] += parseNumber(fila.cells[mes + 1].textContent);
     }
   });
-
   filasReal.forEach((fila) => {
     for (let mes = 0; mes < 12; mes++) {
       totalesReal[mes] += parseNumber(fila.cells[mes + 1].textContent);
     }
   });
+
+  const totalesDiferencia = totalesPresupuesto.map((v, i) => v - totalesReal[i]);
 
   if (presupuestoVsRealChart) presupuestoVsRealChart.destroy();
 
@@ -243,16 +236,21 @@ function crearGraficoTotalesMensuales() {
     data: {
       labels: meses,
       datasets: [
-        { 
-          label: "Presupuesto", 
-          data: totalesPresupuesto, 
-          backgroundColor: "rgba(4, 78, 71, 0.48)" 
+        {
+          label: "Presupuesto",
+          data: totalesPresupuesto,
+          backgroundColor: "rgba(4, 78, 71, 0.6)"
         },
-        { 
-          label: "Gastos Reales", 
-          data: totalesReal, 
-          backgroundColor: "rgba(12, 175, 162, 0.57)" 
+        {
+          label: "Gastos Reales",
+          data: totalesReal,
+          backgroundColor: "rgba(12, 175, 162, 0.7)"
         },
+        {
+          label: "Diferencia (Presupuesto - Real)",
+          data: totalesDiferencia,
+          backgroundColor: "#FFB74D"
+        }
       ],
     },
     options: {
@@ -266,14 +264,11 @@ function crearGraficoTotalesMensuales() {
             label: (ctx) => ctx.dataset.label + ": " + formatNumber(ctx.raw),
           },
         },
-        datalabels: {                   // <- muestra los valores sobre las barras
+        datalabels: {
           anchor: 'end',
           align: 'end',
           color: '#000',
-          font: {
-            weight: 'bold',
-            size: 12
-          },
+          font: { weight: 'bold', size: 12 },
           formatter: (value) => formatNumber(value)
         }
       },
@@ -285,7 +280,7 @@ function crearGraficoTotalesMensuales() {
         },
       },
     },
-    plugins: [ChartDataLabels] // <- registrar plugin
+    plugins: [ChartDataLabels]
   });
 }
 
@@ -306,23 +301,7 @@ function habilitarEdicionYActualizar(idTabla) {
 }
 
 // ---------------------------
-// Edición de celdas y actualización
-// ---------------------------
-function habilitarEdicionYActualizar(idTabla) {
-  const celdas = document.querySelectorAll(`#${idTabla} tbody td`);
-  celdas.forEach((celda) => {
-    celda.setAttribute("contenteditable", "true");
-    celda.addEventListener("input", () => {
-      actualizarTotalesPresupuesto();
-      actualizarTotalesReales();
-      calcularDiferencias();
-      crearGraficoTotalesMensuales();
-    });
-  });
-}
-
-// ---------------------------
-// Comentarios (Agregar / Eliminar) - con localStorage
+// Comentarios (Agregar / Eliminar)
 // ---------------------------
 const STORAGE_KEY_COMMENTS = "presupuesto:comentarios:v1";
 let comentarios = [];
@@ -384,10 +363,8 @@ function eliminarComentarioHandler() {
 function setupComentarios() {
   cargarComentariosDeStorage();
   renderizarComentarios();
-
   const btnAdd = document.getElementById("agregar-comentario");
   const btnDel = document.getElementById("eliminar-comentario");
-
   if (btnAdd) btnAdd.addEventListener("click", agregarComentarioHandler);
   if (btnDel) btnDel.addEventListener("click", eliminarComentarioHandler);
 }
@@ -399,4 +376,3 @@ window.addEventListener("DOMContentLoaded", () => {
   cargarDatosDesdeGoogleSheet();
   setupComentarios();
 });
-
