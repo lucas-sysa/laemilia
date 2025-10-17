@@ -195,7 +195,7 @@ function calcularDiferencias() {
 }
 
 // ---------------------------
-// Gráfico de barras (con diferencia)
+// Gráfico de barras (con diferencia positiva y colores condicionales)
 // ---------------------------
 let presupuestoVsRealChart;
 
@@ -227,7 +227,11 @@ function crearGraficoTotalesMensuales() {
     }
   });
 
-  const totalesDiferencia = totalesPresupuesto.map((v, i) => v - totalesReal[i]);
+  // Diferencia absoluta y colores
+  const totalesDiferencia = totalesPresupuesto.map((v, i) => Math.abs(v - totalesReal[i]));
+  const coloresDiferencia = totalesPresupuesto.map((v, i) =>
+    totalesReal[i] > v ? "#FFB3B3" : "#d0f0c0"
+  );
 
   if (presupuestoVsRealChart) presupuestoVsRealChart.destroy();
 
@@ -247,9 +251,9 @@ function crearGraficoTotalesMensuales() {
           backgroundColor: "rgba(12, 175, 162, 0.7)"
         },
         {
-          label: "Diferencia (Presupuesto - Real)",
+          label: "Diferencia Absoluta",
           data: totalesDiferencia,
-          backgroundColor: "#FFB74D"
+          backgroundColor: coloresDiferencia
         }
       ],
     },
@@ -261,7 +265,16 @@ function crearGraficoTotalesMensuales() {
           mode: "index",
           intersect: false,
           callbacks: {
-            label: (ctx) => ctx.dataset.label + ": " + formatNumber(ctx.raw),
+            label: (ctx) => {
+              const label = ctx.dataset.label || "";
+              const value = ctx.raw;
+              if (label === "Diferencia Absoluta") {
+                const i = ctx.dataIndex;
+                const status = totalesReal[i] > totalesPresupuesto[i] ? "Se pasó del presupuesto" : "Dentro del presupuesto";
+                return `${label}: ${formatNumber(value)} (${status})`;
+              }
+              return `${label}: ${formatNumber(value)}`;
+            }
           },
         },
         datalabels: {
@@ -301,7 +314,7 @@ function habilitarEdicionYActualizar(idTabla) {
 }
 
 // ---------------------------
-// Comentarios (Agregar / Eliminar)
+// Comentarios
 // ---------------------------
 const STORAGE_KEY_COMMENTS = "presupuesto:comentarios:v1";
 let comentarios = [];
