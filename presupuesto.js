@@ -59,29 +59,49 @@
     });
   }
 
-  function calcularDiferencias() {
-    const filasPres = UI.presupuestoBody.rows;
-    const filasReal = UI.realBody.rows;
-    const filasDif = UI.diferenciaBody.rows;
+function calcularDiferencias() {
+    const filasPresupuesto = document.querySelectorAll("#presupuesto-table tbody tr");
+    const filasReal = document.querySelectorAll("#real-table tbody tr");
+    const filasDif = document.querySelectorAll("#diferencia-table tbody tr");
 
-    Array.from(filasPres).forEach((fPres, i) => {
-      if (!filasDif[i]) return;
-      filasDif[i].cells[0].textContent = fPres.cells[0].textContent;
-      
-      let totalDif = 0;
-      for (let m = 1; m <= 13; m++) { // Incluye la columna total
-        const vP = parseNumber(fPres.cells[m].textContent);
-        const vR = parseNumber(filasReal[i].cells[m].textContent);
-        const dif = vP - vR;
-        totalDif += (m < 13) ? dif : 0;
+    filasPresupuesto.forEach((filaPres, i) => {
+        const filaReal = filasReal[i];
+        const filaDif = filasDif[i];
         
-        const celdaDif = filasDif[i].cells[m];
-        celdaDif.textContent = formatNumber(m === 13 ? totalDif : dif);
-        celdaDif.className = dif >= 0 ? "positivo" : "negativo";
-      }
-    });
-  }
+        if (!filaReal || !filaDif) return;
 
+        // Copiamos el nombre de la cuenta (columna 0)
+        filaDif.cells[0].textContent = filaPres.cells[0].textContent;
+
+        let acumuladoAnualDif = 0;
+
+        // Bucle del mes 1 (Enero) al 12 (Diciembre)
+        for (let mes = 1; mes <= 12; mes++) {
+            const valPres = parseNumber(filaPres.cells[mes].textContent);
+            const valReal = parseNumber(filaReal.cells[mes].textContent);
+            
+            const dif = valPres - valReal;
+            acumuladoAnualDif += dif;
+
+            // Renderizar mes a mes
+            filaDif.cells[mes].textContent = formatNumber(dif);
+            
+            // Aplicar colores
+            filaDif.cells[mes].classList.remove('positivo', 'negativo');
+            if (dif > 0) filaDif.cells[mes].classList.add('positivo');
+            else if (dif < 0) filaDif.cells[mes].classList.add('negativo');
+        }
+
+        // --- EL TOTAL FINAL (Columna 13) ---
+        const celdaTotal = filaDif.cells[13]; // Asegúrate que tu HTML tenga 14 celdas (0 a 13)
+        if (celdaTotal) {
+            celdaTotal.textContent = formatNumber(acumuladoAnualDif);
+            celdaTotal.classList.remove('positivo', 'negativo');
+            if (acumuladoAnualDif > 0) celdaTotal.classList.add('positivo');
+            else if (acumuladoAnualDif < 0) celdaTotal.classList.add('negativo');
+        }
+    });
+}
   // --- Inicialización ---
   async function cargarDashboard() {
     try {
@@ -109,3 +129,4 @@
 
   window.addEventListener("DOMContentLoaded", cargarDashboard);
 })();
+
