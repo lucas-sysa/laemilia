@@ -64,46 +64,93 @@
     }
 
     // --- Gráfico ---
-    function renderizarGrafico() {
-        const ctx = document.getElementById("presupuestoVsRealChart")?.getContext("2d");
-        if (!ctx) return;
+// --- Función de Renderizado Mejorada ---
+  function renderizarGrafico() {
+    const canvas = document.getElementById("presupuestoVsRealChart");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
 
-        const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-        const totalesPres = Array(12).fill(0);
-        const totalesReal = Array(12).fill(0);
+    const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    const totalesPres = Array(12).fill(0);
+    const totalesReal = Array(12).fill(0);
 
-        document.querySelectorAll("#presupuesto-table tbody tr").forEach(f => {
-            for (let i = 0; i < 12; i++) totalesPres[i] += parseNumber(f.cells[i + 1].textContent);
+    // Sumamos lo que haya actualmente en las tablas (aunque estén vacías al inicio)
+    document.querySelectorAll("#presupuesto-table tbody tr").forEach(f => {
+      for (let i = 0; i < 12; i++) totalesPres[i] += parseNumber(f.cells[i + 1].textContent);
+    });
+    document.querySelectorAll("#real-table tbody tr").forEach(f => {
+      for (let i = 0; i < 12; i++) totalesReal[i] += parseNumber(f.cells[i + 1].textContent);
+    });
+
+    if (presupuestoVsRealChart) presupuestoVsRealChart.destroy();
+
+    presupuestoVsRealChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: meses,
+        datasets: [
+          { label: "Presupuesto", data: totalesPres, backgroundColor: "#048C7C" },
+          { label: "Real", data: totalesReal, backgroundColor: "#AEAAAA" }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, // Importante para que respete el alto del div
+        plugins: {
+          legend: { position: 'top' },
+          datalabels: {
+            anchor: 'end', align: 'top',
+            formatter: (v) => v > 0 ? formatNumber(v) : '',
+            font: { size: 10, weight: 'bold' }
+          }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
+  }
+
+  // --- Carga Inicial con Prioridad ---
+  async function cargarDatos() {
+    // 1. Dibujar gráfico inmediatamente (con ceros o datos iniciales del HTML)
+    renderizarGrafico();
+
+    try {
+      const response = await fetch(endpoint);
+      const data = await response.json();
+
+      // Si los datos vienen de afuera, aquí actualizarías el innerHTML de los tbodys
+      // ... lógica de actualización de tablas ...
+
+      // 2. Recalcular todo
+      actualizarTotales("presupuesto-table");
+      actualizarTotales("real-table");
+      calcularDiferencias();
+      
+      // 3. Actualizar el gráfico con los datos nuevos
+      renderizarGrafico();
+
+      // 4. Habilitar edición en tiempo real
+      document.querySelectorAll("td[contenteditable='true']").forEach(td => {
+        td.addEventListener("input", () => {
+          actualizarTotales("presupuesto-table");
+          actualizarTotales("real-table");
+          calcularDiferencias();
+          renderizarGrafico(); // El gráfico se actualiza mientras escribes
         });
-        document.querySelectorAll("#real-table tbody tr").forEach(f => {
-            for (let i = 0; i < 12; i++) totalesReal[i] += parseNumber(f.cells[i + 1].textContent);
-        });
+      });
 
-        if (presupuestoVsRealChart) presupuestoVsRealChart.destroy();
-
-        presupuestoVsRealChart = new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: meses,
-                datasets: [
-                    { label: "Presupuesto", data: totalesPres, backgroundColor: "#048C7C" },
-                    { label: "Real", data: totalesReal, backgroundColor: "#AEAAAA" }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    datalabels: {
-                        anchor: 'end', align: 'top',
-                        formatter: (v) => formatNumber(v),
-                        font: { size: 10 }
-                    }
-                }
-            },
-            plugins: [ChartDataLabels]
-        });
+    } catch (e) {
+      console.error("Error al cargar datos:", e);
+      // Si falla el fetch, calculamos lo que ya hay en el HTML por defecto
+      actualizarTotales("presupuesto-table");
+      actualizarTotales("real-table");
+      calcularDiferencias();
+      renderizarGrafico();
     }
-
+  }
     // --- Carga Inicial ---
     async function cargarDatos() {
         try {
@@ -131,3 +178,4 @@
 
     window.addEventListener("DOMContentLoaded", cargarDatos);
 })();
+
