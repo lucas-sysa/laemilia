@@ -3,29 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Presupuesto</title>
+  <title>Presupuesto Logística</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="presupuesto.css" />
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Chart.js DataLabels plugin -->
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-<!-- Tu JS principal -->
-<script src="presupuesto.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
   <div class="header">
-    <img src="Logo.png" alt="Presupuesto" class="logo">
+    <img src="Logo.png" alt="Logo" class="logo">
   </div>
 
   <h1 style="text-align:center;">Presupuesto Logística 2025</h1>
 
-  <h2>Comparativo Mensual</h2>
-  <canvas id="presupuestoVsRealChart" width="1000" height="400"></canvas>
+  <div id="grafico-comparativo-container" style="margin-bottom: 30px;">
+    <h2 style="text-align:center;">Comparativo Mensual</h2>
+    <div style="position: relative; height:300px; width:100%;">
+      <canvas id="presupuestoVsRealChart"></canvas>
+    </div>
+  </div>
 
-
-  <!-- Tabla de Premisas -->
   <h2>Premisas</h2>
   <div id="premisas-container">
     <table id="premisas-table">
@@ -38,29 +36,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Inflación Proyectada</td>
-          <td></td><td></td><td></td><td></td>
-          <td></td><td></td><td></td><td></td>
-          <td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td>TC OFICIAL Proyectado</td>
-          <td></td><td></td><td></td><td></td>
-          <td></td><td></td><td></td><td></td>
-          <td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td>TC CCL Proyectado</td>
-          <td></td><td></td><td></td><td></td>
-          <td></td><td></td><td></td><td></td>
-          <td></td><td></td><td></td><td></td>
-        </tr>
+        <tr><td>Inflación Proyectada</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>TC OFICIAL Proyectado</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>TC CCL Proyectado</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Presupuesto -->
   <h2>Presupuesto</h2>
   <div id="presupuesto-container">
     <table id="presupuesto-table">
@@ -73,23 +55,15 @@
           <th>Totales</th>
         </tr>
       </thead>
-<tbody>
-        <tr><td>Gastos Extras</td><td></td><td class="fijo"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Descarga de Contenedores</td><td></td><td class="fijo"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Papelería y útiles</td><td></td><td class="fijo"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Alquileres pagados</td><td></td><td class="fijo"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Movilidad</td><td></td><td class="fijo"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Comidas y Refrigerios</td><td></td><td class="fijo"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Fletes Varios</td><td></td><td class="fijo"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Desagotadora Andino (Módulo)</td><td></td><td class="fijo"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Desagotadora Andino (Baño químico)</td><td></td><td class="fijo"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Embalaje</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Reclutamiento</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tbody>
+        <tr><td>Gastos Extras</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>Descarga de Contenedores</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>Alquileres pagados</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>Gastos de Movilidad</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Gastos Reales -->
   <h2>Gastos Reales</h2>
   <div id="real-container">
     <table id="real-table">
@@ -102,23 +76,15 @@
           <th>Totales</th>
         </tr>
       </thead>
-<tbody>
-        <tr><td>Gastos Extras</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Descarga de Contenedores</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Papelería y útiles</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Alquileres pagados</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Movilidad</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Comidas y Refrigerios</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Fletes Varios</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Desagotadora Andino (Módulo)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Desagotadora Andino (Baño químico)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Embalaje</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Reclutamiento</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tbody>
+        <tr><td>Gastos Extras</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>Descarga de Contenedores</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>Alquileres pagados</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>Gastos de Movilidad</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Diferencia -->
   <h2>Diferencia (Presupuesto - Gastos Reales)</h2>
   <div id="diferencia-container">
     <table id="diferencia-table">
@@ -131,59 +97,25 @@
           <th>Totales</th>
         </tr>
       </thead>
-<tbody>
+      <tbody>
         <tr><td>Gastos Extras</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td>Descarga de Contenedores</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Papelería y útiles</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td>Alquileres pagados</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td>Gastos de Movilidad</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Comidas y Refrigerios</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Fletes Varios</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Desagotadora Andino (Módulo)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Desagotadora Andino (Baño químico)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Gastos de Embalaje</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Reclutamiento</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
       </tbody>
     </table>
   </div>
 
- <!-- Comentarios y botones -->
   <div id="comentarios-generales">
-    <label for="mes-comentario">Seleccionar mes:</label>
     <select id="mes-comentario">
-      <option value="Enero">Enero</option>
-      <option value="Febrero">Febrero</option>
-      <option value="Marzo">Marzo</option>
-      <option value="Abril">Abril</option>
-      <option value="Mayo">Mayo</option>
-      <option value="Junio">Junio</option>
-      <option value="Julio">Julio</option>
-      <option value="Agosto">Agosto</option>
-      <option value="Septiembre">Septiembre</option>
-      <option value="Octubre">Octubre</option>
-      <option value="Noviembre">Noviembre</option>
-      <option value="Diciembre">Diciembre</option>
-    </select>
-
-    <button id="agregar-comentario">+ Agregar comentario</button>
-    <button id="eliminar-comentario">- Eliminar último comentario</button>
-    <button class="btn-panol" onclick="window.location.href='panol.html'">Abrir Pañol</button>
-    <button class="btn-nomina" onclick="window.location.href='nomina.html'">Abrir Nómina</button>
-    <button class="btn-nomina" onclick="window.location.href='https://docs.google.com/spreadsheets/d/1UD4gO41bteQ02auEnuVbOheagkcIbBdVmY52MKZsLME/edit?gid=0#gid=0'">
-     Cargar Presupuesto
-    </button>
-    <button class="btn-nomina" onclick="window.location.href='https://docs.google.com/spreadsheets/d/14heegBB0TaL78IAg2MTRvQrOvQlDiRjiKLn5Lkr-Awo/edit?gid=0#gid=0'">
-     Cargar Pañol
-    </button>
-    <ul id="lista-comentarios" style="margin-top:10px;"></ul>
+      <option value="Enero">Enero</option><option value="Febrero">Febrero</option>
+      </select>
+    <button id="agregar-comentario">+ Comentario</button>
+    <button id="eliminar-comentario">- Eliminar último</button>
+    <button class="btn-panol" onclick="window.open('https://docs.google.com/spreadsheets/d/1UD4gO41bteQ02auEnuVbOheagkcIbBdVmY52MKZsLME/edit', '_blank')">Cargar Presupuesto</button>
+    <ul id="lista-comentarios"></ul>
   </div>
 
   <script src="presupuesto.js"></script>
 </body>
 </html>
-
-
-
-
-
-
